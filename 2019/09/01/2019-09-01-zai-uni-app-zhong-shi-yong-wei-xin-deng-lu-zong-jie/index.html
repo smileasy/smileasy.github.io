@@ -1,0 +1,1049 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="在uni-app中使用微信登录总结, 星星的博客">
+    <meta name="description" content="
+
+
+在uni-app中使用微信登录总结最近开发了一款使用uni-app框架的小程序，名字叫“花果鲜inside”（因为是针对公司业务的小程序，注册后需要后台审核，所以只能游客浏览哈）。现将开发问题中涉及到的微信授权登录业务总结一下.
+登录">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>在uni-app中使用微信登录总结 | 星星的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">星星的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">星星的博客</div>
+        <div class="logo-desc">
+            
+            一起学习 共同进步
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        在uni-app中使用微信登录总结
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/总结提高/" target="_blank">
+                                <span class="chip bg-color">总结提高</span>
+                            </a>
+                        
+                            <a href="/tags/uni-app/" target="_blank">
+                                <span class="chip bg-color">uni-app</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Vue-js/" class="post-category" target="_blank">
+                                Vue.js
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-09-01
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        2k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        9 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <meta name="referrer" content="no-referrer">
+
+
+<h2 id="在uni-app中使用微信登录总结"><a href="#在uni-app中使用微信登录总结" class="headerlink" title="在uni-app中使用微信登录总结"></a>在uni-app中使用微信登录总结</h2><p>最近开发了一款使用uni-app框架的小程序，名字叫“花果鲜inside”（因为是针对公司业务的小程序，注册后需要后台审核，所以只能游客浏览哈）。现将开发问题中涉及到的微信授权登录业务总结一下.</p>
+<h3 id="登录流程"><a href="#登录流程" class="headerlink" title="登录流程"></a>登录流程</h3><p>首先，我们先上<a href="https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/login.html" target="_blank" rel="noopener">小程序登录</a>的官方示例图：</p>
+<p><img src="https://res.wx.qq.com/wxdoc/dist/assets/img/api-login.2fcc9f35.jpg" alt="官方登录流程时序图"></p>
+<blockquote>
+<p>如果你看起这个登录时序图有些懵逼，那么就看我结合业务的实现吧。</p>
+</blockquote>
+<h4 id="登录业务实现"><a href="#登录业务实现" class="headerlink" title="登录业务实现"></a>登录业务实现</h4><p>散配小程序从管家APP中剥离出购物车、订单和我的三个模块。三个模块均设有登录入口。用户启动小程序，从<code>login.vue</code>中触发登录逻辑(部分代码)：</p>
+<pre><code>onLoad(e) {
+        tip.showLoading()
+        if (e !== {} &amp;&amp; e.autoLogin ===  &#39;false&#39;) {
+            //用户点击登录按钮，触发的onload,需要展示登录页面
+            this.authorizationLogin()
+        } else {
+            // 小程序启动的业务处理入口
+            const storageUserInfo = tool.getUserInfo()
+            if (storageUserInfo) {
+                const res = JSON.parse(storageUserInfo)
+                this.setLoginData(res)
+                this.$config.open_id = res.open_id
+            } else {
+                tip.hideLoading()
+                this.$store.commit(&#39;setLoginStatus&#39;, false)
+                this.$router.switchTab(&#39;/pages/order/order&#39;)
+            }
+        }
+
+    },</code></pre><blockquote>
+<p>考虑到存在用户从不同页面触发login.vue的onload和小程序启动时调用onload两种情况，使用autoLogin来做区别。</p>
+</blockquote>
+<p>用户如果通过点击事件触发，则需要这样传参：</p>
+<pre><code>this.$router.push(&#39;/pages/login/login&#39;, { autoLogin: false })</code></pre><h5 id="启动小程序登录场景"><a href="#启动小程序登录场景" class="headerlink" title="启动小程序登录场景"></a>启动小程序登录场景</h5><p>判断本地是否存储有用户的信息，有的话则会在setLoginData方法中配置全局config对象，并在该方法中请求token。注意，token对后台而言是区分用户是否处于登录的唯一标识。获取成功后，则跳转到首页，完成登录业务流程。</p>
+<p>如果本地没有存储有用户的信息，则直接跳转到首页。如果需要登录，则需要用户后续通过主动点击模块的登录按钮来触发登录业务。</p>
+<h5 id="用户点击登录按钮"><a href="#用户点击登录按钮" class="headerlink" title="用户点击登录按钮"></a>用户点击登录按钮</h5><p>用户从三个模块点击登录时，会 调用<code>login.vue</code>的onload中的authorizationLogin方法，通过authorizationLogin来实现登录业务。</p>
+<p>首先，我们去获取用户信息,我采取的是先调用<code>uni.login</code>，后通过<code>uni.getSetting</code>来判断用户是否权限的方式。当然，你也可以先通过<code>uni.getSetting</code>判断权限后调用<code>uni.login</code>。</p>
+<pre><code>        authorizationLogin() {
+            uni.login({
+                provider: &#39;weixin&#39;,
+                success: res =&gt; {
+                    this.code = res.code
+                    uni.getSetting({
+                        success: (result) =&gt; {
+                            tip.hideLoading()
+                            if (result.authSetting[&#39;scope.userInfo&#39;]) {
+                                this.getWxUserInfo()
+                            } else {
+                                this.needAuth = true
+                            }
+                        },
+                        fail: () =&gt; {
+                            this.needAuth = true
+                        }
+                    })
+                }
+            })
+        },</code></pre><blockquote>
+<p>由于拉取用户信息需要用户授权，并且只能通过button来触发获取，所以需要通过<code>uni.getSetting</code>来判断。</p>
+</blockquote>
+<p>授权按钮：</p>
+<pre><code>&lt;button open-type=&quot;getUserInfo&quot; @getuserinfo=&quot;getuserinfoCallback&quot; class=&quot;auth&quot; v-if=&quot;needAuth&quot;&gt;授权登录&lt;/button&gt;</code></pre><p>正常场景，拿到用户信息，调用readyWxAuth方法，该方法会请求自己后台的接口：</p>
+<pre><code>        // 后台做判断
+        readyWxAuth(res) {
+            this.$api
+                .readyWxAuth({
+                    code: this.code,
+                    userInfo: JSON.stringify(res.userInfo)
+                })
+                .then(res =&gt; {
+                    tip.hideLoading()
+                    this.open_id = res.open_id
+                    this.$config.open_id = res.open_id
+                    if (res.user_info === undefined) {
+                        //说明是新的用户，弹出登录框，绑定用户
+                        this.canAutoLogin = false
+                    } else {
+                        //不是新用户，存储用户信息，设置全局变量
+                        tool.saveUserInfo(res)
+                        this.setLoginData(res)
+                    }
+                })
+        }</code></pre><blockquote>
+<p>需要将我们通过uni.login拿到的code和通过用户授权的信息传给自己的后台，后台判断该用户是否为新用户，是新用户（res.user_info === undefined）的话，执行注册相关的逻辑，注册成功，则后续可以执行登录操作。不是的话，将后台返回的信息存储到本地，设置全局信息config，完成登录业务。</p>
+</blockquote>
+<p>如果你看的不是很明白，那么我就将登录页面代码给大家粘贴出来：</p>
+<pre><code>&lt;template&gt;
+    &lt;view class=&quot;container&quot;&gt;
+        &lt;div class=&quot;login_page&quot; v-if=&quot;!canAutoLogin&quot;&gt;
+            &lt;view class=&quot;content&quot;&gt;
+                &lt;view class=&quot;item&quot;&gt;
+                    &lt;text class=&quot;title&quot;&gt;账号&lt;/text&gt;
+                    &lt;input class=&quot;input&quot; type=&quot;text&quot; placeholder=&quot;请输入账号&quot; v-model=&quot;account&quot; /&gt;
+                &lt;/view&gt;
+                &lt;view class=&quot;item&quot;&gt;
+                    &lt;text class=&quot;title&quot;&gt;密码&lt;/text&gt;
+                    &lt;input class=&quot;input&quot; type=&quot;text&quot; password placeholder=&quot;请输入密码&quot; v-model=&quot;password&quot; /&gt;
+                &lt;/view&gt;
+            &lt;/view&gt;
+            &lt;view class=&quot;login&quot; @click=&quot;login&quot;&gt;登录&lt;/view&gt;
+            &lt;view class=&quot;option&quot;&gt;
+                &lt;navigator class=&quot;change-password&quot; url=&quot;/pages/login/register&quot;&gt;注册&lt;/navigator&gt;
+                &lt;navigator class=&quot;change-password&quot; url=&quot;/pages/login/changePassword&quot;&gt;忘记密码?&lt;/navigator&gt;
+            &lt;/view&gt;
+            &lt;view class=&quot;version&quot;&gt;当前版本:{{ version }}&lt;/view&gt;
+        &lt;/div&gt;
+        &lt;button open-type=&quot;getUserInfo&quot; @getuserinfo=&quot;getuserinfoCallback&quot; class=&quot;auth&quot; v-if=&quot;needAuth&quot;&gt;授权登录&lt;/button&gt;
+    &lt;/view&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import tip from &#39;../../util/tips.js&#39;
+import tool from &#39;../../util/tool.js&#39;
+import md5 from &#39;../../util/md5.min.js&#39;
+import { RECENT_SELECTED_STORE } from &#39;../../util/storage.js&#39;
+export default {
+    data() {
+        return {
+            account: &#39;&#39;,
+            password: &#39;&#39;,
+            version: &#39;&#39;,
+            open_id: &#39;&#39;,
+            code: &#39;&#39;,
+            canAutoLogin: true, // wx启动后，检测能否自动登录（默认可以），如果不能自动登录，则需要显示展示订货首页
+            needAuth: false //如果登录过期，则需要置为true，显示授权登录按钮
+        }
+    },
+    onLoad(e) {
+        this.$config.needRefresh = true
+        tip.showLoading()
+        if (e !== {} &amp;&amp; e.autoLogin ===  &#39;false&#39;) {
+            //用户点击登录按钮，触发的onload,需要展示登录页面
+            this.authorizationLogin()
+        } else {
+            // 小程序启动的业务处理入口
+            const storageUserInfo = tool.getUserInfo()
+            if (storageUserInfo) {
+                const res = JSON.parse(storageUserInfo)
+                this.setLoginData(res)
+                this.$config.open_id = res.open_id
+            } else {
+                tip.hideLoading()
+                this.$store.commit(&#39;setLoginStatus&#39;, false)
+                this.$router.switchTab(&#39;/pages/order/order&#39;)
+            }
+        }
+
+    },
+    methods: {
+        getuserinfoCallback(e) {
+            this.needAuth = false
+            if (e.detail.userInfo === undefined) { //授权拒绝
+                this.needAuth = true
+            } else {
+                this.readyWxAuth(e.detail)
+            }
+        },
+        authorizationLogin() {
+            uni.login({
+                provider: &#39;weixin&#39;,
+                success: res =&gt; {
+                    this.code = res.code
+                    uni.getSetting({
+                        success: (result) =&gt; {
+                            tip.hideLoading()
+                            //判断是否有权限去直接拉取用户信息
+                            if (result.authSetting[&#39;scope.userInfo&#39;]) {
+                                this.getWxUserInfo()
+                            } else {
+                            //没有权限，则需要显示一个固定格式的button，点击让用户授权
+                                this.needAuth = true
+                            }
+                        },
+                        fail: () =&gt; {
+                            this.needAuth = true
+                        }
+                    })
+                }
+            })
+        },
+        getWxUserInfo() {
+            tip.showLoading()
+            this.needAuth = false
+            //获取用户信息
+            uni.getUserInfo({
+                provider: &#39;weixin&#39;,
+                withCredentials: true,
+                success: res =&gt; {
+                    this.readyWxAuth(res)
+                },
+                fail: error =&gt; {
+                    tip.hideLoading()
+                }
+            })
+        },
+        // 此时，才涉及到你与自己后台的交互判断
+        readyWxAuth(res) {
+            this.$api
+                .readyWxAuth({
+                    code: this.code,
+                    userInfo: JSON.stringify(res.userInfo)
+                })
+                .then(res =&gt; {
+                    tip.hideLoading()
+                    this.open_id = res.open_id
+                    this.$config.open_id = res.open_id
+                    if (res.user_info === undefined) {
+                        //说明是新的用户，弹出登录框，绑定用户
+                        this.canAutoLogin = false
+                    } else {
+                        //不是新用户，存储用户信息，设置全局变量
+                        tool.saveUserInfo(res)
+                        this.setLoginData(res)
+                    }
+                })
+        },
+        setLoginData(res) {
+            const userInfo = res.user_info
+            const store = res.store
+            this.$config.store_name = store.name
+            this.$config.wxHeadImage = userInfo.wxInfo.avatarUrl
+            this.$config.sign = res.sign
+            this._setStoreInfo(store)
+            this.$config.staff_role_gid = userInfo.FK_role_gid
+            this.$config.staff_name = userInfo.username
+            this.getToken(userInfo.gid, this.$config.store_gid, res.sign)
+        },
+        login() {
+            if (this.account === &#39;&#39;) {
+                tip.showToast(&#39;账号不能为空&#39;)
+                return
+            }
+            if (this.password === &#39;&#39;) {
+                tip.showToast(&#39;密码不能为空&#39;)
+                return
+            }
+            this.$api
+                .login({
+                    number: this.account,
+                    password: md5(this.password),
+                    open_id: this.open_id,
+                    isLoading: true
+                })
+                .then(res =&gt; {
+                    res.user_info.self_login_password = md5(this.password)
+                    res.open_id = this.$config.open_id 
+                    //登录拿到的res中不包含open_id,所以需要自己手动存进res
+                    tool.saveUserInfo(res)
+                    this.setLoginData(res)
+                })
+                .catch(err =&gt; {
+                    tip.showModal(err, false)
+                })
+        },
+        getToken(staff_gid, store_gid, sign) {
+            let data = {
+                FK_staff_gid: staff_gid,
+                FK_store_gid: store_gid,
+                sign: sign
+            }
+            // 保存用户gid
+            this.$config.staff_gid = staff_gid
+            this.$api
+                .getToken(data)
+                .then(res =&gt; {
+                    // 保存token
+                    this.$config.token = &#39;Bearer &#39; + res
+                    tip.hideLoading()
+                    this.$store.commit(&#39;setLoginStatus&#39;, true)
+                    this.$config.needRefresh = true
+                    this.$router.switchTab(&#39;/pages/order/order&#39;)
+                })
+                .catch(err =&gt; {
+                    tip.hideLoading()
+                    tip.showToast(err)
+                    this.clearUserInfo() 
+                })
+        },
+        clearUserInfo() {
+            this.$store.commit(&#39;setLoginStatus&#39;, false)
+            tool.removeProductCache()
+            this.$store.commit(&#39;initProduct&#39;, [])
+            tool.delUserInfo()
+            this.$config.store_name = &#39;&#39;
+            this.$config.sign = &#39;&#39;
+            this.$config.staff_role_gid = &#39;&#39;
+            this.$config.token = &#39;&#39;
+            this.$config.authArray = []
+            this.needAuth = true
+            this.$config.needRefresh = true
+        },
+        // 设置门店信息
+        _setStoreInfo(store) {
+            const recent_selected_store = tool.getStorageSync(RECENT_SELECTED_STORE)
+            if (recent_selected_store) {
+                let tempStore = recent_selected_store[0]
+                if (tempStore.FK_branch_type_gid) {
+                    store = tempStore
+                }
+            }
+            this.$config.store_name = store.name
+            this.$config.store_gid = store.gid
+            this.$config.store_branch_gid = store.FK_branch_type_gid
+        }
+    }
+}
+&lt;/script&gt;</code></pre><blockquote>
+<p>总结：登录页面比较简单，思路也比较固定。小程序启动后，先判断是否存储有用户信息，有的话就直接登录；没有的话就需要小程序来登录了。使用小程序登录，需要先判断用户有没有授权让你获取用户信息，有的话去拉取用户信息，然后与自己的后台做交互。</p>
+</blockquote>
+
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《在uni-app中使用微信登录总结》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/09/01/2019-09-01-zai-uni-app-zhong-shi-yong-wei-xin-deng-lu-zong-jie/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                刘星星
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'abc79898ea014913ba7c',
+        clientSecret: '41f23ea4570391c06c9f4f47d0acec45d8dfe3ff',
+        repo: 'blogtalk',
+        owner: 'smileasy',
+        admin: "smileasy",
+        id: '2019-09-01T00-00-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/10/17/2019-10-17-zai-uni-app-zhong-shi-yong-vuex/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="在uni-app中使用Vuex">
+                        
+                        <span class="card-title">在uni-app中使用Vuex</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+引入vuexuni-app已经内置了vuex，我们可以直接引入使用。官方文档
+state的使用我们按照大型项目中的实际需求，将不同模块的状态管理划分为不同的module。例如我们有2个模块home和user，将home和user模块引入
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Vue-js/" class="post-category" target="_blank">
+                                    Vue.js
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/uni-app/" target="_blank">
+                        <span class="chip bg-color">uni-app</span>
+                    </a>
+                    
+                    <a href="/tags/Vuex/" target="_blank">
+                        <span class="chip bg-color">Vuex</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/08/27/2019-08-27-shi-yong-uni-app-shi-xian-yun-da-bao-he-re-geng-xin/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="使用uni-app实现云打包和热更新">
+                        
+                        <span class="card-title">使用uni-app实现云打包和热更新</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+
+使用uni-app实现云打包和热更新云打包启动HBuilderX，然后点击“运行”–&gt;“原生APP-云打包”，弹出如下页面：
+
+
+如果你要同时发布Android和iOS，那么需要都需要配置其内容。需要注意的是，一般我们都需要将
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-27
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Vue-js/" class="post-category" target="_blank">
+                                    Vue.js
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/总结提高/" target="_blank">
+                        <span class="chip bg-color">总结提高</span>
+                    </a>
+                    
+                    <a href="/tags/uni-app/" target="_blank">
+                        <span class="chip bg-color">uni-app</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站博客内容由刘星星负责更新维护.
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;当前站点总字数:&nbsp;
+                <span class="white-color">118.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

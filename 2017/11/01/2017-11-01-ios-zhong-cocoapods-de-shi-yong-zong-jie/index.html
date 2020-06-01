@@ -1,0 +1,901 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="iOS中cocoapods的使用总结, 星星的博客">
+    <meta name="description" content="
+
+
+cocoapods的使用我们可以从官网获取更为完整的信息,也可以从GitHub上了解更多。
+安装打开终端：
+sudo gem install cocoapods
+
+cd ~
+
+vim .bash_profile
+
+
+//配置 .bas">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>iOS中cocoapods的使用总结 | 星星的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">星星的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">星星的博客</div>
+        <div class="logo-desc">
+            
+            一起学习 共同进步
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        iOS中cocoapods的使用总结
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/cocoapods/" target="_blank">
+                                <span class="chip bg-color">cocoapods</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/项目管理/" class="post-category" target="_blank">
+                                项目管理
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2017-11-01
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        1.7k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        7 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <meta name="referrer" content="no-referrer">
+
+
+<h2 id="cocoapods的使用"><a href="#cocoapods的使用" class="headerlink" title="cocoapods的使用"></a>cocoapods的使用</h2><p>我们可以从<a href="https://guides.cocoapods.org/using/getting-started.html" target="_blank" rel="noopener">官网</a>获取更为完整的信息,也可以从GitHub上<a href="https://github.com/CocoaPods/CocoaPods" target="_blank" rel="noopener">了解更多</a>。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>打开终端：</p>
+<pre><code>sudo gem install cocoapods
+
+cd ~
+
+vim .bash_profile
+
+
+//配置 .bash_profile
+export GEM_HOME=$HOME/.gem
+export PATH=$GEM_HOME/bin:$PATH</code></pre><p>更新操作也是同样的命令：</p>
+<pre><code>sudo gem install cocoapods</code></pre><h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>cd到xcode项目的根目录下初始化Proflie文件：</p>
+<pre><code>pod init </code></pre><p>添加所需要的依赖：</p>
+<pre><code>target &#39;MyApp&#39; do
+  pod &#39;AFNetworking&#39;, &#39;~&gt; 3.0&#39;
+  pod &#39;FBSDKCoreKit&#39;, &#39;~&gt; 4.9&#39;
+end</code></pre><p>运行<code>pod install</code>即可。</p>
+<h4 id="pod-install-vs-pod-update"><a href="#pod-install-vs-pod-update" class="headerlink" title="pod install vs. pod update"></a>pod install vs. pod update</h4><p>很多人以为，<code>pod install</code>仅仅在自己第一次创建项目的时候使用，而后续的操作更新都是使用 <code>pod update</code>。但实际上这种想法并不完全正确。</p>
+<h5 id="pod-install"><a href="#pod-install" class="headerlink" title="pod install"></a>pod install</h5><p>当你为项目添加新的pods依赖或者删除已有pods的时候，你应该使用<code>pod install</code>。也就是说，除了初始化项目时需要<code>pod install</code>外，当你在以后的开发中操作了Profile文件的时候，你应该使用<code>pod install</code>。</p>
+<blockquote>
+<p>当第一次运行Podfile文件时，会自动生成一个Podfile.lock文件，Podfile.lock会记录你使用的pods的版本并进行版本track。以后每次运行pod install命令的时候，它都会去按照Podfile.lock文件去下载指定版本的依赖（不会尝试检查是否有新的依赖版本）。对于新增的依赖，由于没有添加到Podfile.lock中，会匹配最新的依赖（如果没有指定新加入的依赖版本的话）然后更新到Podfile.lock中。</p>
+</blockquote>
+<h5 id="pod-update"><a href="#pod-update" class="headerlink" title="pod update"></a>pod update</h5><p>我们使用<code>pod update</code>的场景，只在我们需要更新依赖到新的版本的时候。比如，我们可以使用<code>pod update [PODNAME]</code>来指定更新某个依赖。当你使用该命令时，CocoaPods会忽略Podfile.lock中的版本，去将Pod更新到尽肯能新的版本（根据你在Podfile中做的版本限制情况）。如果没有指定更新pods的名字，而是直接运行<code>pod update</code>，那么cocoaPods会根据Podfile更新每一个依赖到尽可能新的版本。</p>
+<h4 id="镜像问题"><a href="#镜像问题" class="headerlink" title="镜像问题"></a>镜像问题</h4><p>如果下载速度过慢，可以尝试切换镜像，例如<a href="https://mirror.tuna.tsinghua.edu.cn/help/CocoaPods/" target="_blank" rel="noopener">清华大学开源镜像站</a>。cocoapods切换镜像的方法：</p>
+<pre><code> cd ~/.cocoapods/repos 
+ pod repo remove master
+  git clone https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git master</code></pre><p>最后进入自己的工程，在自己工程的podFile第一行加上：</p>
+<pre><code>source &#39;https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git&#39;</code></pre><h4 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a><a href="http://www.jianshu.com/p/6d8604f0b94c" target="_blank" rel="noopener">环境配置</a></h4><h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>vim podfile</td>
+<td>添加文件</td>
+</tr>
+<tr>
+<td>pod search AFN</td>
+<td>搜索</td>
+</tr>
+<tr>
+<td>Podfile.lock</td>
+<td>该文件用于保存已经安装的Pods依赖库的版本</td>
+</tr>
+<tr>
+<td>pod update –no-repo-update</td>
+<td>更新</td>
+</tr>
+<tr>
+<td>pod env</td>
+<td>查看已经安装的cocoapods版本。</td>
+</tr>
+<tr>
+<td>pod outdated</td>
+<td>查看Podfile文件中的依赖库的最新版本。</td>
+</tr>
+</tbody></table>
+<pre><code>platform :ios,&#39;8.0&#39;
+
+target ‘BSPH’ do
+
+pod &#39;AFNetworking&#39;, &#39;~&gt; 3.1.0&#39;
+
+end</code></pre><hr>
+<h3 id="建立远程仓库（2020年4月更新）"><a href="#建立远程仓库（2020年4月更新）" class="headerlink" title="建立远程仓库（2020年4月更新）"></a>建立远程仓库（2020年4月更新）</h3><p>首先，需要建立一个远程仓库，你可以选择码云或者其他代码托管平台。这里使用github做演示：</p>
+<p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/39D78FA08ADC4AFE8F7A095070E3CF40/35048" alt="image"></p>
+<p>打开终端，选择自己想要的目录<br>输入命令<code>pod lib create CoRep</code> ，通过pod创建一个项目，如下:</p>
+<pre><code>pod lib create CoRep</code></pre><p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/4AF7FCD5315945F1B35A73DE7E80A4EE/35055" alt="image"><br>稍后，会让你配置一些信息,当然后续你还有机会更改：</p>
+<p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/C84C9EEF5D2D479489AB9DF74CE2EC10/35069" alt="image"></p>
+<pre><code>你要使用哪个平台？ iOS
+你要使用哪种语言？ ObjC
+是否要使用示例？ YES
+使用哪个测试框架？ None
+是否要UI测试？ No
+类名前缀是啥？ HHY</code></pre><p>配置完成后，会自动启动xcode，我们可以看下创建的文件目录：</p>
+<p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/3033FBB5BC474E9C9B16477C5962BAEC/35053" alt="image"></p>
+<p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/70567C1A33E64551882EF4BF6BA0BDF6/35086" alt="image"></p>
+<p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/8C2980F96F174081801AE2736BF93239/35090" alt="image"></p>
+<blockquote>
+<p>其中Example就是我们选择YES时创建的示例工程，CoRep就是我们存放仓库代码的位置，里面默认创建有Assets和Classes两个文件夹，我们的代码文件就放在Classes里，里面有一个叫做ReplaceMe.m的文件，提示我们后续替换掉它。图片资源文件则可以放在Assets里。另外还有生成的License证书和REAME文件。注意：CoRep.podspec是比较重要的一个文件，这是我们关联远程仓库的一个配置文件，我们刚才输入的配置，我们后续可以在里面进行部分修改。</p>
+</blockquote>
+<p>下一步，将要上传的文件放到Classes目录下：</p>
+<p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/67A10AD5A9664ED1847E1D7BD78E9D8F/35088" alt="image"></p>
+<p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/3E4A90989E184254B0720F7C98D80EA9/35092" alt="image"></p>
+<p>添加后，我们可以使用创建的测试项目进行测试。运行<code>pod install</code>，就可以引入我们之前的文件了。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/47B8117BE65640B69DED25D478E0255F/35094" alt="image"></p>
+<h4 id="提交到Github仓库"><a href="#提交到Github仓库" class="headerlink" title="提交到Github仓库"></a>提交到Github仓库</h4><p>在测试项目中没有问题的话，下一步就将项目提交到github，然后打上tag：</p>
+<pre><code>git tag 0.0.1
+git push origin 0.0.1</code></pre><h4 id="配置并验证CoRep-podspec文件"><a href="#配置并验证CoRep-podspec文件" class="headerlink" title="配置并验证CoRep.podspec文件"></a>配置并验证<code>CoRep.podspec</code>文件</h4><p>下一步，我们修改CoRep.podspec文件的配置：</p>
+<pre><code>#
+# Be sure to run `pod lib lint CoRep.podspec&#39; to ensure this is a
+# valid spec before submitting.
+#
+# Any lines starting with a # are optional, but their use is encouraged
+# To learn more about a Podspec see https://guides.cocoapods.org/syntax/podspec.html
+#
+
+Pod::Spec.new do |s|
+  s.name             = &#39;CoRep&#39;
+  s.version          = &#39;0.0.1&#39; 
+  s.summary          = &#39;CoRep&#39;
+
+# This description is used to generate tags and improve search results.
+#   * Think: What does it do? Why did you write it? What is the focus?
+#   * Try to keep it short, snappy and to the point.
+#   * Write the description between the DESC delimiters below.
+#   * Finally, don&#39;t worry about the indent, CocoaPods strips it!
+
+  s.description      = &#39;CoRep remote&#39;
+ # 仓库主页地址
+  s.homepage         = &#39;https://github.com/smileasy/&#39;
+  # s.screenshots     = &#39;www.example.com/screenshots_1&#39;, &#39;www.example.com/screenshots_2&#39;
+  s.license          = { :type =&gt; &#39;MIT&#39;, :file =&gt; &#39;LICENSE&#39; }
+  s.author           = { &#39;刘二拐&#39; =&gt; &#39;lxxwork0827@163.com&#39; }
+  s.source           = { :git =&gt; &#39;https://github.com/smileasy/CoRep.git&#39;, :tag =&gt; &quot;#{s.version}&quot; }
+  # s.social_media_url = &#39;https://twitter.com/&lt;TWITTER_USERNAME&gt;&#39;
+
+  s.ios.deployment_target = &#39;8.0&#39;
+
+  s.source_files = &#39;CoRep/Classes/**/*&#39;
+
+  # s.resource_bundles = {
+  #   &#39;CoRep&#39; =&gt; [&#39;CoRep/Assets/*.png&#39;]
+  # }
+
+  # s.public_header_files = &#39;Pod/Classes/**/*.h&#39;
+  # s.frameworks = &#39;UIKit&#39;, &#39;MapKit&#39;
+  # s.dependency &#39;AFNetworking&#39;, &#39;~&gt; 2.3&#39;
+end
+</code></pre><blockquote>
+<p>这里的s.version，请跟我们在项目中打的tag保持一致。</p>
+</blockquote>
+<p>下一步，就是要将我们修改的<code>CoRep.podspec</code>文件上传到官方的Specs Repo上。</p>
+<p>第一步，我们要验证我们的配置文件是否通过验证，输入命令：</p>
+<pre><code>pod lib lint --allow-warnings</code></pre><p>等待返回结果。如果返回的结果是<code>CoRep passed validation.</code>，则证明验证没有问题。这里我们加了<code>--allow-warnings</code>，为的是让警告也通过验证，不然过不了验证。</p>
+<h4 id="上传到cocoapods"><a href="#上传到cocoapods" class="headerlink" title="上传到cocoapods"></a>上传到cocoapods</h4><p>第一步，我们需要查看是否有注册过Cocoapods账号：</p>
+<pre><code>pod trunk me</code></pre><p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/16054FB1324C493F9B97DA1EE55014B1/35139" alt="image"></p>
+<blockquote>
+<p>如果报错<code>You need to register a session first.</code>，则说明我们需要注册。</p>
+</blockquote>
+<p>按照格式<code>pod trunk  register 邮箱地址 &#39;用户名&#39; --description=&#39;描述信息&#39;</code>输入注册命令：</p>
+<pre><code>pod trunk register smileasy@foxmail.com &#39;smileasy&#39; --description=&#39;Cocoapods DESCRIPTION&#39;</code></pre><p>然后到自己的邮箱验证，再次<code>trunk me</code>,就可以看到成功的信息了。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/AA8336123D404C4094483FD377DE3F75/35145" alt="image"></p>
+<p>下一步，上传我们的<code>CoRep.podspec</code>：</p>
+<pre><code>pod trunk push CoRep.podspec --allow-warnings</code></pre><p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/1E113684A8F4495981378E63D148C897/35153" alt="image"></p>
+<p>到这，我们建立Cocoapods远程仓库就完成了<a href="https://www.jianshu.com/p/9975a364b476" target="_blank" rel="noopener">参考博客</a>。</p>
+
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《iOS中cocoapods的使用总结》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2017/11/01/2017-11-01-ios-zhong-cocoapods-de-shi-yong-zong-jie/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                刘星星
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'abc79898ea014913ba7c',
+        clientSecret: '41f23ea4570391c06c9f4f47d0acec45d8dfe3ff',
+        repo: 'blogtalk',
+        owner: 'smileasy',
+        admin: "smileasy",
+        id: '2017-11-01T00-00-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/01/09/2018-01-09-tong-xun-lu-de-ji-ben-shi-yong/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="通讯录的基本使用">
+                        
+                        <span class="card-title">通讯录的基本使用</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            获取系统的通讯录参考博客参考博客2//
+//  ViewController.m
+//  通讯录Demo
+//
+//  Created by szphsw4 on 2018/1/4.
+//  Copyright © 2018年 PH. Al
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2018-01-09
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                    iOS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/iOS/" target="_blank">
+                        <span class="chip bg-color">iOS</span>
+                    </a>
+                    
+                    <a href="/tags/Object-C/" target="_blank">
+                        <span class="chip bg-color">Object-C</span>
+                    </a>
+                    
+                    <a href="/tags/通讯录/" target="_blank">
+                        <span class="chip bg-color">通讯录</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2017/09/14/2017-09-14-avfoundation-xi-tong-xue-xi-1/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="AVFoundation系统学习(一)">
+                        
+                        <span class="card-title">AVFoundation系统学习(一)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+## ```AVFoundation```系统学习
+
+最近零零散散的看了点关于AVFoundation的资料，觉得很不系统，决定系统的学习一下。官方文档，请点击这里查看。
+
+通过下面的图，我们可以知道AVFoundation的整体结构：
+
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2017-09-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                    iOS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Object-C/" target="_blank">
+                        <span class="chip bg-color">Object-C</span>
+                    </a>
+                    
+                    <a href="/tags/基础总结/" target="_blank">
+                        <span class="chip bg-color">基础总结</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站博客内容由刘星星负责更新维护.
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;当前站点总字数:&nbsp;
+                <span class="white-color">118.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

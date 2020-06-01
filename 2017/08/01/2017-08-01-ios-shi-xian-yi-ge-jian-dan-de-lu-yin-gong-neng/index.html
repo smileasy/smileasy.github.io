@@ -1,0 +1,1087 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="实现一个简单的录音功能, 星星的博客">
+    <meta name="description" content="
+
+
+AVAudioRecorder参考博客
+
+在AVFoundation框架中还要一个AVAudioRecorder类专门处理录音操作，它同样支持多种音频格式。与AVAudioPlayer类似，你完全可以将它看成是一个录音机控制类，下面是">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>实现一个简单的录音功能 | 星星的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">星星的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">星星的博客</div>
+        <div class="logo-desc">
+            
+            一起学习 共同进步
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        实现一个简单的录音功能
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/iOS/" target="_blank">
+                                <span class="chip bg-color">iOS</span>
+                            </a>
+                        
+                            <a href="/tags/音频入门案例/" target="_blank">
+                                <span class="chip bg-color">音频入门案例</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                iOS
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2017-08-01
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        1.8k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        7 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <meta name="referrer" content="no-referrer">
+
+
+<h2 id="AVAudioRecorder"><a href="#AVAudioRecorder" class="headerlink" title="AVAudioRecorder"></a>AVAudioRecorder</h2><p><a href="http://www.cnblogs.com/kenshincui/p/4186022.html" target="_blank" rel="noopener">参考博客</a></p>
+<ul>
+<li>在AVFoundation框架中还要一个AVAudioRecorder类专门处理录音操作，它同样支持多种音频格式。与AVAudioPlayer类似，你完全可以将它看成是一个录音机控制类，下面是常用的属性和方法：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>@property(readonly, getter=isRecording) BOOL recording;</td>
+<td>是否正在录音，只读</td>
+</tr>
+<tr>
+<td>@property(readonly) NSURL *url</td>
+<td>录音文件地址，只读</td>
+</tr>
+<tr>
+<td>@property(readonly) NSDictionary *settings</td>
+<td>录音文件设置，只读</td>
+</tr>
+<tr>
+<td>@property(readonly) NSTimeInterval currentTime</td>
+<td>录音时长，只读，注意仅仅在录音状态可用</td>
+</tr>
+<tr>
+<td>@property(readonly) NSTimeInterval deviceCurrentTime</td>
+<td>输入设置的时间长度，只读，注意此属性一直可访问</td>
+</tr>
+<tr>
+<td>@property(getter=isMeteringEnabled) BOOL meteringEnabled;</td>
+<td>是否启用录音测量，如果启用录音测量可以获得录音分贝等数据信息</td>
+</tr>
+<tr>
+<td>@property(nonatomic, copy) NSArray *channelAssignments</td>
+<td>当前录音的通道</td>
+</tr>
+<tr>
+<td>对象方法</td>
+<td>说明</td>
+</tr>
+<tr>
+<td>- (instancetype)initWithURL:(NSURL <em>)url settings:(NSDictionary *)settings error:(NSError *</em>)outError</td>
+<td>录音机对象初始化方法，注意其中的url必须是本地文件url，settings是录音格式、编码等设置</td>
+</tr>
+<tr>
+<td>- (BOOL)prepareToRecord</td>
+<td>准备录音，主要用于创建缓冲区，如果不手动调用，在调用record录音时也会自动调用</td>
+</tr>
+<tr>
+<td>- (BOOL)record</td>
+<td>开始录音</td>
+</tr>
+<tr>
+<td>- (BOOL)recordAtTime:(NSTimeInterval)time</td>
+<td>在指定的时间开始录音，一般用于录音暂停再恢复录音</td>
+</tr>
+<tr>
+<td>- (BOOL)recordForDuration:(NSTimeInterval) duration</td>
+<td>按指定的时长开始录音</td>
+</tr>
+<tr>
+<td>- (BOOL)recordAtTime:(NSTimeInterval)time forDuration:(NSTimeInterval) duration</td>
+<td>在指定的时间开始录音，并指定录音时长</td>
+</tr>
+<tr>
+<td>- (void)pause;</td>
+<td>暂停录音</td>
+</tr>
+<tr>
+<td>- (void)stop;</td>
+<td>停止录音</td>
+</tr>
+<tr>
+<td>- (BOOL)deleteRecording;</td>
+<td>删除录音，注意要删除录音此时录音机必须处于停止状态</td>
+</tr>
+<tr>
+<td>- (void)updateMeters;</td>
+<td>更新测量数据，注意只有meteringEnabled为YES此方法才可用</td>
+</tr>
+<tr>
+<td>- (float)peakPowerForChannel:(NSUInteger)channelNumber;</td>
+<td>指定通道的测量峰值，注意只有调用完updateMeters才有值</td>
+</tr>
+<tr>
+<td>- (float)averagePowerForChannel:(NSUInteger)channelNumber</td>
+<td>指定通道的测量平均值，注意只有调用完updateMeters才有值</td>
+</tr>
+<tr>
+<td>代理方法</td>
+<td>说明</td>
+</tr>
+<tr>
+<td>- (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag</td>
+<td>完成录音</td>
+</tr>
+<tr>
+<td>- (void)audioRecorderEncodeErrorDidOccur:(AVAudioRecorder *)recorder error:(NSError *)error</td>
+<td>录音编码发生错误</td>
+</tr>
+<tr>
+<td>- AVAudioRecorder很多属性和方法跟AVAudioPlayer都是类似的,但是它的创建有所不同，在创建录音机时除了指定路径外还必须指定录音设置信息，因为录音机必须知道录音文件的格式、采样率、通道数、每个采样点的位数等信息，但是也并不是所有的信息都必须设置，通常只需要几个常用设置。关于录音设置详见帮助文档中的“AV Foundation Audio Settings Constants”。</td>
+<td></td>
+</tr>
+<tr>
+<td>- 在这个示例中将实行一个完整的录音控制，包括录音、暂停、恢复、停止，同时还会实时展示用户录音的声音波动，当用户点击完停止按钮还会自动播放录音文件。程序的构建主要分为以下几步：</td>
+<td></td>
+</tr>
+<tr>
+<td>- 1.设置音频会话类型为AVAudioSessionCategoryPlayAndRecord，因为程序中牵扯到录音和播放操作。</td>
+<td></td>
+</tr>
+<tr>
+<td>- 2.创建录音机AVAudioRecorder，指定录音保存的路径并且设置录音属性，注意对于一般的录音文件要求的采样率、位数并不高，需要适当设置以保证录音文件的大小和效果。</td>
+<td></td>
+</tr>
+<tr>
+<td>- 3.设置录音机代理以便在录音完成后播放录音，打开录音测量保证能够实时获得录音时的声音强度。（注意声音强度范围-160到0,0代表最大输入）</td>
+<td></td>
+</tr>
+<tr>
+<td>- 4.创建音频播放器AVAudioPlayer，用于在录音完成之后播放录音。</td>
+<td></td>
+</tr>
+<tr>
+<td>- 5.创建一个定时器以便实时刷新录音测量值并更新录音强度到UIProgressView中显示</td>
+<td></td>
+</tr>
+<tr>
+<td>- 6.添加录音、暂停、恢复、停止操作，需要注意录音的恢复操作其实是有音频会话管理的，恢复时只要再次调用record方法即可，无需手动管理恢复时间等</td>
+<td></td>
+</tr>
+</tbody></table>
+<pre><code>//
+//  ViewController.m
+//  AVAudioRecorder
+//
+//  Created by Kenshin Cui on 14/03/30.
+//  Copyright (c) 2014年 cmjstudio. All rights reserved.
+//
+
+#import &quot;ViewController.h&quot;
+#import &lt;AVFoundation/AVFoundation.h&gt;
+#define kRecordAudioFile @&quot;myRecord.caf&quot;
+
+@interface ViewController ()&lt;AVAudioRecorderDelegate&gt;
+
+@property (nonatomic,strong) AVAudioRecorder *audioRecorder;//音频录音机
+@property (nonatomic,strong) AVAudioPlayer *audioPlayer;//音频播放器，用于播放录音文件
+@property (nonatomic,strong) NSTimer *timer;//录音声波监控（注意这里暂时不对播放进行监控）
+
+@property (weak, nonatomic) IBOutlet UIButton *record;//开始录音
+@property (weak, nonatomic) IBOutlet UIButton *pause;//暂停录音
+@property (weak, nonatomic) IBOutlet UIButton *resume;//恢复录音
+@property (weak, nonatomic) IBOutlet UIButton *stop;//停止录音
+@property (weak, nonatomic) IBOutlet UIProgressView *audioPower;//音频波动
+
+@end
+
+@implementation ViewController
+
+#pragma mark - 控制器视图方法
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    [self setAudioSession];
+}
+
+#pragma mark - 私有方法
+/**
+ *  设置音频会话
+ */
+-(void)setAudioSession{
+    AVAudioSession *audioSession=[AVAudioSession sharedInstance];
+    //设置为播放和录音状态，以便可以在录制完之后播放录音
+    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+    [audioSession setActive:YES error:nil];
+}
+
+/**
+ *  取得录音文件保存路径
+ *
+ *  @return 录音文件路径
+ */
+-(NSURL *)getSavePath{
+    NSString *urlStr=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    urlStr=[urlStr stringByAppendingPathComponent:kRecordAudioFile];
+    NSLog(@&quot;file path:%@&quot;,urlStr);
+    NSURL *url=[NSURL fileURLWithPath:urlStr];
+    return url;
+}
+
+/**
+ *  取得录音文件设置
+ *
+ *  @return 录音设置
+ */
+-(NSDictionary *)getAudioSetting{
+    NSMutableDictionary *dicM=[NSMutableDictionary dictionary];
+    //设置录音格式
+    [dicM setObject:@(kAudioFormatLinearPCM) forKey:AVFormatIDKey];
+    //设置录音采样率，8000是电话采样率，对于一般录音已经够了
+    [dicM setObject:@(8000) forKey:AVSampleRateKey];
+    //设置通道,这里采用单声道
+    [dicM setObject:@(1) forKey:AVNumberOfChannelsKey];
+    //每个采样点位数,分为8、16、24、32
+    [dicM setObject:@(8) forKey:AVLinearPCMBitDepthKey];
+    //是否使用浮点数采样
+    [dicM setObject:@(YES) forKey:AVLinearPCMIsFloatKey];
+    //....其他设置等
+    return dicM;
+}
+
+/**
+ *  获得录音机对象
+ *
+ *  @return 录音机对象
+ */
+-(AVAudioRecorder *)audioRecorder{
+    if (!_audioRecorder) {
+        //创建录音文件保存路径
+        NSURL *url=[self getSavePath];
+        //创建录音格式设置
+        NSDictionary *setting=[self getAudioSetting];
+        //创建录音机
+        NSError *error=nil;
+        _audioRecorder=[[AVAudioRecorder alloc]initWithURL:url settings:setting error:&amp;error];
+        _audioRecorder.delegate=self;
+        _audioRecorder.meteringEnabled=YES;//如果要监控声波则必须设置为YES
+        if (error) {
+            NSLog(@&quot;创建录音机对象时发生错误，错误信息：%@&quot;,error.localizedDescription);
+            return nil;
+        }
+    }
+    return _audioRecorder;
+}
+
+/**
+ *  创建播放器
+ *
+ *  @return 播放器
+ */
+-(AVAudioPlayer *)audioPlayer{
+    if (!_audioPlayer) {
+        NSURL *url=[self getSavePath];
+        NSError *error=nil;
+        _audioPlayer=[[AVAudioPlayer alloc]initWithContentsOfURL:url error:&amp;error];
+        _audioPlayer.numberOfLoops=0;
+        [_audioPlayer prepareToPlay];
+        if (error) {
+            NSLog(@&quot;创建播放器过程中发生错误，错误信息：%@&quot;,error.localizedDescription);
+            return nil;
+        }
+    }
+    return _audioPlayer;
+}
+
+/**
+ *  录音声波监控定制器
+ *
+ *  @return 定时器
+ */
+-(NSTimer *)timer{
+    if (!_timer) {
+        _timer=[NSTimer scheduledTimerWithTimeInterval:0.1f target:self selector:@selector(audioPowerChange) userInfo:nil repeats:YES];
+    }
+    return _timer;
+}
+
+/**
+ *  录音声波状态设置
+ */
+-(void)audioPowerChange{
+    [self.audioRecorder updateMeters];//更新测量值
+    float power= [self.audioRecorder averagePowerForChannel:0];//取得第一个通道的音频，注意音频强度范围时-160到0
+    CGFloat progress=(1.0/160.0)*(power+160.0);
+    [self.audioPower setProgress:progress];
+}
+#pragma mark - UI事件
+/**
+ *  点击录音按钮
+ *
+ *  @param sender 录音按钮
+ */
+- (IBAction)recordClick:(UIButton *)sender {
+    if (![self.audioRecorder isRecording]) {
+        [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
+        self.timer.fireDate=[NSDate distantPast];
+    }
+}
+
+/**
+ *  点击暂定按钮
+ *
+ *  @param sender 暂停按钮
+ */
+- (IBAction)pauseClick:(UIButton *)sender {
+    if ([self.audioRecorder isRecording]) {
+        [self.audioRecorder pause];
+        self.timer.fireDate=[NSDate distantFuture];
+    }
+}
+
+/**
+ *  点击恢复按钮
+ *  恢复录音只需要再次调用record，AVAudioSession会帮助你记录上次录音位置并追加录音
+ *
+ *  @param sender 恢复按钮
+ */
+- (IBAction)resumeClick:(UIButton *)sender {
+    [self recordClick:sender];
+}
+
+/**
+ *  点击停止按钮
+ *
+ *  @param sender 停止按钮
+ */
+- (IBAction)stopClick:(UIButton *)sender {
+    [self.audioRecorder stop];
+    self.timer.fireDate=[NSDate distantFuture];
+    self.audioPower.progress=0.0;
+}
+
+#pragma mark - 录音机代理方法
+/**
+ *  录音完成，录音完成后播放录音
+ *
+ *  @param recorder 录音机对象
+ *  @param flag     是否成功
+ */
+-(void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag{
+    if (![self.audioPlayer isPlaying]) {
+        [self.audioPlayer play];
+    }
+    NSLog(@&quot;录音完成!&quot;);
+}
+
+@end
+</code></pre>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《实现一个简单的录音功能》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2017/08/01/2017-08-01-ios-shi-xian-yi-ge-jian-dan-de-lu-yin-gong-neng/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                刘星星
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'abc79898ea014913ba7c',
+        clientSecret: '41f23ea4570391c06c9f4f47d0acec45d8dfe3ff',
+        repo: 'blogtalk',
+        owner: 'smileasy',
+        admin: "smileasy",
+        id: '2017-08-01T00-00-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2017/08/03/2017-08-03-chu-shi-ios-zhong-de-audiotoolbox-kuang-jia/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="初识iOS中的AudioToolbox框架">
+                        
+                        <span class="card-title">初识iOS中的AudioToolbox框架</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+音效参考博客
+
+AudioToolbox.framework是一套基于C语言的框架，使用它来播放音效其本质是将短音频注册到系统声音服务（System Sound Service）。System Sound Service是一种简单、底
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2017-08-03
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                    iOS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/iOS/" target="_blank">
+                        <span class="chip bg-color">iOS</span>
+                    </a>
+                    
+                    <a href="/tags/音频框架/" target="_blank">
+                        <span class="chip bg-color">音频框架</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2017/07/30/2017-07-30-3dtouch-de-ji-ben-shi-yong/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="3D touch的基本使用">
+                        
+                        <span class="card-title">3D touch的基本使用</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            3D touch介绍
+3D touch 是ios9+、iphone6s+的新功能，简单的说3Dtouch就是用力按压，通过3Dtouch增加了一组手势交互方式。3D touch主要常见的使用：
+1：Home Screen Quick Act
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2017-07-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                    iOS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/iOS/" target="_blank">
+                        <span class="chip bg-color">iOS</span>
+                    </a>
+                    
+                    <a href="/tags/Object-C/" target="_blank">
+                        <span class="chip bg-color">Object-C</span>
+                    </a>
+                    
+                    <a href="/tags/3DTouch/" target="_blank">
+                        <span class="chip bg-color">3DTouch</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站博客内容由刘星星负责更新维护.
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;当前站点总字数:&nbsp;
+                <span class="white-color">118.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

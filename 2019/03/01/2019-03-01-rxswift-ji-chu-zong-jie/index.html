@@ -1,0 +1,1425 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="RxSwift基础总结, 星星的博客">
+    <meta name="description" content="
+
+1.创建可观察对象Observable下面都是创建可观察对象的方式：
+enum MyError: Error {
+    case errorA
+    case errorB
+}//创建可观察对象
+let _ = Observable">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>RxSwift基础总结 | 星星的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">星星的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">星星的博客</div>
+        <div class="logo-desc">
+            
+            一起学习 共同进步
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        RxSwift基础总结
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/基础总结/" target="_blank">
+                                <span class="chip bg-color">基础总结</span>
+                            </a>
+                        
+                            <a href="/tags/swift/" target="_blank">
+                                <span class="chip bg-color">swift</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                iOS
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-03-01
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        4.4k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        21 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <meta name="referrer" content="no-referrer">
+
+<h3 id="1-创建可观察对象Observable"><a href="#1-创建可观察对象Observable" class="headerlink" title="1.创建可观察对象Observable"></a>1.创建可观察对象Observable</h3><p>下面都是创建可观察对象的方式：</p>
+<pre><code>enum MyError: Error {
+    case errorA
+    case errorB
+}</code></pre><pre><code>//创建可观察对象
+let _ = Observable&lt;String&gt;.just(&quot;liuxingxing&quot;)
+        let _ = Observable&lt;Int&gt;.of(1,2,3,4)
+        let _ = Observable&lt;Bool&gt;.from([true, false, true])
+        let _ = Observable&lt;Double&gt;.empty()
+        let _ = Observable&lt;Float&gt;.never() //never表示该观察对象永远不会发出event事件， 也不会终止
+        let _ = Observable&lt;Int&gt;.error(MyError.errorA)
+        let _ = Observable&lt;Int&gt;.range(start: 1, count: 6) // 1,2,3,4,5,6
+        let _ = Observable&lt;Int&gt;.repeatElement(333) //重复发出元素的event 不会停止
+        let _ = Observable&lt;Int&gt;.generate(initialState: 0, condition: { (num) -&gt; Bool in
+            return num &lt;= 10
+        }) { (num) -&gt; Int in
+           return num + 2
+        } //0, 2,4,6,8,10
+        let _ = Observable.generate(initialState: 10, condition: {$0 &gt;= 0}, iterate: {$0 - 2}) // 10,8,6,4,2,0
+        let _ = Observable&lt;String&gt;.create { (observer) -&gt; Disposable in
+            observer.onNext(&quot;hahahaha&quot;)
+            observer.onCompleted()
+            //每一个订阅行为都会有一个Disposables类型的返回值
+            return Disposables.create {
+
+            }
+        }
+        var isOdd = true
+        let factory = Observable&lt;String&gt;.deferred { () -&gt; Observable&lt;String&gt; in
+            isOdd = !isOdd
+            if isOdd {
+                return Observable&lt;String&gt;.of(&quot;1&quot;, &quot;2&quot;)
+            }
+            return Observable&lt;String&gt;.of(&quot;1a&quot;, &quot;2b&quot;)
+        }
+        factory.subscribe {event in
+            print(event)
+        }
+        factory.subscribe {event in
+            print(event)
+        }
+        let ob = Observable&lt;Int&gt;.interval(1, scheduler: MainScheduler.instance)
+        ob.subscribe {event in
+            print(&quot;每隔1秒产生一个元素：&quot;,event)
+        }
+
+        let ob1 = Observable&lt;Int&gt;.timer(5, scheduler: MainScheduler.instance)
+        ob1.subscribe { event in
+            print(&quot;经过5s后产生的唯一元素：&quot;,event)
+        }
+        let ob2 = Observable&lt;Int&gt;.timer(5, period: 1, scheduler: MainScheduler.instance)
+        ob2.subscribe { event in
+            print(&quot;经过5s后,每隔1s产生一个元素：&quot;,event)
+      }</code></pre><h3 id="2-订阅可观察对象Observable"><a href="#2-订阅可观察对象Observable" class="headerlink" title="2.订阅可观察对象Observable"></a>2.订阅可观察对象Observable</h3><pre><code>        // 第一种写法
+        let ob = Observable&lt;Int&gt;.of(1,2,3,4,5)
+        ob.subscribe {event in
+           switch event {
+            case .next(let element):
+                print(element)
+            case .error(let error):
+                print(error)
+            case .completed:
+                print(&quot;completed&quot;)
+            }
+        }
+
+        // 第二种写法
+        ob.subscribe(onNext: { (num) in
+            print(num)
+        }, onError: { (error) in
+            print(error)
+        }, onCompleted: {
+            print(&quot;onCompleted&quot;)
+        }, onDisposed: {
+            print(&quot;disposed&quot;)
+        })
+</code></pre><h4 id="Disposable"><a href="#Disposable" class="headerlink" title="Disposable"></a>Disposable</h4><p>每当Observeable被订阅时，都会返回一个Disposable实例，当调用Disposable的dispose，就相当于取消订阅。在不需要再接收事件时，建议取消订阅，释放资源。有3种常见方式取消订阅。</p>
+<pre><code>        let observable = Observable&lt;Int&gt;.create { (observer) -&gt; Disposable in
+            observer.onNext(123)
+            return Disposables.create()
+        }
+       let disposable = observable.subscribe { (event) in
+            switch event {
+            case .next(let element):
+                print(element)
+            case .error(let error):
+                print(error)
+            case .completed:
+                print(&quot;completed&quot;)
+            }
+        }
+        // 如果在某个时刻，你不再需要订阅了，可以调用以下方法来取消订阅
+        disposable.dispose()
+
+
+
+
+        //如果订阅后立即取消订阅，可以这样实现：
+        observable.subscribe { (event) in
+            switch event {
+            case .next(let element):
+                print(element)
+            case .error(let error):
+                print(error)
+            case .completed:
+                print(&quot;completed&quot;)
+            }
+        }.dispose()
+
+
+        // 通过DisposeBag来销毁,当bag销毁（deinit）时，会自动
+        // 调用Disposable实例的dispose
+        let disposeBag = DisposeBag()
+        observable.subscribe { (event) in
+
+        }.disposed(by: disposeBag)
+
+
+
+        //第三种，监听自身销毁takeUntil
+        let _ = observable.takeUntil(self.rx.deallocated).map{&quot;\($0)&quot;}
+        .bind(to: timerLabel.rx.text)
+</code></pre><p>do方法会在每一次subscribe函数调用之前调用，是监听事件生命周期的函数：</p>
+<pre><code>        let ob = Observable&lt;Int&gt;.of(1,2,3,4,5)
+        // do方法会在每一次subscribe函数调用z之前调用，是监听事件生命周期的函数
+        ob.do(onNext: { (num) in
+            print(&quot;----&gt;\(num)&quot;)
+        }, onError: { (error) in
+            print(error)
+        }, onCompleted: {
+            print(&quot;-----&gt;onCompleted&quot;)
+        }, onSubscribe: {
+            print(&quot;----&gt;onSubscribe&quot;)
+        }, onSubscribed: {
+            print(&quot;----&gt;onSubscribed&quot;)
+        }, onDispose: {
+            print(&quot;----&gt;onDispose&quot;)
+        }).subscribe(onNext: { (num) in
+            print(num)
+        }, onError: { (error) in
+            print(error)
+        }, onCompleted: {
+            print(&quot;onCompleted&quot;)
+        }, onDisposed: {
+            print(&quot;disposed&quot;)
+        })
+
+    }
+</code></pre><p> 示例1：</p>
+<pre><code>        //创建可观察对象
+        _ = Observable.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        let evenObservable = Observable.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).map { Int($0) }
+            .filter { $0 % 2 == 0 }
+        //订阅这个可观察对象
+        _ = evenObservable.subscribe { (event) in
+            print(&quot;this event: \(event)&quot;)
+        }</code></pre><pre><code>this event: next(2)
+this event: next(4)
+this event: next(6)
+this event: next(8)
+this event: next(10)
+this event: completed</code></pre><p> 使用<code>skip</code>忽略前两个事件：</p>
+<pre><code>        //创建可观察对象
+        _ = Observable.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        let evenObservable = Observable.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).map { Int($0) }
+            .filter { $0 % 2 == 0 }
+        //订阅这个可观察对象
+        _ = evenObservable.skip(2).subscribe { (event) in
+            print(&quot;this event: \(event)&quot;)
+        }</code></pre><pre><code>this event: next(6)
+this event: next(8)
+this event: next(10)
+this event: completed</code></pre><h3 id="3-事件的状态与绑定"><a href="#3-事件的状态与绑定" class="headerlink" title="3.事件的状态与绑定"></a>3.事件的状态与绑定</h3><p>事件状态的改变：</p>
+<pre><code>        let evenObservable = Observable.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).map { Int($0) }
+            .filter { $0 % 2 == 0 }
+        //订阅这个可观察对象
+        _ = evenObservable.subscribe(
+            onNext: {event in print(event )},
+            onError: { print(&quot;error: \($0)&quot;) },
+             onCompleted: {  print(&quot;completed&quot; ) },
+             onDisposed: {print(&quot;disposed&quot; ) }
+        )</code></pre><pre><code>2
+4
+6
+8
+10
+completed
+disposed</code></pre><h4 id="通过bind方式来进行事件绑定："><a href="#通过bind方式来进行事件绑定：" class="headerlink" title="通过bind方式来进行事件绑定："></a>通过bind方式来进行事件绑定：</h4><pre><code>    func startTimer() {
+        let observer: AnyObserver&lt;String&gt;  = AnyObserver { (event) in
+            switch event {
+            case .next(let text):
+                print(text)
+                break
+            default:
+                break
+            }
+        }
+        let observable = Observable&lt;Int&gt;.interval(1, scheduler: MainScheduler.instance)
+        observable.map {&quot;当前值为\($0)&quot;}.skip(1).bind(to: observer).disposed(by: disposeBag)
+    }
+
+
+
+
+// 也可以绑定一个UI控件
+</code></pre><h4 id="通过Binder进行事件绑定"><a href="#通过Binder进行事件绑定" class="headerlink" title="通过Binder进行事件绑定:"></a>通过Binder进行事件绑定:</h4><pre><code>    func startTimer() {
+        let observer: Binder&lt;String&gt; = Binder(self) { (_, text) in
+            print(text)
+        }
+        let observable = Observable&lt;Int&gt;.interval(1, scheduler: MainScheduler.instance)
+        observable.map {&quot;当前值为\($0)&quot;}.skip(1).bind(to: observer).disposed(by: disposeBag)
+    }
+
+
+
+      let binder = Binder&lt;String&gt;.init(timerLabel) { (label, value) in
+            label.text = value
+        }
+        Observable.just(&quot;123&quot;).bind(to: binder).dispose()
+        //也可以通过下面的方式
+        Observable.just(&quot;abc&quot;).subscribe(binder).dispose()
+</code></pre><h5 id="实现一个label的循环展示与隐藏"><a href="#实现一个label的循环展示与隐藏" class="headerlink" title="实现一个label的循环展示与隐藏"></a>实现一个label的循环展示与隐藏</h5><pre><code>        //我们可以通过以下代码实现一个label的循环展示与隐藏
+        let observerable = Observable&lt;Int&gt;.timer(.seconds(2), period: .seconds(1), scheduler: MainScheduler.instance)
+        let binder = Binder&lt;Bool&gt;.init(timerLabel) { (label, value) in
+            label.isHidden = value
+        }
+        observerable.map{ $0 % 2 == 0 }.bind(to: binder).disposed(by: bag)</code></pre><p>我们也可以通过扩展来更简单的实现这个功能：</p>
+<pre><code>// 添加扩展
+extension Reactive where Base: UILabel {
+    var hidden: Binder&lt;Bool&gt; {
+        return Binder&lt;Bool&gt;(base) { label, value in
+            label.isHidden = value
+        }
+    }
+}
+// 使用
+        let observerable = Observable&lt;Int&gt;.timer(.seconds(2), period: .seconds(1), scheduler: MainScheduler.instance)
+        observerable.map{ $0 % 2 == 0 }.bind(to: timerLabel.rx.hidden).disposed(by: bag)
+
+</code></pre><p>实现一个简单的tableview（此tableview不需要设置代理）：</p>
+<pre><code>    let bag =  DisposeBag()
+    let persons = Observable.just([Person(name: &quot;lxx&quot;, age: 234),Person(name: &quot;lxx32&quot;, age: 234),Person(name: &quot;lddxx&quot;, age: 234),Person(name: &quot;lxggx&quot;, age: 234)])
+
+
+        persons.bind(to: tableView.rx.items(cellIdentifier: &quot;cell&quot;)) { row, person, cell in
+            cell.textLabel?.text = person.name
+            cell.detailTextLabel?.text = &quot;\(person.age)&quot;
+        }.disposed(by: bag)
+
+        // 第一种点击事件
+//        tableView.rx.itemSelected.subscribe({ path in
+//            print(path)
+//        }).disposed(by: bag)
+
+        // 第二种点击事件
+        tableView.rx.modelSelected(Person.self).subscribe(onNext: { (person) in
+            print(person.name)
+            }).disposed(by: bag)</code></pre><p>监听一个按钮的点击</p>
+<pre><code>// 方式1：
+button.rx.controlEvent(.touchUpInside).subscribe(onNext: {
+            print(&quot;被点击了&quot;)
+            }).disposed(by: bag)
+
+
+
+            // 方式2：
+                button.rx.tap.subscribe(onNext: {
+                    print(&quot;被点击了&quot;)
+                    }).disposed(by: bag)</code></pre><h4 id="创建Observer"><a href="#创建Observer" class="headerlink" title="创建Observer"></a>创建Observer</h4><pre><code>  let observer = AnyObserver&lt;Int&gt;.init { (event) in
+
+        }
+        Observable.just(1).subscribe(observer).dispose()</code></pre><h3 id="4、针对无限发送的事件做销毁"><a href="#4、针对无限发送的事件做销毁" class="headerlink" title="4、针对无限发送的事件做销毁"></a>4、针对无限发送的事件做销毁</h3><pre><code>        //5秒钟后销毁
+        let disposable = Observable&lt;Int&gt;.interval(1, scheduler: MainScheduler.instance).subscribe(
+                onNext: {event in print(event )},
+                onDisposed: {print(&quot;disposed&quot; ) }
+        )
+        delay(5) {
+            disposable.dispose()
+        }</code></pre><pre><code>    func delay(_ delay: Double, closure: @escaping () -&gt; ()) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            closure()
+        }
+    }</code></pre><pre><code>0
+1
+2
+3
+4
+disposed</code></pre><h3 id="5、DisposeBag来销毁对象"><a href="#5、DisposeBag来销毁对象" class="headerlink" title="5、DisposeBag来销毁对象"></a>5、DisposeBag来销毁对象</h3><pre><code>        //5秒钟后销毁
+        var bag = DisposeBag()
+        Observable&lt;Int&gt;.interval(1, scheduler: MainScheduler.instance).subscribe(
+                onNext: {event in print(event )},
+                onDisposed: {print(&quot;disposed&quot; ) }
+        ).disposed(by: bag)
+        delay(5) {
+            //通过创建新的bag,使原来bag绑定的对象便会销毁
+            bag = DisposeBag()
+        }</code></pre><h3 id="6、手动创建可观察对象"><a href="#6、手动创建可观察对象" class="headerlink" title="6、手动创建可观察对象"></a>6、手动创建可观察对象</h3><pre><code>   enum CustomError: Error {
+        case somethingError
+    }
+
+
+    func test4() {
+        let customObservable = Observable&lt;Int&gt;.create { (observer) -&gt; Disposable in
+            observer.onNext(10)
+            observer.onNext(11)
+            observer.onNext(12)
+            observer.onError(CustomError.somethingError)
+            observer.onCompleted()
+            return Disposables.create()
+        }
+        let bag = DisposeBag()
+        customObservable.subscribe(
+            onNext: { print($0)},
+            onCompleted: {  print(&quot;completed&quot; ) },
+            onDisposed: {print(&quot;disposed&quot; ) }
+            ).disposed(by: bag)
+    }</code></pre><ul>
+<li>成功打印：</li>
+</ul>
+<pre><code>10
+11
+12
+completed
+disposed</code></pre><ul>
+<li>失败打印（不会再打印completed了）：</li>
+</ul>
+<pre><code>10
+11
+12
+Unhandled error happened: somethingError
+ subscription called from:
+
+disposed</code></pre><h3 id="7、使用do（注意：do使用的是onDispose）"><a href="#7、使用do（注意：do使用的是onDispose）" class="headerlink" title="7、使用do（注意：do使用的是onDispose）"></a>7、使用do（注意：do使用的是onDispose）</h3><pre><code>    func test4() {
+        let customObservable = Observable&lt;Int&gt;.create { (observer) -&gt; Disposable in
+            observer.onNext(10)
+            observer.onNext(11)
+            observer.onNext(12)
+            observer.onCompleted()
+            return Disposables.create()
+        }
+        let bag = DisposeBag()
+        customObservable.do(
+            onNext: { print(&quot;intercepted:\($0)&quot;) },
+            onCompleted: {  print(&quot;intercepted:completed&quot;) },
+            onDispose: {print(&quot;intercepted: disposed&quot; ) }
+            )
+            .subscribe(
+            onNext: { print($0)},
+            onCompleted: {  print(&quot;completed&quot; ) },
+            onDisposed: {print(&quot;disposed&quot; ) }
+            ).disposed(by: bag)
+    }</code></pre><pre><code>intercepted:10
+10
+intercepted:11
+11
+intercepted:12
+12
+intercepted:completed
+completed
+disposed
+intercepted: disposed</code></pre><h3 id="8、debug"><a href="#8、debug" class="headerlink" title="8、debug"></a>8、debug</h3><pre><code>    func test4() {
+        let customObservable = Observable&lt;Int&gt;.create { (observer) -&gt; Disposable in
+            observer.onNext(10)
+            observer.onNext(11)
+            observer.onNext(12)
+            observer.onCompleted()
+            return Disposables.create()
+        }
+        let bag = DisposeBag()
+        customObservable.debug().subscribe(
+            onNext: { print($0)},
+            onCompleted: {  print(&quot;completed&quot; ) },
+            onDisposed: {print(&quot;disposed&quot; ) }
+            ).disposed(by: bag)
+    }</code></pre><pre><code>2019-03-01 10:25:29.252: ViewController.swift:187 (test4()) -&gt; subscribed
+2019-03-01 10:25:29.261: ViewController.swift:187 (test4()) -&gt; Event next(10)
+10
+2019-03-01 10:25:29.261: ViewController.swift:187 (test4()) -&gt; Event next(11)
+11
+2019-03-01 10:25:29.261: ViewController.swift:187 (test4()) -&gt; Event next(12)
+12
+2019-03-01 10:25:29.262: ViewController.swift:187 (test4()) -&gt; Event completed
+completed
+disposed</code></pre><h3 id="9-PublishSubject"><a href="#9-PublishSubject" class="headerlink" title="9. PublishSubject"></a>9. PublishSubject</h3><p>PublishSubject即是订阅者，又是观察者：</p>
+<pre><code>        //初始化发送者
+        let subject = PublishSubject&lt;String&gt;()
+        //订阅者需要在发送消息前订阅，不然是接收不到订阅前发送的消息的
+        let scribe1 = subject.subscribe({str in
+            print(&quot;scribe1 - what happend: \(str)&quot;)
+        })
+        //发送一个消息
+        subject.onNext(&quot;episode1 updated &quot;)
+        //订阅者被销毁了
+        scribe1.dispose()
+        let scribe2 = subject.subscribe({str in
+            print(&quot;scribe2 - what happend: \(str)&quot;)
+        })
+        //发送一个消息
+        subject.onNext(&quot;episode2 updated &quot;)
+        subject.onNext(&quot;episode3 updated &quot;)
+        //订阅者被销毁了
+        scribe2.dispose()</code></pre><p> 打印结果：</p>
+<pre><code>scribe1 - what happend: next(episode1 updated )
+scribe2 - what happend: next(episode2 updated )
+scribe2 - what happend: next(episode3 updated )</code></pre><p>如果还是不很清楚，那么我们结合示意图，来完整演示一下：</p>
+<p><img src="https://note.youdao.com/yws/public/resource/b3da4a5ccb160d519b7bfc579842626c/xmlnote/ACC75440C3B54F718CE1DBCEB7E96017/29010" alt="image"></p>
+<pre><code>    func test5() {
+        //初始化
+        let subject = PublishSubject&lt;String&gt;()
+        //没有订阅，发送事件是接收不到的
+        subject.onNext(&quot;我是一个事件，但是我不能被接收到。。。&quot;)
+
+        //先订阅
+        subject.subscribe(onNext: { (str) in
+            print(&quot;我是一号订阅者：&quot;,str)
+        }, onError: { (error) in
+            print(error)
+        }, onCompleted: {
+            print(&quot;我是一号订阅者：onCompleted&quot;)
+        }, onDisposed: {
+            print(&quot;我是一号订阅者：onDisposed&quot;)
+        }).disposed(by: disposeBag)
+        //然后发送事件
+        subject.onNext(&quot;我是一个事件&quot;)
+        //可以多次订阅
+        subject.subscribe(onNext: { (str) in
+            print(&quot;我是二号订阅者：&quot;,str)
+        }, onError: { (error) in
+            print(error)
+        }, onCompleted: {
+            print(&quot;我是二号订阅者：onCompleted&quot;)
+        }, onDisposed: {
+            print(&quot;我是二号订阅者：onDisposed&quot;)
+        }).disposed(by: disposeBag)
+        //再次发送一个事件
+        subject.onNext(&quot;哈哈哈哈，我也是一个事件&quot;)
+        //更改为完成状态
+        subject.onCompleted()
+        //完成后就没法再接收事件了
+        subject.onNext(&quot;完成后，我不能被接受到&quot;)
+        //这时候订阅，只能接收到完成的状态
+        subject.subscribe(onNext: { (str) in
+            print(&quot;我是三号订阅者：&quot;,str)
+        }, onError: { (error) in
+            print(error)
+        }, onCompleted: {
+            print(&quot;我是三号订阅者：onCompleted&quot;)
+        }, onDisposed: {
+            print(&quot;我是三号订阅者：onDisposed&quot;)
+        }).disposed(by: disposeBag)
+
+    }</code></pre><p>打印结果：</p>
+<pre><code>我是一号订阅者： 我是一个事件
+我是一号订阅者： 哈哈哈哈，我也是一个事件
+我是二号订阅者： 哈哈哈哈，我也是一个事件
+我是一号订阅者：onCompleted
+我是一号订阅者：onDisposed
+我是二号订阅者：onCompleted
+我是二号订阅者：onDisposed
+我是三号订阅者：onCompleted
+我是三号订阅者：onDisposed</code></pre><h3 id="10-BehaviorSubject"><a href="#10-BehaviorSubject" class="headerlink" title="10. BehaviorSubject"></a>10. BehaviorSubject</h3><p>BehaviorSubject需要一个初始化值。与PublishSubject不同的是，BehaviorSubject可以接受到最后一条历史值（也就是订阅之前发送的事件）。</p>
+<pre><code>        //初始化发送者
+        let subject = BehaviorSubject&lt;String&gt;(value: &quot;RxSwift step by step&quot;)
+        //当没有事件的话，订阅者可以接收到发送者发送的默认值
+        let scribe1 = subject.subscribe({str in
+            print(&quot;scribe1 - what happend: \(str)&quot;)
+        })
+        //发送一个消息
+        subject.onNext(&quot;episode1 updated &quot;)
+        //订阅者被销毁了
+        scribe1.dispose()
+        let scribe2 = subject.subscribe({str in
+            print(&quot;scribe2 - what happend: \(str)&quot;)
+        })
+        //发送一个消息
+        subject.onNext(&quot;episode2 updated &quot;)
+        subject.onNext(&quot;episode3 updated &quot;)
+        //订阅者被销毁了
+        scribe2.dispose()</code></pre><p>打印结果：</p>
+<pre><code>scribe1 - what happend: next(RxSwift step by step)
+scribe1 - what happend: next(episode1 updated )
+scribe2 - what happend: next(episode1 updated )
+scribe2 - what happend: next(episode2 updated )
+scribe2 - what happend: next(episode3 updated )</code></pre><blockquote>
+<p>注意第三条的打印： scribe2 - what happend: next(episode1 updated ) 当scribe2订阅事件的时候，发送者已经有历史事件了，所以会被scribe2接收到最后一条 （最后一条 最后一条）历史事件</p>
+</blockquote>
+<p>如果产生错误事件：</p>
+<pre><code>   func test6() {
+        let subject = BehaviorSubject&lt;String&gt;(value: &quot;我是默认事件&quot;)
+        //如果没有事件，则会接收默认事件
+        subject.subscribe(onNext: { (str) in
+            print(&quot;我是一号订阅者：&quot;,str)
+        }, onError: { (error) in
+            print(&quot;我是一号订阅者：&quot;,error)
+        }, onCompleted: {
+            print(&quot;我是一号订阅者：onCompleted&quot;)
+        }, onDisposed: {
+            print(&quot;我是一号订阅者：onDisposed&quot;)
+        }).disposed(by: disposeBag)
+        subject.onNext(&quot;我是一个事件&quot;)
+        subject.onError(NSError(domain: &quot;---&quot;, code: 0, userInfo: [&quot;msg&quot;: &quot;哈哈哈我发送了错误&quot;]))
+        subject.subscribe(onNext: { (str) in
+            print(&quot;我是二号订阅者：&quot;,str)
+        }, onError: { (error) in
+            print(&quot;我是二号订阅者：&quot;,error)
+        }, onCompleted: {
+            print(&quot;我是二号订阅者：onCompleted&quot;)
+        }, onDisposed: {
+            print(&quot;我是二号订阅者：onDisposed&quot;)
+        }).disposed(by: disposeBag)
+    }</code></pre><p>打印结果：</p>
+<pre><code>我是一号订阅者： 我是默认事件
+我是一号订阅者： 我是一个事件
+我是一号订阅者： Error Domain=--- Code=0 &quot;(null)&quot; UserInfo={msg=哈哈哈我发送了错误}
+我是一号订阅者：onDisposed
+我是二号订阅者： Error Domain=--- Code=0 &quot;(null)&quot; UserInfo={msg=哈哈哈我发送了错误}
+我是二号订阅者：onDisposed
+</code></pre><h3 id="11-ReplaySubject（可以指定历史事件的个数）"><a href="#11-ReplaySubject（可以指定历史事件的个数）" class="headerlink" title="11. ReplaySubject（可以指定历史事件的个数）"></a>11. ReplaySubject（可以指定历史事件的个数）</h3><pre><code>    func test() {
+        //初始化发送者,并指定l可以接收到历史事件的个数
+        let subject = ReplaySubject&lt;String&gt;.create(bufferSize: 1)
+        //当没有事件的话，订阅者可以接收到发送者发送的默认值
+        let scribe1 = subject.subscribe({str in
+            print(&quot;scribe1 - what happend: \(str)&quot;)
+        })
+        //发送一个消息
+        subject.onNext(&quot;episode1 updated &quot;)
+        //发送一个消息
+        subject.onNext(&quot;episode1 updated------- &quot;)
+        //订阅者被销毁了
+        scribe1.dispose()
+        let scribe2 = subject.subscribe({str in
+            print(&quot;scribe2 - what happend: \(str)&quot;)
+        })
+        //发送一个消息
+        subject.onNext(&quot;episode2 updated &quot;)
+        subject.onNext(&quot;episode3 updated &quot;)
+        //订阅者被销毁了
+        scribe2.dispose()
+
+    }</code></pre><p>如果是1，打印结果如下：</p>
+<pre><code>scribe1 - what happend: next(episode1 updated )
+scribe1 - what happend: next(episode1 updated------- )
+scribe2 - what happend: next(episode1 updated------- )
+scribe2 - what happend: next(episode2 updated )
+scribe2 - what happend: next(episode3 updated )</code></pre><p> 如果是2，打印结果如下：</p>
+<pre><code>scribe1 - what happend: next(episode1 updated )
+scribe1 - what happend: next(episode1 updated------- )
+scribe2 - what happend: next(episode1 updated )
+scribe2 - what happend: next(episode1 updated------- )
+scribe2 - what happend: next(episode2 updated )
+scribe2 - what happend: next(episode3 updated )</code></pre><blockquote>
+<p>缓冲区是2时，scribe2可以接受到订阅前的2条历史数据（第3、4条的打印信息）</p>
+</blockquote>
+<p>如果不太清楚，那么就再简单点：</p>
+<pre><code>    func test7() {
+        let subject = ReplaySubject&lt;String&gt;.create(bufferSize: 3)
+        subject.onNext(&quot;我是第一个事件&quot;)
+        subject.onNext(&quot;我是第二个事件&quot;)
+        subject.onNext(&quot;我是第三个事件&quot;)
+        subject.onNext(&quot;我是第四个事件&quot;)
+        //如果没有事件，则会接收默认事件
+        subject.subscribe(onNext: { (str) in
+            print(&quot;我是一号订阅者：&quot;,str)
+        }, onError: { (error) in
+            print(&quot;我是一号订阅者：&quot;,error)
+        }, onCompleted: {
+            print(&quot;我是一号订阅者：onCompleted&quot;)
+        }, onDisposed: {
+            print(&quot;我是一号订阅者：onDisposed&quot;)
+        }).disposed(by: disposeBag)
+        subject.onNext(&quot;我是五个事件&quot;)
+        subject.subscribe(onNext: { (str) in
+            print(&quot;我是二号订阅者：&quot;,str)
+        }, onError: { (error) in
+            print(&quot;我是二号订阅者：&quot;,error)
+        }, onCompleted: {
+            print(&quot;我是二号订阅者：onCompleted&quot;)
+        }, onDisposed: {
+            print(&quot;我是二号订阅者：onDisposed&quot;)
+        }).disposed(by: disposeBag)
+    }
+</code></pre><p>打印结果：</p>
+<pre><code>我是一号订阅者： 我是第二个事件
+我是一号订阅者： 我是第三个事件
+我是一号订阅者： 我是第四个事件
+我是一号订阅者： 我是五个事件
+我是二号订阅者： 我是第三个事件
+我是二号订阅者： 我是第四个事件
+我是二号订阅者： 我是五个事件</code></pre><blockquote>
+<p>打印结果说明：我们缓存了3个历史事件，所以只能缓存“最近”的三个事件。一号订阅者订阅前已经产生了4条事件，那么它只能接收到第二三四个事件。此时，在发送一个事件五，一号订阅者正常接收；添加二号订阅者，对于二号订阅者，历史事件是三四五，所以只能接收到三四五事件。</p>
+</blockquote>
+<h3 id="12-Variable"><a href="#12-Variable" class="headerlink" title="12.Variable"></a>12.Variable</h3><pre><code>    func test() {
+        let stringVariable = Variable(&quot;Episode1&quot;)
+        let sub1 = stringVariable.asObservable().subscribe({
+            print(&quot;sub1: \($0)&quot;)
+        })
+        //简单写法
+        print(&quot;easy print:&quot; + stringVariable.value)
+        //我们还可以修改值，相当于重新发送事件(onNext)
+        stringVariable.value = &quot;new data&quot;
+        print(&quot;easy print----:&quot; + stringVariable.value)
+
+    }</code></pre><ul>
+<li>打印结果：</li>
+</ul>
+<pre><code>ℹ️ [DEPRECATED] `Variable` is planned for future deprecation. Please consider `BehaviorRelay` as a replacement. Read more at: https://git.io/vNqvx
+sub1: next(Episode1)
+easy print:Episode1
+sub1: next(new data)
+easy print----:new data
+sub1: completed</code></pre><p>简单实现：</p>
+<pre><code>    func test8() {
+        let subject = Variable&lt;String&gt;(&quot;我是默认值&quot;)
+        subject.asObservable().subscribe(onNext: { (str) in
+            print(&quot;我是一号订阅者：&quot;,str)
+        }, onError: { (error) in
+            print(&quot;我是一号订阅者：&quot;,error)
+        }, onCompleted: {
+            print(&quot;我是一号订阅者：onCompleted&quot;)
+        }, onDisposed: {
+            print(&quot;我是一号订阅者：onDisposed&quot;)
+        }).disposed(by: disposeBag)
+        subject.value = &quot;我是一个新的值111&quot;
+        subject.value = &quot;我是一个新的值222&quot;
+        subject.value = &quot;我是一个新的值333&quot;
+        subject.asObservable().subscribe(onNext: { (str) in
+            print(&quot;我是二号订阅者：&quot;,str)
+        }, onError: { (error) in
+            print(&quot;我是二号订阅者：&quot;,error)
+        }, onCompleted: {
+            print(&quot;我是二号订阅者：onCompleted&quot;)
+        }, onDisposed: {
+            print(&quot;我是二号订阅者：onDisposed&quot;)
+        }).disposed(by: disposeBag)
+    }
+
+</code></pre><p>打印结果：</p>
+<pre><code>ℹ️ [DEPRECATED] `Variable` is planned for future deprecation. Please consider `BehaviorRelay` as a replacement. Read more at: https://git.io/vNqvx
+我是一号订阅者： 我是默认值
+我是一号订阅者： 我是一个新的值111
+我是一号订阅者： 我是一个新的值222
+我是一号订阅者： 我是一个新的值333
+我是二号订阅者： 我是一个新的值333
+我是一号订阅者：onCompleted
+我是一号订阅者：onDisposed
+我是二号订阅者：onCompleted
+我是二号订阅者：onDisposed
+
+</code></pre><blockquote>
+<p>打印说明：一号订阅者会接收到默认事件，当更改subject的值时，相当于发送了一个next事件，所以一号订阅者可以接收到；二号订阅者可以接受到最后一条历史事件，所以可以接收到“我是一个新的值333”</p>
+</blockquote>
+<hr>
+<h3 id="UI扩展"><a href="#UI扩展" class="headerlink" title="UI扩展"></a>UI扩展</h3><p>我们可以使用2种方式的扩展，一种常规的，一种rx风格的：</p>
+<pre><code>
+extension UILabel {
+    //方式1的扩展
+    public var fontSize: Binder&lt;CGFloat&gt; {
+        return Binder(self) { (label, fontSize) in
+            label.font = UIFont.systemFont(ofSize: fontSize)
+        }
+    }
+}
+
+extension Reactive where Base: UILabel {
+    //方式2的扩展
+    public var rxFontSize: Binder&lt;CGFloat&gt; {
+        return Binder(self.base) { (label, fontSize) in
+            label.font = UIFont.systemFont(ofSize: fontSize)
+        }
+    }
+}</code></pre><p>使用的风格：</p>
+<pre><code>func test4() {
+        //方式1的使用
+        let observable = Observable&lt;Int&gt;.interval(0.5, scheduler: MainScheduler.instance)
+        observable.map{CGFloat($0)}.bind(to: myLabel.fontSize).disposed(by: disposeBag)
+
+        //方式2的使用
+        let observable2 = Observable&lt;Int&gt;.interval(1, scheduler: MainScheduler.instance)
+        observable2.map{CGFloat($0) * 10}.bind(to: myLabel.rx.rxFontSize).disposed(by: disposeBag)
+    }</code></pre>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《RxSwift基础总结》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/03/01/2019-03-01-rxswift-ji-chu-zong-jie/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                刘星星
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'abc79898ea014913ba7c',
+        clientSecret: '41f23ea4570391c06c9f4f47d0acec45d8dfe3ff',
+        repo: 'blogtalk',
+        owner: 'smileasy',
+        admin: "smileasy",
+        id: '2019-03-01T00-00-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/07/01/2019-07-01-wei-xin-xiao-cheng-xu-zong-jie-ti-gao/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="微信小程序总结提高">
+                        
+                        <span class="card-title">微信小程序总结提高</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+
+微信小程序总结提高现如今,微信小程序的开发越来越受欢迎,最近一段时间先后开发和维护了几个微信小程序,既有原生的,也有使用框架开发的.我现在维护的项目使用的框架有mpvue(现在已经迁移到uni-app)上,uni-app框架,Tar
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-01
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/微信小程序/" class="post-category" target="_blank">
+                                    微信小程序
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/总结提高/" target="_blank">
+                        <span class="chip bg-color">总结提高</span>
+                    </a>
+                    
+                    <a href="/tags/微信小程序/" target="_blank">
+                        <span class="chip bg-color">微信小程序</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/01/07/2019-01-07-swift-zhong-de-kai-fa-ji-qiao-zong-jie-er/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="swift中的开发技巧总结(二)">
+                        
+                        <span class="card-title">swift中的开发技巧总结(二)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+
+
+@autoclosure的使用定义一个尾随闭包func logIfTrue(_ predicate: () -&gt; Bool) {
+    //不要写 predicate,一定要加上()
+    if predicate() 
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-07
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                    iOS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/swift/" target="_blank">
+                        <span class="chip bg-color">swift</span>
+                    </a>
+                    
+                    <a href="/tags/总结提高/" target="_blank">
+                        <span class="chip bg-color">总结提高</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站博客内容由刘星星负责更新维护.
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;当前站点总字数:&nbsp;
+                <span class="white-color">118.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

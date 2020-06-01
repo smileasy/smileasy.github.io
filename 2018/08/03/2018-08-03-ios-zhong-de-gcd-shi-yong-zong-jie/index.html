@@ -1,0 +1,1251 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="iOS中的GCD使用总结, 星星的博客">
+    <meta name="description" content="
+
+
+iOS中的GCD使用总结GCD是iOS开发者必须要熟练掌握和使用的异步执行任务的技术之一。下面是我自己总结的GCD的使用总结。
+GCD的APIDispatch QueueGCD中，执行时存在2种Dispatch Queue。一种是串行">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>iOS中的GCD使用总结 | 星星的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">星星的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">星星的博客</div>
+        <div class="logo-desc">
+            
+            一起学习 共同进步
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        iOS中的GCD使用总结
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/总结提高/" target="_blank">
+                                <span class="chip bg-color">总结提高</span>
+                            </a>
+                        
+                            <a href="/tags/多线程/" target="_blank">
+                                <span class="chip bg-color">多线程</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                iOS
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-08-03
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        5.3k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        25 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <meta name="referrer" content="no-referrer">
+
+
+<h2 id="iOS中的GCD使用总结"><a href="#iOS中的GCD使用总结" class="headerlink" title="iOS中的GCD使用总结"></a>iOS中的GCD使用总结</h2><p>GCD是iOS开发者必须要熟练掌握和使用的异步执行任务的技术之一。下面是我自己总结的GCD的使用总结。</p>
+<h3 id="GCD的API"><a href="#GCD的API" class="headerlink" title="GCD的API"></a>GCD的API</h3><h4 id="Dispatch-Queue"><a href="#Dispatch-Queue" class="headerlink" title="Dispatch Queue"></a>Dispatch Queue</h4><p>GCD中，执行时存在2种Dispatch Queue。一种是串行队列Serial Dispatch Queue，一种是并发队列Concurrent Dispatch Queue。我们可以自己创建串行队列和并发队列：</p>
+<pre><code>// 串行队列
+dispatch_queue_t serialQueue = dispatch_queue_create(NULL, DISPATCH_QUEUE_SERIAL);
+
+ //并发队列
+ dispatch_queue_t concurrentQueue = dispatch_queue_create(NULL, DISPATCH_QUEUE_CONCURRENT);</code></pre><blockquote>
+<p>串行队列Serial Dispatch Queue是指执行多个任务时，任务会按照先后顺序一个一个执行，也就是说Serial Dispatch Queue同时只能执行一个任务。注意：使用dispatc_queue_create函数时，第二个参数如果不指定为DISPATCH_QUEUE_SERIAL或者DISPATCH_QUEUE_CONCURRENT，传入NULL则为串行队列。</p>
+</blockquote>
+<p>虽然如此，你却可以创建多个Serial Dispatch Queue队列，此时各个Serial Dispatch Queue将并行执行。比如你可以通过<code>dispatch_queue_create</code>同时创建5个串行队列，然后再在每个串行队列中执行一个任务，那么CPU将同时执行这5个任务。</p>
+<p>但是，如果我们创建过多的线程，就会造成大量的性能开销，造成CPU的频繁调度，反而会降低系统的性能。</p>
+<h4 id="Dispatch-Main-Queue"><a href="#Dispatch-Main-Queue" class="headerlink" title="Dispatch Main Queue"></a>Dispatch Main Queue</h4><p>我们可以获取系统为我们提供的Dispatch Queue。比如Main Dispatch  Queue和Global Dispatch  Queue。</p>
+<pre><code>// 主队列
+dispatch_queue_t mainQueue = dispatch_get_main_queue();</code></pre><blockquote>
+<p> Main Dispatch  Queue就是我们说的主线程或者UI线程。因为主线程只有一个，Main Dispatch  Queue自然就是串行队列Serial Dispatch Queue。</p>
+</blockquote>
+<h4 id="Global-Dispatch-Queue"><a href="#Global-Dispatch-Queue" class="headerlink" title="Global Dispatch  Queue"></a>Global Dispatch  Queue</h4><p>系统为我们提供了并发队列Concurrent Dispatch Queue：</p>
+<pre><code>// 全局队列
+dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);</code></pre><blockquote>
+<p> Global Dispatch  Queue共提供了4个优先级。DISPATCH_QUEUE_PRIORITY_HIGH:高优先级；DISPATCH_QUEUE_PRIORITY_DEFAULT：默认优先级；DISPATCH_QUEUE_PRIORITY_LOW：低优先级；DISPATCH_QUEUE_PRIORITY_BACKGROUND： 后台。</p>
+</blockquote>
+<p>声明的宏定义如下：</p>
+<pre><code>#define DISPATCH_QUEUE_PRIORITY_HIGH 2
+#define DISPATCH_QUEUE_PRIORITY_DEFAULT 0
+#define DISPATCH_QUEUE_PRIORITY_LOW (-2)
+#define DISPATCH_QUEUE_PRIORITY_BACKGROUND INT16_MIN</code></pre><h4 id="dispatch-set-target-queue"><a href="#dispatch-set-target-queue" class="headerlink" title="dispatch_set_target_queue"></a>dispatch_set_target_queue</h4><p>我们通过<code>dispatch_queue_create</code>创建生成的队列，默认使用的优先级都是与<code>dispatch_get_global_queue</code>使用<code>DISPATCH_QUEUE_PRIORITY_DEFAULT</code>的优先级相同。而如果你想要改变自己创建的队列的优先级，需要使用<code>dispatch_set_target_queue</code>函数来实现：</p>
+<pre><code>// 自己创建的队列
+dispatch_queue_t serialQueue = dispatch_queue_create(NULL, DISPATCH_QUEUE_SERIAL);
+// 使用系统提供的队列，并指定优先级为DISPATCH_QUEUE_PRIORITY_BACKGROUND
+dispatch_queue_t  globalBackgoundQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+//我们希望自己创建的队列也使用与DISPATCH_QUEUE_PRIORITY_BACKGROUND相同的优先级，可以这样指定：
+// (原队列， 参考的队列)
+ dispatch_set_target_queue(serialQueue, globalBackgoundQueue);</code></pre><blockquote>
+<p>请不要将原队列设置为主队列Main  Queue和全局队列Global   Queue。</p>
+</blockquote>
+<p>通过dispatch_get_global_queue不仅可以改变队列的优先级，还可以变更队列的“执行阶层”。我们创建5个串行队列，然后异步执行：</p>
+<pre><code>    dispatch_queue_t serialQueue1 = dispatch_queue_create(&quot;liuxingxing1&quot;, NULL);
+    dispatch_queue_t serialQueue2 = dispatch_queue_create(&quot;liuxingxing2&quot;, NULL);
+    dispatch_queue_t serialQueue3 = dispatch_queue_create(&quot;liuxingxing3&quot;, NULL);
+    dispatch_queue_t serialQueue4 = dispatch_queue_create(&quot;liuxingxing4&quot;, NULL);
+    dispatch_queue_t serialQueue5 = dispatch_queue_create(&quot;liuxingxing5&quot;, NULL);
+    dispatch_async(serialQueue1, ^{
+        NSLog(@&quot;1:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(serialQueue2, ^{
+        NSLog(@&quot;2:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(serialQueue3, ^{
+        NSLog(@&quot;3:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(serialQueue4, ^{
+        NSLog(@&quot;4:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(serialQueue5, ^{
+        NSLog(@&quot;5:%@&quot;,[NSThread currentThread]);
+    });</code></pre><p>打印结果如下：</p>
+<pre><code>2018-08-02 09:40:14.540502+0800 GCD[77612:10924290] 2:&lt;NSThread: 0x6000034e7240&gt;{number = 5, name = (null)}
+2018-08-02 09:40:14.540506+0800 GCD[77612:10924287] 1:&lt;NSThread: 0x6000034cb240&gt;{number = 6, name = (null)}
+2018-08-02 09:40:14.540588+0800 GCD[77612:10924291] 5:&lt;NSThread: 0x6000034e6c40&gt;{number = 3, name = (null)}
+2018-08-02 09:40:14.540544+0800 GCD[77612:10924293] 4:&lt;NSThread: 0x6000034cb280&gt;{number = 7, name = (null)}
+2018-08-02 09:40:14.540644+0800 GCD[77612:10924298] 3:&lt;NSThread: 0x6000034cb300&gt;{number = 8, name = (null)}</code></pre><blockquote>
+<p>通过打印，我们可以看到，系统为5个队列分别开了5个线程，5个线程并行执行，没有先后顺序。</p>
+</blockquote>
+<p>现在，我们再创建一个串行队列，让这5个串行队列作为该队列的执行阶层：</p>
+<pre><code>    // 目标串行队列
+    dispatch_queue_t targetSerialQueue = dispatch_queue_create(&quot;liuxingxing&quot;, NULL);
+    // 5个用于测试的串行队列
+    dispatch_queue_t serialQueue1 = dispatch_queue_create(&quot;liuxingxing1&quot;, NULL);
+    dispatch_queue_t serialQueue2 = dispatch_queue_create(&quot;liuxingxing2&quot;, NULL);
+    dispatch_queue_t serialQueue3 = dispatch_queue_create(&quot;liuxingxing3&quot;, NULL);
+    dispatch_queue_t serialQueue4 = dispatch_queue_create(&quot;liuxingxing4&quot;, NULL);
+    dispatch_queue_t serialQueue5 = dispatch_queue_create(&quot;liuxingxing5&quot;, NULL);
+    // 将这5个队列设置为目标队列的执行阶层：
+    dispatch_set_target_queue(serialQueue1, targetSerialQueue);
+    dispatch_set_target_queue(serialQueue2, targetSerialQueue);
+    dispatch_set_target_queue(serialQueue3, targetSerialQueue);
+    dispatch_set_target_queue(serialQueue4, targetSerialQueue);
+    dispatch_set_target_queue(serialQueue5, targetSerialQueue);
+    NSLog(@&quot;执行了。。。&quot;);
+    dispatch_async(serialQueue1, ^{
+        NSLog(@&quot;1:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(serialQueue2, ^{
+        NSLog(@&quot;2:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(serialQueue3, ^{
+        NSLog(@&quot;3:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(serialQueue4, ^{
+        NSLog(@&quot;4:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(serialQueue5, ^{
+        NSLog(@&quot;5:%@&quot;,[NSThread currentThread]);
+    });
+    NSLog(@&quot;我也执行了。。。&quot;);</code></pre><p>打印结果如下：</p>
+<pre><code>2018-08-02 09:54:08.938848+0800 GCD[78218:10933655] 执行了。。。
+2018-08-02 09:54:08.939075+0800 GCD[78218:10933655] 我也执行了。。。
+2018-08-02 09:54:08.939155+0800 GCD[78218:10933741] 1:&lt;NSThread: 0x6000004e0180&gt;{number = 5, name = (null)}
+2018-08-02 09:54:08.939307+0800 GCD[78218:10933741] 2:&lt;NSThread: 0x6000004e0180&gt;{number = 5, name = (null)}
+2018-08-02 09:54:08.939431+0800 GCD[78218:10933741] 3:&lt;NSThread: 0x6000004e0180&gt;{number = 5, name = (null)}
+2018-08-02 09:54:08.939567+0800 GCD[78218:10933741] 4:&lt;NSThread: 0x6000004e0180&gt;{number = 5, name = (null)}
+2018-08-02 09:54:08.939698+0800 GCD[78218:10933741] 5:&lt;NSThread: 0x6000004e0180&gt;{number = 5, name = (null)}</code></pre><blockquote>
+<p>我们可以发现，5个串行队列在一个编号为5的子线程中异步串行执行了。</p>
+</blockquote>
+<h4 id="dispatch-after"><a href="#dispatch-after" class="headerlink" title="dispatch_after"></a>dispatch_after</h4><p>我们有时候需要延迟指定时间后做执行的场景。假如你希望延迟5s后执行处理，可以这样实现：</p>
+<pre><code>    NSLog(@&quot;执行了。。。&quot;);
+    dispatch_time_t afterTime = dispatch_time(DISPATCH_TIME_NOW, 5ull * NSEC_PER_SEC);
+    dispatch_after(afterTime, dispatch_get_main_queue(), ^{
+        NSLog(@&quot;我5秒后执行了。。。&quot;);
+    });
+    NSLog(@&quot;我也执行了。。。&quot;);</code></pre><blockquote>
+<p>补充：5ull * NSEC_PER_SEC的乘积结果是单位为毫微秒的数值。“ull”是C语言的数值字面量，是显式表明类型时使用的字符串（表示“unsigned long long”）。如果使用NSEC_PER_MSEC，则表示已毫秒计算。如果不是很清晰，我们可以点击这个宏，就一目了然了。</p>
+</blockquote>
+<pre><code>#define NSEC_PER_SEC 1000000000ull
+#define NSEC_PER_MSEC 1000000ull
+#define USEC_PER_SEC 1000000ull
+#define NSEC_PER_USEC 1000ull
+
+#define DISPATCH_TIME_NOW (0ull)</code></pre><p>接下来，我们查看打印结果，结果如下：</p>
+<pre><code>2018-08-02 10:16:51.485556+0800 GCD[79047:10947179] 执行了。。。
+2018-08-02 10:16:51.485787+0800 GCD[79047:10947179] 我也执行了。。。
+2018-08-02 10:16:56.486077+0800 GCD[79047:10947179] 我5秒后执行了。。。</code></pre><blockquote>
+<p>需要注意的是，5s后执行是指5s后将block中的业务处理添加到mainQueue中，而不是说5s后执行block中的业务代码。也就是说，如果主队列mainQueue中有大量耗时操作时，虽然5s时追加到了主队列，但这个实际执行的时间要比5s时间长的多。</p>
+</blockquote>
+<p>我们一般会使用dispatch_time函数来计算相对时间。但是我们如果想使用绝对时间，例如在“2018-08-02 11:19:00”时执行，可以使用<code>**struct** timespec</code>来实现：</p>
+<pre><code>dispatch_time_t getDispatchTimeByDate(NSDate *date) {
+    NSTimeInterval interval;
+    double second, subsecond;
+    struct timespec time;
+    dispatch_time_t milestone;
+    interval = [date timeIntervalSince1970];
+    subsecond = modf(interval, &amp;second);
+    time.tv_sec = second;
+    time.tv_nsec = subsecond * NSEC_PER_SEC;
+    milestone = dispatch_walltime(&amp;time, 0);
+    return milestone;
+}</code></pre><p>调用该函数：</p>
+<pre><code>    NSLog(@&quot;执行了。。。&quot;);
+    NSDateFormatter * form = [[NSDateFormatter alloc]init];
+    form.dateFormat = @&quot;yyyy-MM-dd HH:mm:ss&quot;;
+    NSDate *date = [form dateFromString:@&quot;2018-08-02 11:19:00&quot;];
+    dispatch_after(getDispatchTimeByDate(date), dispatch_get_main_queue(), ^{
+        NSLog(@&quot;我在2018-08-02 11:19:00秒执行了。。。&quot;);
+    });
+    NSLog(@&quot;我也执行了。。。&quot;);</code></pre><p>打印结果：</p>
+<pre><code>2018-08-02 11:18:08.710400+0800 GCD[81313:10983251] 执行了。。。
+2018-08-02 11:18:08.724402+0800 GCD[81313:10983251] 我也执行了。。。
+2018-08-02 11:19:00.001673+0800 GCD[81313:10983251] 我在2018-08-02 11:19:00秒执行了。。。</code></pre><h4 id="Dispatch-Group"><a href="#Dispatch-Group" class="headerlink" title="Dispatch Group"></a>Dispatch Group</h4><p>如果我们使用异步并发队列执行多个耗时操作，执行完毕后希望在主队列main Queue中再做下一步的处理。这时候你可以使用Dispatch Group来实现这个功能。</p>
+<pre><code>    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_async(group, queue, ^{
+        NSLog(@&quot;执行了1:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_group_async(group, queue, ^{
+        NSLog(@&quot;执行了2:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_group_async(group, queue, ^{
+        NSLog(@&quot;执行了3:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        NSLog(@&quot;我也执行了。。。&quot;);
+    });</code></pre><p>执行结果如下：</p>
+<pre><code>2018-08-02 11:49:09.194348+0800 GCD[82438:11001111] 执行了1:&lt;NSThread: 0x6000007916c0&gt;{number = 4, name = (null)}
+2018-08-02 11:49:09.194348+0800 GCD[82438:11001100] 执行了3:&lt;NSThread: 0x60000079fe40&gt;{number = 7, name = (null)}
+2018-08-02 11:49:09.194348+0800 GCD[82438:11001102] 执行了2:&lt;NSThread: 0x600000791980&gt;{number = 5, name = (null)}
+2018-08-02 11:49:09.212106+0800 GCD[82438:11000996] 我也执行了。。。</code></pre><blockquote>
+<p>无论子队列按照什么顺序执行，主队列都会在所有子队列执行完毕后再做处理。</p>
+</blockquote>
+<h5 id="dispatch-group-wait"><a href="#dispatch-group-wait" class="headerlink" title="dispatch_group_wait"></a>dispatch_group_wait</h5><p>我们也可以在Dispatch Group中使用dispatch_group_wait函数，dispatch_group_wait可以指定超时的时间。例如，我们的超时时间为5s，超过5s，则提示用户失败：</p>
+<pre><code>    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_async(group, queue, ^{
+        NSLog(@&quot;执行了1:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_group_async(group, queue, ^{
+        NSLog(@&quot;执行了2:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_group_async(group, queue, ^{
+        NSLog(@&quot;执行了3:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW,  5ull * NSEC_PER_SEC);
+    long result = dispatch_group_wait(group,time);
+    if (result == 0) {
+        NSLog(@&quot;5s内执行完毕了。。。&quot;);
+    } else {
+        NSLog(@&quot;5s内还没有执行完！！！！&quot;);
+    }</code></pre><blockquote>
+<p> 如果dispatch_group_wait的返回值result不为0，就意味着在指定时间内，Dispatch Group中还有处理没有完成；如果返回值为0，表示已经在指定时间内完成。</p>
+</blockquote>
+<p>如果设置的超时时间为<code>DISPATCH_TIME_FOREVER</code>，那么就意味着会一直等待，直到Dispatch Group完成。所以dispatch_group_wait的返回值result将一直为0。如果指定超时时间为<code>DISPATCH_TIME_NOW</code>，则不设置超时时间，立即判断Dispatch Group是否执行结束。</p>
+<pre><code>#define DISPATCH_TIME_NOW (0ull)
+#define DISPATCH_TIME_FOREVER (~0ull)</code></pre><h4 id="dispatch-barrier-async"><a href="#dispatch-barrier-async" class="headerlink" title="dispatch_barrier_async"></a>dispatch_barrier_async</h4><p>dispatch_barrier_async可以想象为一个栅栏，在一个异步并发的多线程任务中，执行顺序是不固定的：</p>
+<pre><code>
+    NSLog(@&quot;执行了。。。&quot;);
+    dispatch_queue_t queue = dispatch_queue_create(&quot;liuxingxing&quot;, DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了1:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了2:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了3:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了4:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了5:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了6:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了7:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了8:%@&quot;,[NSThread currentThread]);
+    });
+     NSLog(@&quot;我也执行了。。。&quot;);</code></pre><p>打印结果如下：</p>
+<pre><code>2018-08-02 18:56:09.165354+0800 GCD[1349:11264928] 执行了。。。
+2018-08-02 18:56:09.167767+0800 GCD[1349:11264928] 我也执行了。。。
+2018-08-02 18:56:09.168206+0800 GCD[1349:11265364] 执行了1:&lt;NSThread: 0x600000d8cf00&gt;{number = 15, name = (null)}
+2018-08-02 18:56:09.169986+0800 GCD[1349:11265364] 执行了2:&lt;NSThread: 0x600000d8cf00&gt;{number = 15, name = (null)}
+2018-08-02 18:56:09.171324+0800 GCD[1349:11265596] 执行了4:&lt;NSThread: 0x600000d71b00&gt;{number = 18, name = (null)}
+2018-08-02 18:56:09.171176+0800 GCD[1349:11265594] 执行了3:&lt;NSThread: 0x600000d9de00&gt;{number = 17, name = (null)}
+2018-08-02 18:56:09.171441+0800 GCD[1349:11265364] 执行了5:&lt;NSThread: 0x600000d8cf00&gt;{number = 15, name = (null)}
+2018-08-02 18:56:09.171562+0800 GCD[1349:11265596] 执行了8:&lt;NSThread: 0x600000d71b00&gt;{number = 18, name = (null)}
+2018-08-02 18:56:09.171559+0800 GCD[1349:11265594] 执行了7:&lt;NSThread: 0x600000d9de00&gt;{number = 17, name = (null)}
+2018-08-02 18:56:09.171611+0800 GCD[1349:11265598] 执行了6:&lt;NSThread: 0x600000d71580&gt;{number = 19, name = (null)}</code></pre><p>现在，我们希望在执行线程3和执行线程4之间做些操作，就可以使用dispatch_barrier_async函数。</p>
+<pre><code>    NSLog(@&quot;执行了。。。&quot;);
+    dispatch_queue_t queue = dispatch_queue_create(&quot;liuxingxing&quot;, DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了1:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了2:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了3:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_barrier_async(queue, ^{
+        NSLog(@&quot;我是3和4之间的dispatch_barrier_async&quot;);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了4:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了5:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了6:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了7:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了8:%@&quot;,[NSThread currentThread]);
+    });
+     NSLog(@&quot;我也执行了。。。&quot;);</code></pre><p>打印结果如下：</p>
+<pre><code>2018-08-02 19:01:25.175002+0800 GCD[1389:11268238] 我也执行了。。。
+2018-08-02 19:01:25.176161+0800 GCD[1389:11268735] 执行了1:&lt;NSThread: 0x600000edf840&gt;{number = 10, name = (null)}
+2018-08-02 19:01:25.176187+0800 GCD[1389:11268826] 执行了2:&lt;NSThread: 0x600000edfcc0&gt;{number = 11, name = (null)}
+2018-08-02 19:01:25.176276+0800 GCD[1389:11268827] 执行了3:&lt;NSThread: 0x600000edff00&gt;{number = 12, name = (null)}
+2018-08-02 19:01:25.176630+0800 GCD[1389:11268827] 我是3和4之间的dispatch_barrier_async
+2018-08-02 19:01:25.176820+0800 GCD[1389:11268826] 执行了5:&lt;NSThread: 0x600000edfcc0&gt;{number = 11, name = (null)}
+2018-08-02 19:01:25.176782+0800 GCD[1389:11268827] 执行了4:&lt;NSThread: 0x600000edff00&gt;{number = 12, name = (null)}
+2018-08-02 19:01:25.176936+0800 GCD[1389:11268735] 执行了6:&lt;NSThread: 0x600000edf840&gt;{number = 10, name = (null)}
+2018-08-02 19:01:25.177329+0800 GCD[1389:11268828] 执行了7:&lt;NSThread: 0x600000ed1f40&gt;{number = 13, name = (null)}
+2018-08-02 19:01:25.177525+0800 GCD[1389:11268829] 执行了8:&lt;NSThread: 0x600000ed1d40&gt;{number = 14, name = (null)}</code></pre><blockquote>
+<p>可以看到，dispatch_barrier_async就好比一个栅栏，栅栏两侧的线程无论什么执行顺序，但是dispatch_barrier_async会始终“横亘”在线程3和线程4之间。</p>
+</blockquote>
+<h4 id="dispatch-sync"><a href="#dispatch-sync" class="headerlink" title="dispatch_sync"></a>dispatch_sync</h4><p>dispatch_async与dispatch_sync两者的区别是：dispatch_async是异步队列，所谓异步，就是指不会等待block块的执行完毕才会执行后面的代码；dispatch_sync则恰恰相反，表示是同步队列，表示在block代码快执行完毕之前，不会执行后面的代码。</p>
+<p>我们先看dispatch_async异步执行的代码：</p>
+<pre><code>    NSLog(@&quot;start。。。&quot;);
+    dispatch_queue_t queue = dispatch_queue_create(&quot;liuxingxing&quot;, DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了1:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了2:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;执行了3:%@&quot;,[NSThread currentThread]);
+    });
+     NSLog(@&quot;end。。。&quot;);</code></pre><p>dispatch_async的执行结果是这样的：</p>
+<pre><code>2018-08-02 19:11:10.560857+0800 GCD[1490:11273203] start。。。
+2018-08-02 19:11:10.561109+0800 GCD[1490:11273203] end。。。
+2018-08-02 19:11:10.561169+0800 GCD[1490:11273294] 执行了1:&lt;NSThread: 0x6000005ef400&gt;{number = 3, name = (null)}
+2018-08-02 19:11:10.561225+0800 GCD[1490:11273293] 执行了3:&lt;NSThread: 0x60000058b040&gt;{number = 6, name = (null)}
+2018-08-02 19:11:10.561225+0800 GCD[1490:11273297] 执行了2:&lt;NSThread: 0x6000005b5740&gt;{number = 5, name = (null)}</code></pre><blockquote>
+<p>我们可以看到，“start”和“end”按照代码执行顺序分别为开始和结束，但是异步函数却没有等待block中的代码执行完毕后再执行end.</p>
+</blockquote>
+<p>dispatch_sync的测试代码如下：</p>
+<pre><code>    NSLog(@&quot;start。。。&quot;);
+    dispatch_queue_t queue = dispatch_queue_create(&quot;liuxingxing&quot;, DISPATCH_QUEUE_CONCURRENT);
+    dispatch_sync(queue, ^{
+        NSLog(@&quot;执行了1:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_sync(queue, ^{
+        NSLog(@&quot;执行了2:%@&quot;,[NSThread currentThread]);
+    });
+    dispatch_sync(queue, ^{
+        NSLog(@&quot;执行了3:%@&quot;,[NSThread currentThread]);
+    });
+     NSLog(@&quot;end。。。&quot;);</code></pre><p>dispatch_sync的执行结果是这样的：</p>
+<pre><code>2018-08-02 19:20:51.028573+0800 GCD[1642:11279240] start。。。
+2018-08-02 19:20:51.028822+0800 GCD[1642:11279240] 执行了1:&lt;NSThread: 0x6000018918c0&gt;{number = 1, name = main}
+2018-08-02 19:20:51.028980+0800 GCD[1642:11279240] 执行了2:&lt;NSThread: 0x6000018918c0&gt;{number = 1, name = main}
+2018-08-02 19:20:51.029108+0800 GCD[1642:11279240] 执行了3:&lt;NSThread: 0x6000018918c0&gt;{number = 1, name = main}
+2018-08-02 19:20:51.029208+0800 GCD[1642:11279240] end。。。
+</code></pre><blockquote>
+<p>虽然我们使用了并发队列，但是由于我们使用的同步操作，可以看到，系统并没有开启子线程，并且，始终按照代码的顺序进行执行的。</p>
+</blockquote>
+<p>需要注意的是，我们使用dispatch_sync函数时，一定要不要为dispatch_sync指定为Main Queue主队列，否则将会发生死锁：</p>
+<pre><code>    NSLog(@&quot;start。。。&quot;);
+    dispatch_queue_t queue = dispatch_get_main_queue();
+    dispatch_sync(queue, ^{
+        NSLog(@&quot;执行了1:%@&quot;,[NSThread currentThread]);
+    });
+
+     NSLog(@&quot;end。。。&quot;);</code></pre><blockquote>
+<p>Thread 1: EXC_BAD_INSTRUCTION (code=EXC_I386_INVOP, subcode=0x0)</p>
+</blockquote>
+<p>同样的，下面的这种写法，也会造成死锁：</p>
+<pre><code>    NSLog(@&quot;start。。。&quot;);
+    dispatch_queue_t queue = dispatch_get_main_queue();
+
+    dispatch_async(queue, ^{
+       dispatch_sync(queue, ^{
+            NSLog(@&quot;执行了1:%@&quot;,[NSThread currentThread]);
+        });
+    });
+
+     NSLog(@&quot;end。。。&quot;);</code></pre><h4 id="dispatch-apply"><a href="#dispatch-apply" class="headerlink" title="dispatch_apply"></a>dispatch_apply</h4><p>我们可以使用dispatch_apply来实现在指定线程内多次执行任务：</p>
+<pre><code>    NSLog(@&quot;start。。。&quot;);
+    dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
+    dispatch_apply(5, queue, ^(size_t index) {
+        NSLog(@&quot;当前线程为：%@---%zu&quot;, [NSThread currentThread],index);
+    });
+     NSLog(@&quot;end。。。&quot;);</code></pre><p>打印结果如下：</p>
+<pre><code>2018-08-02 19:35:04.326280+0800 GCD[1849:11288245] start。。。
+2018-08-02 19:35:04.326591+0800 GCD[1849:11288245] 当前线程为：&lt;NSThread: 0x600000630740&gt;{number = 1, name = main}---0
+2018-08-02 19:35:04.327070+0800 GCD[1849:11288245] 当前线程为：&lt;NSThread: 0x600000630740&gt;{number = 1, name = main}---1
+2018-08-02 19:35:04.327574+0800 GCD[1849:11288378] 当前线程为：&lt;NSThread: 0x600000660080&gt;{number = 3, name = (null)}---3
+2018-08-02 19:35:04.327553+0800 GCD[1849:11288245] 当前线程为：&lt;NSThread: 0x600000630740&gt;{number = 1, name = main}---2
+2018-08-02 19:35:04.327740+0800 GCD[1849:11288378] 当前线程为：&lt;NSThread: 0x600000660080&gt;{number = 3, name = (null)}---4
+2018-08-02 19:35:04.328556+0800 GCD[1849:11288245] end。。。</code></pre><p>我们可以通过这种方式，来模仿系统对NSArray的实现：</p>
+<pre><code>    NSArray *testArray = @[@&quot;a&quot;,@&quot;b&quot;,@&quot;c&quot;,@&quot;d&quot;,@&quot;e&quot;];
+    [testArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+         NSLog(@&quot;当前元素为：%@---当前下标为%zd&quot;, obj,idx);
+    }];
+    //自己模拟实现
+    dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
+    dispatch_apply(testArray.count, queue, ^(size_t index) {
+        NSLog(@&quot;当前元素为：%@&quot;, testArray[index]);
+    });</code></pre><h4 id="dispatch-suspend和dispatch-resume"><a href="#dispatch-suspend和dispatch-resume" class="headerlink" title="dispatch_suspend和dispatch_resume"></a>dispatch_suspend和dispatch_resume</h4><p>GCD为我们提供了“挂起”、“恢复”队列的功能。但是，需要注意的是，“挂起”的队列是针对尚未执行的block，正在执行的block不会被挂起。</p>
+<p>为了演示这个功能，需要创建一个串行异步队列做演示，然后创建3个耗时任务，每个耗时任务需要时长5s：</p>
+<pre><code>dispatch_queue_t queue;
+bool flag = 1;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self test];
+}
+-(void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event {
+    if (flag == 1) {
+        NSLog(@&quot;暂停任务&quot;);
+        flag = 0;
+        dispatch_suspend(queue);
+    } else {
+        flag = 1;
+        NSLog(@&quot;继续任务&quot;);
+         dispatch_resume(queue);
+    }
+
+}
+- (void)test {
+    NSLog(@&quot;start&quot;);
+    queue = dispatch_queue_create(&quot;liuxingxing&quot;, DISPATCH_QUEUE_SERIAL);
+    dispatch_async(queue, ^{
+         NSLog(@&quot;我开始执行任务1&quot;);
+        sleep(5);
+        NSLog(@&quot;任务1执行完毕&quot;);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;我开始执行任务2&quot;);
+        sleep(5);
+        NSLog(@&quot;任务2执行完毕&quot;);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;我开始执行任务3&quot;);
+        sleep(5);
+        NSLog(@&quot;任务3执行完毕&quot;);
+    });
+}</code></pre><p>我们在2s左右切换一下线程的状态，打印结果如下：</p>
+<pre><code>2018-08-03 15:05:30.636230+0800 GCD[20645:11727750] start
+2018-08-03 15:05:30.636592+0800 GCD[20645:11727858] 我开始执行任务1
+2018-08-03 15:05:32.325692+0800 GCD[20645:11727750] 暂停任务
+2018-08-03 15:05:35.640567+0800 GCD[20645:11727858] 任务1执行完毕
+2018-08-03 15:05:44.397150+0800 GCD[20645:11727750] 继续任务
+2018-08-03 15:05:44.397735+0800 GCD[20645:11727856] 我开始执行任务2
+2018-08-03 15:05:45.991072+0800 GCD[20645:11727750] 暂停任务
+2018-08-03 15:05:49.402791+0800 GCD[20645:11727856] 任务2执行完毕
+2018-08-03 15:05:53.625076+0800 GCD[20645:11727750] 继续任务
+2018-08-03 15:05:53.625362+0800 GCD[20645:11727856] 我开始执行任务3
+2018-08-03 15:05:54.609694+0800 GCD[20645:11727750] 暂停任务
+2018-08-03 15:05:58.629619+0800 GCD[20645:11727856] 任务3执行完毕</code></pre><blockquote>
+<p>通过打印结果可以验证，我们暂停任务时，正在执行的任务并不会暂停，而是会执行完毕，被“挂起”的任务是没有被执行的任务。而恢复，则使这些被挂起的任务继续执行。</p>
+</blockquote>
+<h4 id="Dispatch-Semaphore"><a href="#Dispatch-Semaphore" class="headerlink" title="Dispatch Semaphore"></a>Dispatch Semaphore</h4><p>GCD为我们提供了信号量机制，让我们可以进行更加细度的控制。信号量机制主要涉及到下面三个函数：</p>
+<pre><code>dispatch_semaphore_create(long value); // 创建信号量
+dispatch_semaphore_signal(dispatch_semaphore_t deem); // 发送信号量
+dispatch_semaphore_wait(dispatch_semaphore_t dsema, dispatch_time_t timeout); // 等待信号量</code></pre><p><code>dispatch_semaphore_create</code>用来创建信号量。value表示可以设置信号量的资源数。0表示没有资源，调用<code>dispatch_semaphore_wait</code>会立即等待。我们也可以把这个value当做并发总数量，dispatch_semaphore_wait会使信号量的资源数减去1，可以理解为value - 1 ；dispatch_semaphore_signal发送信号量，可以理解为添加信号量，也就是value + 1。</p>
+<h5 id="使用场景1-解决死亡回调"><a href="#使用场景1-解决死亡回调" class="headerlink" title="使用场景1:解决死亡回调"></a>使用场景1:解决死亡回调</h5><p>假设我们有3个网络接口ABC，B接口依赖A，C依赖B，如果我们要实现这个功能，最简单粗暴的办法就是：</p>
+<pre><code>    NSLog(@&quot;start。。。&quot;);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+
+    dispatch_async(queue, ^{ //模拟网络请求1
+        NSLog(@&quot;我开始执行任务1&quot;);
+        sleep(5);
+        NSLog(@&quot;任务1执行完毕&quot;);
+        //模拟1成功的回调
+
+        dispatch_async(queue, ^{ //模拟网络请求2
+            NSLog(@&quot;我开始执行任务2&quot;);
+            sleep(5);
+            NSLog(@&quot;任务2执行完毕&quot;);
+
+            //模拟2成功的回调
+            dispatch_async(queue, ^{  //模拟网络请求3
+                NSLog(@&quot;我开始执行任务3&quot;);
+                sleep(5);
+                NSLog(@&quot;任务3执行完毕&quot;);
+            });
+        });
+    });
+    NSLog(@&quot;end。。。&quot;);</code></pre><p>打印结果如下：</p>
+<pre><code>2018-08-03 19:28:55.177312+0800 GCD[31913:11879778] start。。。
+2018-08-03 19:28:55.177565+0800 GCD[31913:11879778] end。。。
+2018-08-03 19:28:55.177603+0800 GCD[31913:11879878] 我开始执行任务1
+2018-08-03 19:29:00.178352+0800 GCD[31913:11879878] 任务1执行完毕
+2018-08-03 19:29:00.178604+0800 GCD[31913:11879878] 我开始执行任务2
+2018-08-03 19:29:05.182333+0800 GCD[31913:11879878] 任务2执行完毕
+2018-08-03 19:29:05.182579+0800 GCD[31913:11879878] 我开始执行任务3
+2018-08-03 19:29:10.186252+0800 GCD[31913:11879878] 任务3执行完毕</code></pre><blockquote>
+<p>也就是，我们在网络成功的回调中，再次嵌套网络回调。如果多个网络请求相互依赖，就会陷入死亡回调。</p>
+</blockquote>
+<p>我们可以使用GCD提供的信号量机制，相对优雅的解决这个问题：</p>
+<pre><code>    NSLog(@&quot;start。。。&quot;);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0); //
+    dispatch_async(queue, ^{ //模拟网络请求1
+        NSLog(@&quot;我开始执行任务1&quot;);
+        sleep(5);
+        NSLog(@&quot;任务1执行完毕&quot;);
+        //模拟1成功的回调
+        // 发送信号量
+         dispatch_semaphore_signal(semaphore);
+    });
+    dispatch_async(queue, ^{ //模拟网络请求1
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        NSLog(@&quot;我开始执行任务2&quot;);
+        sleep(5);
+        NSLog(@&quot;任务2执行完毕&quot;);
+        //模拟2成功的回调
+        // 发送信号量
+         dispatch_semaphore_signal(semaphore);
+    });
+    dispatch_async(queue, ^{ //模拟网络请求1
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        NSLog(@&quot;我开始执行任务3&quot;);
+        sleep(5);
+        NSLog(@&quot;任务3执行完毕&quot;);
+    });
+    NSLog(@&quot;end。。。&quot;);</code></pre><p>打印结果如下：</p>
+<pre><code>2018-08-03 19:34:32.836136+0800 GCD[32019:11883248] start。。。
+2018-08-03 19:34:32.836377+0800 GCD[32019:11883248] end。。。
+2018-08-03 19:34:32.836391+0800 GCD[32019:11883361] 我开始执行任务1
+2018-08-03 19:34:37.841238+0800 GCD[32019:11883361] 任务1执行完毕
+2018-08-03 19:34:37.841505+0800 GCD[32019:11883362] 我开始执行任务2
+2018-08-03 19:34:42.845288+0800 GCD[32019:11883362] 任务2执行完毕
+2018-08-03 19:34:42.845526+0800 GCD[32019:11883360] 我开始执行任务3
+2018-08-03 19:34:47.848411+0800 GCD[32019:11883360] 任务3执行完毕</code></pre><h4 id="dispatch-once"><a href="#dispatch-once" class="headerlink" title="dispatch_once"></a>dispatch_once</h4><p>dispatch_once函数可以保证在应用程序执行中只执行一次处理。我们最可能想到的是单例：</p>
+<pre><code>    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+
+    });</code></pre><p>AFNetworking中使用dispatch_once函数：</p>
+<pre><code>+ (instancetype)sharedManager {
+    static AFNetworkReachabilityManager *_sharedManager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        _sharedManager = [self manager];
+    });
+
+    return _sharedManager;
+}</code></pre>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《iOS中的GCD使用总结》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2018/08/03/2018-08-03-ios-zhong-de-gcd-shi-yong-zong-jie/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                刘星星
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'abc79898ea014913ba7c',
+        clientSecret: '41f23ea4570391c06c9f4f47d0acec45d8dfe3ff',
+        repo: 'blogtalk',
+        owner: 'smileasy',
+        admin: "smileasy",
+        id: '2018-08-03T00-00-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/08/27/2018-08-27-ios-zhong-de-nei-cun-guan-li-zong-jie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="iOS中的内存管理总结">
+                        
+                        <span class="card-title">iOS中的内存管理总结</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+
+内存管理iOS通过以下三种方式来管理内存方案：
+TaggedPointer
+//非指针型的isa
+NONPOINTER_ISA
+//包含了引用计数表 和 弱引用表
+散列表TaggedPointerTaggedPointer对象是为了
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2018-08-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                    iOS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/iOS/" target="_blank">
+                        <span class="chip bg-color">iOS</span>
+                    </a>
+                    
+                    <a href="/tags/总结提高/" target="_blank">
+                        <span class="chip bg-color">总结提高</span>
+                    </a>
+                    
+                    <a href="/tags/内存管理/" target="_blank">
+                        <span class="chip bg-color">内存管理</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/07/30/2018-07-30-javascript-shu-zu-de-chang-yong-cao-zuo/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="JavaScript的数组常用操作">
+                        
+                        <span class="card-title">JavaScript的数组常用操作</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            for in 遍历数组（不仅可以遍历对象，也可以遍历数组，毕竟数组只是一种特殊对象）var a = [1, 2, 3];
+a.foo = true;
+
+for (var key in a) {
+console.log(key);
+}
+// 
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-07-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JavaScript/" class="post-category" target="_blank">
+                                    JavaScript
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JavaScript/" target="_blank">
+                        <span class="chip bg-color">JavaScript</span>
+                    </a>
+                    
+                    <a href="/tags/ES5/" target="_blank">
+                        <span class="chip bg-color">ES5</span>
+                    </a>
+                    
+                    <a href="/tags/数组/" target="_blank">
+                        <span class="chip bg-color">数组</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站博客内容由刘星星负责更新维护.
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;当前站点总字数:&nbsp;
+                <span class="white-color">118.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

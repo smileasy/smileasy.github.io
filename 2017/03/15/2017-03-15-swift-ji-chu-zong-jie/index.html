@@ -1,0 +1,1503 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="swift基础总结, 星星的博客">
+    <meta name="description" content="
+
+
+基础
+声明常量和变量
+
+let maximumNumberOfLoginAttempts = 10
+var currentLoginAttempt = 0
+这两行代码可以被理解为:“声明一个名字是 maximumNumberOfLog">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>swift基础总结 | 星星的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">星星的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">星星的博客</div>
+        <div class="logo-desc">
+            
+            一起学习 共同进步
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        swift基础总结
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/基础总结/" target="_blank">
+                                <span class="chip bg-color">基础总结</span>
+                            </a>
+                        
+                            <a href="/tags/swift/" target="_blank">
+                                <span class="chip bg-color">swift</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                iOS
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2017-03-15
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        14.4k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        56 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <meta name="referrer" content="no-referrer">
+
+
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><ul>
+<li>声明常量和变量</li>
+</ul>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> maximumNumberOfLoginAttempts <span class="token operator">=</span> <span class="token number">10</span>
+<span class="token keyword">var</span> currentLoginAttempt <span class="token operator">=</span> <span class="token number">0</span></code></pre>
+<p>这两行代码可以被理解为:<br>“声明一个名字是 maximumNumberOfLoginAttempts 的新常量，并给它一个值 10 。然后，声明一个名字是<br>rrentLoginAttempt 的变量并将它的值初始化为 0 。”在这个例子中，允许的最大尝试登录次数被声明为一个常量，因为这个值不会改变。当前尝试登录次数被声明为<br>一个变量，因为每次尝试登录失败的时候都需要增加这个值。<br>你可以在一行中声明多个常量或者多个变量，用逗号隔开:</p>
+<pre><code>var x = 0.0, y = 0.0, z = 0.0</code></pre><ul>
+<li>类型标注</li>
+<li>当你声明常量或者变量的时候可以加上类型标注(type annotation)，说明常量或者变量中要存储的值的类 型。如果要添加类型标注，需要在常量或者变量名后面加上一个冒号和空格，然后加上类型名称。</li>
+</ul>
+<pre><code>var welcomeMessage: String</code></pre><p>声明中的冒号代表着“是…类型”，所以这行代码可以被理解为: “声明一个类型为 String ，名字为 welcomeMessage 的变量。”<br>你可以在一行中定义多个同样类型的变量，用逗号分割，并在最后一个变量名之后添加类型标注:</p>
+<pre><code>var red, green, blue: Double</code></pre><p>注意: 一般来说你很少需要写类型标注。如果你在声明常量或者变量的时候赋了一个初始值，Swift可以推断出这个常 量或者变量的类型，请参考类型安全和类型推断 (页 0)。在上面的例子中，没有给 welcomeMessage 赋初始 值，所以变量 welcomeMessage 的类型是通过一个类型标注指定的，而不是通过初始值推断的。</p>
+<ul>
+<li>整数</li>
+<li>整数就是没有小数部分的数字，比如 42 和 -23 。整数可以是 有符号 (正、负、零)或者 无符号 (正、零)。Swift 提供了8，16，32和64位的有符号和无符号整数类型。这些整数类型和 C 语言的命名方式很像，比如8位无 符号整数类型是 UInt8 ，32位有符号整数类型是 Int32 。就像 Swift 的其他类型一样，整数类型采用大写命名 法。</li>
+<li>你可以访问不同整数类型的 min 和 max 属性来获取对应类型的最小值和最大值:</li>
+</ul>
+<pre><code>let minValue = UInt8.min  // minValue is equal to 0, and is of type UInt8
+let maxValue = UInt8.max  // maxValue is equal to 255, and is of type UInt8</code></pre><ul>
+<li>浮点数是有小数部分的数字，比如 3.14159 ，0.1 和 -273.15。<br>浮点类型比整数类型表示的范围更大，可以存储比 Int 类型更大或者更小的数字。Swift 提供了两种有符号浮 点数类型:<br>• Double表示64位浮点数。当你需要存储很大或者很高精度的浮点数时请使用此类型。 • Float表示32位浮点数。精度要求不高的话可以使用此类型。<br>注意:<br>Double 精确度很高，至少有15位数字，而 Float 只有6位数字。选择哪个类型取决于你的代码需要处理的值的<br>范围，在两种类型都匹配的情况下，将优先选择 Double 。</li>
+<li>类型安全和类型推断</li>
+<li>Swift 是一个类型安全(type safe)的语言。类型安全的语言可以让你清楚地知道代码要处理的值的类型。如果<br>你的代码需要一个 String ，你绝对不可能不小心传进去一个 Int 。<br>由于 Swift 是类型安全的，所以它会在编译你的代码时进行类型检查(type checks)，并把不匹配的类型标记 为错误。这可以让你在开发的时候尽早发现并修复错误。当你要处理不同类型的值时，类型检查可以帮你避免错误。然而，这并不是说你每次声明常量和变量的时候都需 要显式指定类型。如果你没有显式指定类型，Swift 会使用类型推断(type inference)来选择合适的类型。有 了类型推断，编译器可以在编译代码的时候自动推断出表达式的类型。原理很简单，只要检查你赋的值即可。<br>因为有类型推断，和 C 或者 Objective-C 比起来 Swift 很少需要声明类型。常量和变量虽然需要明确类型，但 是大部分工作并不需要你自己来完成。</li>
+<li>整数字面量可以被写作:<ul>
+<li>一个十进制数，没有前缀</li>
+<li>一个二进制数，前缀是 0b</li>
+<li>一个八进制数，前缀是 0o</li>
+<li>一个十六进制数，前缀是 0x</li>
+</ul>
+</li>
+<li>下面的所有整数字面量的十进制值都是 17 :</li>
+</ul>
+<pre><code>let decimalInteger = 17
+let binaryInteger = 0b10001       // 17 in binary notation
+let octalInteger = 0o21           // 17 in octal notation
+let hexadecimalInteger = 0x11     // 17 in hexadecimal notation</code></pre><ul>
+<li>如果一个十进制数的指数为 exp ，那这个数相当于基数和10^exp的乘积: • 1.25e2 表示 1.25 × 10^2，等于 125.0 。<br>• 1.25e-2 表示 1.25 × 10^-2，等于 0.0125 。 如果一个十六进制数的指数为 exp ，那这个数相当于基数和2^exp的乘积:<br>• 0xFp2 表示 15 × 2^2，等于 60.0 。 • 0xFp-2 表示 15 × 2^-2，等于 3.75 。</li>
+<li>下面的这些浮点字面量都等于十进制的 12.1875 :</li>
+</ul>
+<pre><code>let decimalDouble = 12.1875
+let exponentDouble = 1.21875e1
+let hexadecimalDouble = 0xC.3p0</code></pre><ul>
+<li>数值类字面量可以包括额外的格式来增强可读性。整数和浮点数都可以添加额外的零并且包含下划线，并不会影<br>响字面量:</li>
+</ul>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> paddedDouble <span class="token operator">=</span> <span class="token number">000123.456</span>
+<span class="token keyword">let</span> oneMillion <span class="token operator">=</span> <span class="token number">1_000_000</span>
+<span class="token keyword">let</span> justOverOneMillion <span class="token operator">=</span> <span class="token number">1_000_000.000_000_1</span>
+</code></pre>
+<h3 id="数值型类型转换"><a href="#数值型类型转换" class="headerlink" title="数值型类型转换"></a>数值型类型转换</h3><ul>
+<li>通常来讲，即使代码中的整数常量和变量已知非负，也请使用 Int 类型。总是使用默认的整数类型可以保证你的 整数常量和变量可以直接被复用并且可以匹配整数类字面量的类型推断。</li>
+<li>只有在必要的时候才使用其他整数类型，比如要处理外部的长度明确的数据或者为了优化性能、内存占用等<br>等。使用显式指定长度的类型可以及时发现值溢出并且可以暗示正在处理特殊数据。<h4 id="整数转换"><a href="#整数转换" class="headerlink" title="整数转换"></a>整数转换</h4></li>
+<li>不同整数类型的变量和常量可以存储不同范围的数字。 Int8 类型的常量或者变量可以存储的数字范围是 -128 ~ 1 27 ，而 UInt8 类型的常量或者变量能存储的数字范围是 0 ~ 255 。如果数字超出了常量或者变量可存储的范 围，编译的时候会报错:</li>
+</ul>
+<pre><code>let cannotBeNegative: UInt8 = -1
+// UInt8 cannot store negative numbers, and so this will report an error
+let tooBig: Int8 = Int8.max + 1
+// Int8 cannot store a number larger than its maximum value,
+// and so this will also report an error</code></pre><ul>
+<li>由于每种整数类型都可以存储不同范围的值，所以你必须根据不同情况选择性使用数值型类型转换。这种选择性<br>使用的方式，可以预防隐式转换的错误并让你的代码中的类型转换意图变得清晰。</li>
+<li>要将一种数字类型转换成另一种，你要用当前值来初始化一个期望类型的新数字，这个数字的类型就是你的目标 类型。在下面的例子中，常量 twoThousand 是 UInt16 类型，然而常量 one 是 UInt8 类型。它们不能直接相 加，因为它们类型不同。所以要调用 UInt16(one) 来创建一个新的 UInt16 数字并用 one 的值来初始化，然后使用 这个新数字来计算:</li>
+</ul>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> twoThousand<span class="token punctuation">:</span> <span class="token builtin">UInt16</span> <span class="token operator">=</span> <span class="token number">2_000</span>
+<span class="token keyword">let</span> one<span class="token punctuation">:</span> <span class="token builtin">UInt8</span> <span class="token operator">=</span> <span class="token number">1</span>
+<span class="token keyword">let</span> twoThousandAndOne <span class="token operator">=</span> twoThousand <span class="token operator">+</span> <span class="token function">UInt16</span><span class="token punctuation">(</span>one<span class="token punctuation">)</span></code></pre>
+<ul>
+<li>现在两个数字的类型都是 UInt16 ，可以进行相加。目标常量 twoThousandAndOne 的类型被推断为 UInt1 6 ，因为它是两个 UInt16 值的和。</li>
+<li>SomeType(ofInitialValue) 是调用 Swift 构造器并传入一个初始值的默认方法。在语言内部， UInt16 有一个 构造器，可以接受一个 UInt8 类型的值，所以这个构造器可以用现有的 UInt8 来创建一个新的 UInt16 。注 意，你并不能传入任意类型的值，只能传入 UInt16 内部有对应构造器的值。不过你可以扩展现有的类型来让它 可以接收其他类型的值(包括自定义类型)，请参考扩展。<h4 id="整数和浮点数转换"><a href="#整数和浮点数转换" class="headerlink" title="整数和浮点数转换"></a>整数和浮点数转换</h4></li>
+<li>整数和浮点数的转换必须显式指定类型:</li>
+</ul>
+<pre><code>let three = 3
+let pointOneFourOneFiveNine = 0.14159
+let pi = Double(three) + pointOneFourOneFiveNine // pi 等于 3.14159，所以被推测为 Double 类型
+//let pipai = three + pointOneFourOneFiveNine//error
+let pai = 3 + 0.12</code></pre><p>这个例子中，常量 three 的值被用来创建一个 Double 类型的值，所以加号两边的数类型须相同。如果不进行 转换，两者无法相加。</p>
+<ul>
+<li>浮点数到整数转换也必须明确。整数类型可以使用一个Double或Float类型来进行初始化：</li>
+</ul>
+<pre><code>let integerPi = Int(pi)
+// integerPi 等于 3，所以被推测为 Int 类型</code></pre><p>当用这种方式来初始化一个新的整数值时，浮点值会被截断。也就是说 4.75 会变成 4 ， -3.9 会变成 -3 。</p>
+<ul>
+<li>注意:<br>结合数字类常量和变量不同于结合数字类字面量。字面量 3 可以直接和字面量 0.14159 相加，因为数字字面量 本身没有明确的类型。它们的类型只在编译器需要求值的时候被推测。<h4 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h4></li>
+<li>类型别名(type aliases)就是给现有类型定义另一个名字。你可以使用 typealias 关键字来定义类型别名。<br>当你想要给现有类型起一个更有意义的名字时，类型别名非常有用。假设你正在处理特定长度的外部资源的数<br>据:</li>
+</ul>
+<pre><code>typealias AudioSample = UInt16</code></pre><ul>
+<li>定义了一个类型别名之后，你可以在任何使用原始名的地方使用别名:</li>
+</ul>
+<pre><code>var maxAmplitudeFound = AudioSample.min 
+// maxAmplitudeFound 现在是 0</code></pre><h4 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h4><ul>
+<li>Swift 有一个基本的布尔(Boolean)类型，叫做 Bool 。布尔值指逻辑上的值，因为它们只能是真或者假。Swift 有两个布尔常量，true 和 false:</li>
+</ul>
+<pre><code>let orangesAreOrange = true
+let turnipsAreDelicious = false
+if turnipsAreDelicious {
+    print(&quot;Mmm, tasty turnips!&quot;)
+} else {
+    print(&quot;Eww, turnips are horrible.&quot;)
+}
+// Prints &quot;Eww, turnips are horrible.&quot;
+</code></pre><ul>
+<li>如果你在需要使用 Bool 类型的地方使用了非布尔值，Swift 的类型安全机制会报错。下面的例子会报告一个编 译时错误:</li>
+</ul>
+<pre><code>let i = 1
+if i {
+    // this example will not compile, and will report an error
+    //error: &#39;Int&#39; is not convertible to &#39;Bool&#39;
+}</code></pre><p>但是，下面的替代示例是有效的：</p>
+<pre><code>let i = 1
+if i == 1 {
+    // this example will compile successfully
+}</code></pre><p>i == 1 的比较结果是 Bool 类型，所以第二个例子可以通过类型检查。类似 i == 1 这样的比较，请参考基 本操作符。<br>和 Swift 中的其他类型安全的例子一样，这个方法可以避免错误并保证这块代码的意图总是清晰的。</p>
+<h4 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h4><ul>
+<li>元组(tuples)把多个值组合成一个复合值。元组内的值可以是任意类型，并不要求是相同类型。<br>下面这个例子中， (404, “Not Found”) 是一个描述 HTTP 状态码(HTTP status code)的元组。HTTP 状态码是 当你请求网页的时候 web 服务器返回的一个特殊值。如果你请求的网页不存在就会返回一个 404 Not Found 状 态码。</li>
+</ul>
+<pre><code>let http404Error = (404, &quot;Not Found&quot;)
+// http404Error 的类型是 (Int, String)，值是 (404, &quot;Not Found&quot;)</code></pre><ul>
+<li>元组把一个int值和一个String值组合起来表示 HTTP 状态码的两个部分:一个数字 和一个人类可读的描述。这个元组可以被描述为“一个类型为(Int, String)的元组”。</li>
+<li>你可以将一个元组的内容分解(decompose)成单独的常量和变量，然后你就可以正常使用它们了:</li>
+</ul>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> http404Error <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">404</span><span class="token punctuation">,</span> <span class="token string">"Not Found"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// http404Error 的类型是 (Int, String)，值是 (404, "Not Found")</span>
+<span class="token keyword">let</span> <span class="token punctuation">(</span>statusCode<span class="token punctuation">,</span> statusMessage<span class="token punctuation">)</span> <span class="token operator">=</span> http404Error
+<span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"The status code is <span class="token interpolation"><span class="token delimiter variable">\(</span>statusCode<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// Prints "The status code is 404"</span>
+<span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"The status message is <span class="token interpolation"><span class="token delimiter variable">\(</span>statusMessage<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// Prints "The status message is Not Found"</span></code></pre>
+<ul>
+<li>如果只需要一些元组的值，则在分解元组时，忽略元组的下划线（_）：</li>
+</ul>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> <span class="token punctuation">(</span>justTheStatusCode<span class="token punctuation">,</span> <span class="token number">_</span><span class="token punctuation">)</span> <span class="token operator">=</span> http404Error
+<span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"The status code is <span class="token interpolation"><span class="token delimiter variable">\(</span>justTheStatusCode<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// Prints "The status code is 404"</span></code></pre>
+<ul>
+<li>此外，你还可以通过下标来访问元组中的单个元素，下标从零开始:</li>
+</ul>
+<pre><code>print(&quot;The status code is \(http404Error.0)&quot;)
+// Prints &quot;The status code is 404&quot;
+print(&quot;The status message is \(http404Error.1)&quot;)
+// Prints &quot;The status message is Not Found&quot;</code></pre><ul>
+<li>你可以在定义元组的时候给单个元素命名:</li>
+</ul>
+<pre><code>let http200Status = (statusCode: 200, description: &quot;OK&quot;)</code></pre><ul>
+<li>给元组中的元素命名后，你可以通过名字来获取这些元素的值:</li>
+</ul>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> http200Status <span class="token operator">=</span> <span class="token punctuation">(</span>statusCode<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> description<span class="token punctuation">:</span> <span class="token string">"OK"</span><span class="token punctuation">)</span>
+<span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"The status code is <span class="token interpolation"><span class="token delimiter variable">\(</span>http200Status<span class="token punctuation">.</span>statusCode<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// Prints "The status code is 200"</span>
+<span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"The status message is <span class="token interpolation"><span class="token delimiter variable">\(</span>http200Status<span class="token punctuation">.</span>description<span class="token delimiter variable">)</span></span>"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// Prints "The status message is OK"</span></code></pre>
+<ul>
+<li>作为函数返回值时，元组非常有用。一个用来获取网页的函数可能会返回一个 (Int, String) 元组来描述是否 获取成功。和只能返回一个类型的值比较起来，一个包含两个不同类型值的元组可以让函数的返回信息更有 用。请参考函数参数与返回值 (页 0)。</li>
+<li>注意:<br>元组在临时组织值的时候很有用，但是并不适合创建复杂的数据结构。如果你的数据结构并不是临时使用，请使<br>用类或者结构体而不是元组。请参考类和结构体。<h4 id="可选类型"><a href="#可选类型" class="headerlink" title="可选类型"></a>可选类型</h4></li>
+<li>使用可选类型(optionals)来处理值可能缺失的情况。</li>
+<li>注意:<br>C 和 Objective-C 中并没有可选类型这个概念。最接近的是 Objective-C 中的一个特性，一个方法要不返回一 个对象要不返回 nil ， nil 表示“缺少一个合法的对象”。然而，这只对对象起作用——对于结构体，基本的 C 类型或者枚举类型不起作用。对于这些类型，Objective-C 方法一般会返回一个特殊值(比如 NSNotFoun<br>d )来暗示值缺失。这种方法假设方法的调用者知道并记得对特殊值进行判断。然而，Swift 的可选类型可以让 你暗示任意类型的值缺失，并不需要一个特殊值。</li>
+<li>来看一个例子。Swift 的 Int 类型有一种构造器，作用是将一个 String 值转换成一个 Int 值。然而，并 不是所有的字符串都可以转换成一个整数。字符串 “123” 可以被转换成数字 123 ，但是字符串 “hello, wor ld” 不行。</li>
+<li>下面的例子使用这种构造器来尝试将一个 String 转换成 Int :</li>
+</ul>
+<pre><code>let possibleNumber = &quot;123&quot;
+let convertedNumber = Int(possibleNumber)
+// convertedNumber 被推测为类型 &quot;Int?&quot;， 或者类型 &quot;optional Int&quot;</code></pre><ul>
+<li>你可以给可选变量赋值为 nil 来表示它没有值:</li>
+</ul>
+<pre><code>var serverResponseCode: Int? = 404// serverResponseCode 包含一个可选的 Int 值 404
+serverResponseCode = nil// serverResponseCode 现在不包含值
+
+var server = 400
+server = nil//nil cannot be assigned to type &#39;Int&#39;</code></pre><p>注意:<br>nil 不能用于非可选的常量和变量。如果你的代码中有常量或者变量需要处理值缺失的情况，请把它们声明成<br>对应的可选类型。</p>
+<ul>
+<li>如果你声明一个可选常量或者变量但是没有赋值，它们会自动被设置为 nil :</li>
+</ul>
+<pre><code>var surveyAnswer: String?
+// surveyAnswer 被自动设置为 nil</code></pre><p>注意:<br>Swift 的 nil 和 Objective-C 中的 nil 并不一样。在 Objective-C 中， nil 是一个指向不存在对象的指 针。在 Swift 中， nil 不是指针——它是一个确定的值，用来表示值缺失。任何类型的可选状态都可以被设 置为 nil ，不只是对象类型。</p>
+<h4 id="if-语句以及强制解析"><a href="#if-语句以及强制解析" class="headerlink" title="if 语句以及强制解析"></a>if 语句以及强制解析</h4><ul>
+<li>你可以使用 if 语句和 nil 比较来判断一个可选值是否包含值。你可以使用“相等”(==)或“不 等”( != )来执行比较。<br>如果可选类型有值，它将不等于 nil :</li>
+</ul>
+<pre><code>if convertedNumber != nil {
+    print(&quot;convertedNumber contains some integer value.&quot;)
+}
+// 输出 &quot;convertedNumber contains some integer value.&quot;</code></pre><ul>
+<li>当你确定可选类型确实包含值之后，你可以在可选的名字后面加一个感叹号( ! )来获取值。这个惊叹号表 示“我知道这个可选有值，请使用它。”这被称为可选值的强制解析(forced unwrapping):</li>
+</ul>
+<pre><code>if convertedNumber != nil {
+    print(&quot;convertedNumber has an integer value of \(convertedNumber!).&quot;)
+}
+// 输出 &quot;convertedNumber has an integer value of 123.&quot;</code></pre><ul>
+<li>注意:<br>使用 ! 来获取一个不存在的可选值会导致运行时错误。使用 ! 来强制解析值之前，一定要确定可选包含一 个非 nil 的值。<h4 id="可选绑定"><a href="#可选绑定" class="headerlink" title="可选绑定"></a>可选绑定</h4></li>
+<li>使用可选绑定(optional binding)来判断可选类型是否包含值，如果包含就把值赋给一个临时常量或者变 量。可选绑定可以用在 if 和 while 语句中，这条语句不仅可以用来判断可选类型中是否有值，同时可以将 可选类型中的值赋给一个常量或者变量。if 和 while 语句，请参考控制流。<br>像下面这样在 if 语句中写一个可选绑定:</li>
+</ul>
+<pre><code>如果 let  constantName = someOptional {
+    声明
+}</code></pre><ul>
+<li>你可以像上面这样使用可选绑定来重写 possibleNumber:</li>
+</ul>
+<pre><code>if let actualNumber = Int(possibleNumber) {
+    print(&quot;\&#39;\(possibleNumber)\&#39; has an integer value of \(actualNumber)&quot;)
+} else {
+    print(&quot;\&#39;\(possibleNumber)\&#39; could not be converted to an integer&quot;)
+}
+// 输出 &quot;&#39;123&#39; has an integer value of 123&quot;</code></pre><p>这段代码可以被理解为:<br>“如果 Int(possibleNumber) 返回的可选 Int 包含一个值，创建一个叫做 actualNumber 的新常量并将可选 包含的值赋给它。”<br>如果转换成功， actualNumber 常量可以在 if 语句的第一个分支中使用。它已经被可选类型 包含的 值初始化 过，所以不需要再使用 ! 后缀来获取它的值。在这个例子中，actualNumber 只被用来输出转换结果。<br>你可以在可选绑定中使用常量和变量。如果你想在if语句的第一个分支中操作 actualNumber 的值，你可以改 成 if var actualNumber ，这样可选类型包含的值就会被赋给一个变量而非常量。</p>
+<ul>
+<li>你可以包含多个可选绑定或多个布尔条件在一个 if 语句中，只要使用逗号分开就行。只要有任意一个可选绑定 的值为nil，或者任意一个布尔条件为false，则整个if条件判断为false，这时你就需要使用嵌套 if 条 件语句来处理，如下所示:</li>
+</ul>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">if</span> <span class="token keyword">let</span> firstNumber <span class="token operator">=</span> <span class="token function">Int</span><span class="token punctuation">(</span><span class="token string">"4"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">let</span> secondNumber <span class="token operator">=</span> <span class="token function">Int</span><span class="token punctuation">(</span><span class="token string">"42"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> firstNumber <span class="token operator">&lt;</span> secondNumber <span class="token operator">&amp;&amp;</span> secondNumber <span class="token operator">&lt;</span> <span class="token number">100</span> <span class="token punctuation">{</span>
+    <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"<span class="token interpolation"><span class="token delimiter variable">\(</span>firstNumber<span class="token delimiter variable">)</span></span> &lt; <span class="token interpolation"><span class="token delimiter variable">\(</span>secondNumber<span class="token delimiter variable">)</span></span> &lt; 100"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// Prints "4 &lt; 42 &lt; 100"</span>
+
+<span class="token keyword">if</span> <span class="token keyword">let</span> firstNumber <span class="token operator">=</span> <span class="token function">Int</span><span class="token punctuation">(</span><span class="token string">"4"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token keyword">let</span> secondNumber <span class="token operator">=</span> <span class="token function">Int</span><span class="token punctuation">(</span><span class="token string">"42"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> firstNumber <span class="token operator">&lt;</span> secondNumber <span class="token operator">&amp;&amp;</span> secondNumber <span class="token operator">&lt;</span> <span class="token number">100</span> <span class="token punctuation">{</span>
+            <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"<span class="token interpolation"><span class="token delimiter variable">\(</span>firstNumber<span class="token delimiter variable">)</span></span> &lt; <span class="token interpolation"><span class="token delimiter variable">\(</span>secondNumber<span class="token delimiter variable">)</span></span> &lt; 100"</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// Prints "4 &lt; 42 &lt; 100"</span></code></pre>
+<p>注意: 在 if 条件语句中使用常量和变量来创建一个可选绑定，仅在 if 语句的句中( body )中才能获取到 值。相反，在 guard 语句中使用常量和变量来创建一个可选绑定，仅在 guard 语句外且在语句后才能获取 到值，请参考提前退出。</p>
+<h4 id="隐式解析可选类型"><a href="#隐式解析可选类型" class="headerlink" title="隐式解析可选类型"></a>隐式解析可选类型</h4><ul>
+<li>如上所述，可选类型暗示了常量或者变量可以“没有值”。可选可以通过 if 语句来判断是否有值，如果有值的 话可以通过可选绑定来解析值。<br>有时候在程序架构中，第一次被赋值之后，可以确定一个可选类型总会有值。在这种情况下，每次都要判断和解<br>析可选值是非常低效的，因为可以确定它总会有值。<br>这种类型的可选状态被定义为隐式解析可选类型(implicitly unwrapped optionals)。把想要用作可选的类型 的后面的问号( String? )改成感叹号( String! )来声明一个隐式解析可选类型。当可选类型被第一次赋值之后就可以确定之后一直有值的时候，隐式解析可选类型非常有用。隐式解析可选类型 主要被用在 Swift 中类的构造过程中，请参考无主引用以及隐式解析可选属性 (页 0)。</li>
+<li>一个隐式解析可选类型其实就是一个普通的可选类型，但是可以被当做非可选类型来使用，并不需要每次都使用 解析来获取可选值。下面的例子展示了可选类型 String 和隐式解析可选类型 String 之间的区别:</li>
+</ul>
+<pre><code>let possibleString: String? = &quot;An optional string.&quot;
+let forcedString: String = possibleString! // requires an exclamation mark(!)需要感叹号来获取值
+
+let assumedString: String! = &quot;An implicitly unwrapped optional string.&quot;
+let implicitString: String = assumedString // no need for an exclamation mark(!)不需要感叹号</code></pre><p>你可以把隐式解析可选类型当做一个可以自动解析的可选类型。你要做的只是声明的时候把感叹号放到类型的结<br>尾，而不是每次取值的可选名字的结尾。</p>
+<ul>
+<li>注意:<br>如果你在隐式解析可选类型没有值的时候尝试取值，会触发运行时错误。和你在没有值的普通可选类型后面加一<br>个惊叹号一样。</li>
+<li>你仍然可以把隐式解析可选类型当做普通可选类型来判断它是否包含值:</li>
+</ul>
+<pre><code>if assumedString != nil {
+    print(assumedString)
+}
+// 输出 &quot;An implicitly unwrapped optional string.&quot;</code></pre><ul>
+<li>你也可以在可选绑定中使用隐式解析可选类型来检查并解析它的值:</li>
+</ul>
+<pre><code>if let definiteString = assumedString {
+    print(definiteString)
+}
+// 输出 &quot;An implicitly unwrapped optional string.&quot;</code></pre><p>注意:<br>如果一个变量之后可能变成 nil 的话请不要使用隐式解析可选类型。如果你需要在变量的生命周期中判断是否 是 nil 的话，请使用普通可选类型。</p>
+<h4 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h4><ul>
+<li>你可以使用 错误处理(error handling) 来应对程序执行中可能会遇到的错误条件。<br>相对于可选中运用值的存在与缺失来表达函数的成功与失败，错误处理可以推断失败的原因，并传播至程序的其<br>他部分。<br>当一个函数遇到错误条件，它能报错。调用函数的地方能抛出错误消息并合理处理。</li>
+</ul>
+<pre><code>func canThrowAnError() throws {
+    // 这个函数有可能抛出错误
+}</code></pre><ul>
+<li>一个函数可以通过在声明中添加 throws 关键词来抛出错误消息。当你的函数能抛出错误消息时, 你应该在表达式 中前置 try 关键词。</li>
+</ul>
+<pre><code>do {
+try canThrowAnError() // 没有错误消息抛出
+} catch {
+// 有一个错误消息抛出
+}</code></pre><ul>
+<li>一个 do 语句创建了一个新的包含作用域,使得错误能被传播到一个或多个 catch 从句。 这里有一个错误处理如何用来应对不同错误条件的例子。</li>
+</ul>
+<pre><code>func makeASandwich() throws {
+    // ...
+}
+
+do {
+    try makeASandwich()
+    eatASandwich()
+} catch SandwichError.outOfCleanDishes {
+    washDishes()
+} catch SandwichError.missingIngredients(let ingredients) {
+    buyGroceries(ingredients)
+}</code></pre><p>在这个例子中，makeASandwich()如果没有干净的菜肴或缺少任何成分，该功能将会发出错误。因为makeASandwich()可以引发错误，函数调用被包装在一个try表达式中。通过将函数调用包含在do语句中，抛出的任何错误将被传播到提供的catch子句。</p>
+<p>如果没有引发错误，eatASandwich()则调用该函数。如果抛出一个错误并匹配该错误SandwichError.outOfCleanDishes，那么该washDishes()函数将被调用。如果抛出一个错误，并且匹配该SandwichError.missingIngredients情况，则使用该模式捕获buyGroceries(_:)的关联[String]值调用该函数catch。</p>
+<h4 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h4><ul>
+<li>可选类型可以让你判断值是否存在，你可以在代码中优雅地处理值缺失的情况。然而，在某些情况下，如果值缺 失或者值并不满足特定的条件，你的代码可能没办法继续执行。这时，你可以在你的代码中触发一个 断言(asse rtion) 来结束代码运行并通过调试来找到值缺失的原因。</li>
+<li>使用断言进行调试</li>
+<li>断言会在运行时判断一个逻辑条件是否为 true 。从字面意思来说，断言“断言”一个条件是否为真。你可以使 用断言来保证在运行其他代码之前，某些重要的条件已经被满足。如果条件判断为 true ，代码运行会继续进 行;如果条件判断为 false ，代码执行结束，你的应用被终止。<br>如果你的代码在调试环境下触发了一个断言，比如你在 Xcode 中构建并运行一个应用，你可以清楚地看到不合法 的状态发生在哪里并检查断言被触发时你的应用的状态。此外，断言允许你附加一条调试信息。<br>你可以使用全局 assert(<em>:</em>:file:line:) 函数来写一个断言。向这个函数传入一个结果为 true 或者 的表达式以及一条信息，当表达式的结果为 false 的时候这条信息会被显示:</li>
+</ul>
+<pre><code>let age = -3
+assert(age &gt;= 0, &quot;A person&#39;s age cannot be less than zero&quot;) // 因为 age &lt; 0，所以断言会触发</code></pre><p> 在这个例子中，只有 age &gt;= 0 为 true 的时候，即 age 的值非负的时候，代码才会继续执行。如果age 的值是负数，就像代码中那样， age &gt;= 0 为 false ，断言被触发，终止应用。<br>如果不需要断言信息，可以省略，就像这样:</p>
+<pre><code>assert(age &gt;= 0)</code></pre><ul>
+<li>注意:<br>当代码使用优化编译的时候，断言将会被禁用，例如在 Xcode 中，使用默认的 target Release 配置选项来 bu ild 时，断言会被禁用。<h5 id="何时使用断言"><a href="#何时使用断言" class="headerlink" title="何时使用断言"></a>何时使用断言</h5></li>
+<li>当条件可能为假时使用断言，但是最终一定要保证条件为真，这样你的代码才能继续运行。断言的适用情景:<ul>
+<li>整数类型的下标索引被传入一个自定义下标实现，但是下标索引值可能太小或者太大。</li>
+<li>需要给函数传入一个值，但是非法的值可能导致函数不能正常执行。</li>
+<li>一个可选值现在是 nil ，但是后面的代码运行需要一个非 nil 值。</li>
+</ul>
+</li>
+<li>注意:<br>断言可能导致你的应用终止运行，所以你应当仔细设计你的代码来让非法条件不会出现。然而，在你的应用发布<br>之前，有时候非法条件可能出现，这时使用断言可以快速发现问题。<h2 id="基本运算符"><a href="#基本运算符" class="headerlink" title="基本运算符"></a>基本运算符</h2><h4 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h4></li>
+<li>如果赋值的右边是一个多元组，它的元素可以马上被分解成多个常量或变量:</li>
+</ul>
+<pre><code>let (x, y) = (1, 2)
+// 现在 x 等于 1，y 等于 2</code></pre><ul>
+<li>与 C 语言和 Objective-C 不同，Swift 的赋值操作并不返回任何值。所以以下代码是错误的:</li>
+</ul>
+<pre><code>if x = y {
+// 此句错误, 因为 x = y 并不返回任何值
+}</code></pre><p>这个特性使你无法把( == )错写成( = )，由于 if x = y 是错误代码，Swift 能帮你避免此类错误发生。</p>
+<h4 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h4><ul>
+<li>与 C 语言和 Objective-C 不同的是，Swift 默认情况下不允许在数值运算中出现溢出情况。但是你可以使用 Sw ift 的溢出运算符来实现溢出运算(如 a &amp;+ b )。详情参见溢出运算符 (页 0)。加法运算符也可用于 String 的拼接:</li>
+</ul>
+<pre><code>&quot;hello, &quot; + &quot;world&quot; // 等于 &quot;hello, world&quot;</code></pre><ul>
+<li>当元组中的值可以比较时，你也可以使用这些运算符来比较它们的大小。例如，因为 Int 和 String 类型的值 可以比较，所以类型为 (Int, String) 的元组也可以被比较。相反， Bool 不能被比较，也意味着存有布尔类 型的元组不能被比较。<br>比较元组大小会按照从左到右、逐值比较的方式，直到发现有两个值不等时停止。如果所有的值都相等，那么这<br>一对元组我们就称它们是相等的。例如:</li>
+</ul>
+<pre><code>(1, &quot;zebra&quot;) &lt; (2, &quot;apple&quot;)// true，因为 1 小于 2
+(3, &quot;apple&quot;) &lt; (3, &quot;bird&quot;)// true，因为 3 等于 3，但是 apple 小于 bird
+(4, &quot;dog&quot;) == (4, &quot;dog&quot;)// true，因为 4 等于 4，dog 等于 dog</code></pre><p>在上面的例子中，你可以看到，在第一行中从左到右的比较行为。因为 1 小于 2 ，所以 (1, “zebra”) 小于 (2, “apple”) ，不管元组剩下的值如何。所以 “zebra” 小于 “apple” 没有任何影响，因为元组的比较已经被第一个元 素决定了。不过，当元组的第一个元素相同时候，第二个元素将会用作比较-第二行和第三行代码就发生了这样的 比较。</p>
+<ul>
+<li>注意:<br>Swift 标准库只能比较七个以内元素的元组比较函数。如果你的元组元素超过七个时，你需要自己实现比较运算 符。<h4 id="空合运算符-Nil-Coalescing-Operator"><a href="#空合运算符-Nil-Coalescing-Operator" class="headerlink" title="空合运算符(Nil Coalescing Operator)"></a>空合运算符(Nil Coalescing Operator)</h4><ul>
+<li>空合运算符( a ?? b )将对可选类型 a 进行空判断，如果 a 包含一个值就进行解封，否则就返回一个默认<br>值 b 。表达式 a 必须是 Optional 类型。默认值 b 的类型必须要和 a 存储值的类型保持一致。 空合运算符是对以下代码的简短表达方法:</li>
+</ul>
+</li>
+</ul>
+<pre><code>a != nil ? a! : b</code></pre><p>上述代码使用了三目运算符。当可选类型 a 的值不为空时，进行强制解封(a!)，访问 a 中的值;反之返 回默认值 b 。无疑空合运算符( ?? )提供了一种更为优雅的方式去封装条件判断和解封两种行为，显得简洁以 及更具可读性。</p>
+<ul>
+<li>注意: 如果 a 为非空值( non-nil )，那么值 b 将不会被计算。这也就是所谓的短路求值。下文例子采用空合运算符，实现了在默认颜色名和可选自定义颜色名之间抉择:</li>
+</ul>
+<pre><code>let defaultColorName = &quot;red&quot;
+var userDefinedColorName: String? //默认值为 nil
+var colorNameToUse = userDefinedColorName ?? defaultColorName
+// userDefinedColorName 的值为空，所以 colorNameToUse 的值为 &quot;red&quot;</code></pre><p>userDefinedColorName 变量被定义为一个可选的 String 类型，默认值为 nil 。由于 是一个可选类型，我们可以使用空合运算符去判断其值。在上一个例子中，通过空合运算符为一个名为 eToUse 的变量赋予一个字符串类型初始值。 由于 userDefinedColorName 值为空，因此表达式 lorName ?? defaultColorName 返回 defaultColorName 的值，即 red 。</p>
+<ul>
+<li>另一种情况，分配一个非空值( non-nil )给 userDefinedColorName ，再次执行空合运算，运算结果为封包在 userDefaultColorName 中的值，而非默认值。</li>
+</ul>
+<pre><code>userDefinedColorName = &quot;green&quot;
+colorNameToUse = userDefinedColorName ?? defaultColorName
+// userDefinedColorName 非空，因此 colorNameToUse 的值为 &quot;green&quot;</code></pre><h4 id="区间运算符-Range-Operators"><a href="#区间运算符-Range-Operators" class="headerlink" title="区间运算符(Range Operators)"></a>区间运算符(Range Operators)</h4><ul>
+<li>闭区间运算符</li>
+<li>闭区间运算符( a…b )定义一个包含从 a 到 b (包括 a 和 b )的所有值的区间。 a 的值不能超过 b 。 ? 闭区间运算符在迭代一个区间的所有值时是非常有用的，如在 for-in 循环中:</li>
+</ul>
+<pre><code>for index in 1...5 {
+    print(&quot;\(index) * 5 = \(index * 5)&quot;)
+}
+// 1 * 5 = 5
+// 2 * 5 = 10
+// 3 * 5 = 15
+// 4 * 5 = 20
+// 5 * 5 = 25</code></pre><ul>
+<li>半开区间运算符</li>
+<li>半开区间运算符( a..&lt;b )定义一个从 a 到 b 但不包括 b 的区间。 之所以称为半开区间，是因为该区间 包含第一个值而不包括最后的值。</li>
+<li>半开区间的实用性在于当你使用一个从 0 开始的列表(如数组)时，非常方便地从0数到列表的长度。</li>
+</ul>
+<pre><code>let names = [&quot;Anna&quot;, &quot;Alex&quot;, &quot;Brian&quot;, &quot;Jack&quot;]
+let count = names.count
+for i in 0..&lt;count {
+    print(&quot;第 \(i + 1) 个人叫 \(names[i])&quot;)
+}
+// 第 1 个人叫 Anna // 第 2 个人叫 Alex // 第 3 个人叫 Brian // 第 4 个人叫 Jack</code></pre><h2 id="字符串和字符"><a href="#字符串和字符" class="headerlink" title="字符串和字符"></a>字符串和字符</h2><h4 id="初始化空字符串"><a href="#初始化空字符串" class="headerlink" title="初始化空字符串"></a>初始化空字符串</h4><ul>
+<li>要创建一个空字符串作为初始值，可以将空的字符串字面量赋值给变量，也可以初始化一个新的 String 实例:</li>
+</ul>
+<pre><code>var emptyString = &quot;&quot; // 空字符串字面量 
+var anotherEmptyString = String() // 初始化方法
+// 两个字符串均为空并等价。</code></pre><ul>
+<li>您可以通过检查其 Bool 类型的 isEmpty 属性来判断该字符串是否为空:</li>
+</ul>
+<pre><code>if emptyString.isEmpty {
+    print(&quot;Nothing to see here&quot;)
+}
+// 打印输出:&quot;Nothing to see here&quot;</code></pre><h4 id="字符串可变性"><a href="#字符串可变性" class="headerlink" title="字符串可变性"></a>字符串可变性</h4><ul>
+<li>您可以通过将一个特定字符串分配给一个变量来对其进行修改，或者分配给一个常量来保证其不会被修改:</li>
+</ul>
+<pre><code>var variableString = &quot;Horse&quot;
+variableString += &quot; and carriage&quot;
+// variableString 现在为 &quot;Horse and carriage&quot;
+let constantString = &quot;Highlander&quot;
+constantString += &quot; and another Highlander&quot;
+// 这会报告一个编译错误 (compile-time error) - 常量字符串不可以被修改。</code></pre><ul>
+<li>注意:<br>在 Objective-C 和 Cocoa 中，您需要通过选择两个不同的类( NSString 和 NSMutableString )来指定字符串是 否可以被修改。<h4 id="字符串是值类型"><a href="#字符串是值类型" class="headerlink" title="字符串是值类型"></a>字符串是值类型</h4></li>
+<li>Swift 的 String 类型是值类型。 如果您创建了一个新的字符串，那么当其进行常量、变量赋值操作，或在函数/ 方法中传递时，会进行值拷贝。 任何情况下，都会对已有字符串值创建新副本，并对该新副本进行传递或赋值操 作。 值类型在 结构体和枚举是值类型 (页 0) 中进行了详细描述。<br>Swift 默认字符串拷贝的方式保证了在函数/方法中传递的是字符串的值。 很明显无论该值来自于哪里，都是您 独自拥有的。 您可以确信传递的字符串不会被修改，除非你自己去修改它。<br>在实际编译时，Swift 编译器会优化字符串的使用，使实际的复制只发生在绝对必要的情况下，这意味着您将字 符串作为值类型的同时可以获得极高的性能。<h4 id="使用字符"><a href="#使用字符" class="headerlink" title="使用字符"></a>使用字符</h4></li>
+<li>您可通过 for-in 循环来遍历字符串中的 characters 属性来获取每一个字符的值:</li>
+</ul>
+<pre><code>for character in &quot;Dog!?&quot;.characters {
+    print(character)
+}
+// D
+// o
+// g
+// !
+// ?</code></pre><ul>
+<li>另外，通过标明一个 Character 类型并用字符字面量进行赋值，可以建立一个独立的字符常量或变量:</li>
+</ul>
+<pre><code>let exclamationMark: Character = &quot;!&quot;</code></pre><ul>
+<li>字符串可以通过传递一个值类型为 Character 的数组作为自变量来初始化:</li>
+</ul>
+<pre><code>let catCharacters: [Character] = [&quot;C&quot;, &quot;a&quot;, &quot;t&quot;, &quot;!&quot;, &quot;?&quot;]
+let catString = String(catCharacters)
+print(catString)
+// 打印输出:&quot;Cat!?&quot;</code></pre><h4 id="连接字符串和字符"><a href="#连接字符串和字符" class="headerlink" title="连接字符串和字符"></a>连接字符串和字符</h4><ul>
+<li>字符串可以通过加法运算符( + )相加在一起(或称“连接”)创建一个新的字符串:</li>
+</ul>
+<pre><code>let string1 = &quot;hello&quot;
+let string2 = &quot; there&quot;
+var welcome = string1 + string2 // welcome 现在等于 &quot;hello there&quot;</code></pre><ul>
+<li>您也可以通过加法赋值运算符 ( += ) 将一个字符串添加到一个已经存在字符串变量上:</li>
+</ul>
+<pre><code>var instruction = &quot;look over&quot;
+instruction += string2
+// instruction 现在等于 &quot;look over there&quot;</code></pre><ul>
+<li>您可以用 append() 方法将一个字符附加到一个字符串变量的尾部:</li>
+</ul>
+<pre><code>let exclamationMark: Character = &quot;!&quot;
+welcome.append(exclamationMark)
+// welcome 现在等于 &quot;hello there!&quot;</code></pre><h4 id="字符串插值"><a href="#字符串插值" class="headerlink" title="字符串插值"></a>字符串插值</h4><ul>
+<li>字符串插值是一种构建新字符串的方式，可以在其中包含常量、变量、字面量和表达式。 您插入的字符串字面量 的每一项都在以反斜线为前缀的圆括号中:</li>
+</ul>
+<pre><code>let multiplier = 3
+let message = &quot;\(multiplier) times 2.5 is \(Double(multiplier) * 2.5)&quot;
+// message 是 &quot;3 times 2.5 is 7.5&quot;</code></pre><h4 id="字符串字面量的特殊字符"><a href="#字符串字面量的特殊字符" class="headerlink" title="字符串字面量的特殊字符"></a>字符串字面量的特殊字符</h4><ul>
+<li>字符串字面量可以包含以下特殊字符:<br>• 转义字符 \0 (空字符)、 \ (反斜线)、 \t (水平制表符)、 \n (换行符)、 \r (回车符)、 &quot; (双引<br>号)、 &#39; (单引号)。<br>• Unicode 标量，写成 \u{n} (u为小写)，其中 n 为任意一到八位十六进制数且可用的 Unicode 位码。<br>下面的代码为各种特殊字符的使用示例。 wiseWords 常量包含了两个双引号。 dollarSign 、 blackHeart 和 rklingHeart 常量演示了三种不同格式的 Unicode 标量:</li>
+</ul>
+<pre><code>let wiseWords = &quot;\&quot;Imagination is more important than knowledge\&quot; - Einstein&quot;
+// &quot;Imagination is more important than knowledge&quot; - Einstein
+let dollarSign = &quot;\u{24}&quot;        // $,  Unicode scalar U+0024
+let blackHeart = &quot;\u{2665}&quot;      // ♥,  Unicode scalar U+2665
+let sparklingHeart = &quot;\u{1F496}&quot; // 💖, Unicode scalar U+1F496</code></pre><h4 id="计算字符数量"><a href="#计算字符数量" class="headerlink" title="计算字符数量"></a>计算字符数量</h4><ul>
+<li>如果想要获得一个字符串中 Character 值的数量，可以使用字符串的 characters 属性的 count 属性:</li>
+</ul>
+<pre><code>let unusualMenagerie = &quot;Koala 🐨, Snail 🐌, Penguin 🐧, Dromedary 🐪&quot;
+print(&quot;unusualMenagerie has \(unusualMenagerie.characters.count) characters&quot;)
+// Prints &quot;unusualMenagerie has 40 characters&quot;</code></pre><h4 id="访问和修改字符串"><a href="#访问和修改字符串" class="headerlink" title="访问和修改字符串"></a>访问和修改字符串</h4><ul>
+<li>每个String值都有一个相关联的索引类型，String.Index它对应于每个Character字符串中的位置。</li>
+<li>使用startIndex属性访问Charactera 的第一个位置String。该endIndex属性是最后一个字符之后的位置String。因此，该endIndex属性不是字符串下标的有效参数。如果a String是空的，startIndex并且endIndex是相等的。<ul>
+<li>您可以使用index(before:)and index(after:)方法访问给定索引之前和之后的索引String。要访问远离给定索引的索引，可以使用该index(_:offsetBy:)方法，而不是多次调用这些方法之一。</li>
+<li>您可以使用下标语法访问Character特定的String索引。</li>
+</ul>
+</li>
+</ul>
+<pre><code>let Mygreeting = &quot;Guten Tag!&quot;
+Mygreeting[Mygreeting.startIndex]
+// G
+Mygreeting[Mygreeting.index(before: Mygreeting.endIndex)]
+// !
+Mygreeting[Mygreeting.index(after: Mygreeting.startIndex)]
+// u
+let index = Mygreeting.index(Mygreeting.startIndex, offsetBy: 7)
+Mygreeting[index]
+// a</code></pre><ul>
+<li>试图获取越界索引对应的 Character ，将引发一个运行时错误。</li>
+</ul>
+<pre><code>Mygreeting[Mygreeting.endIndex] // error
+Mygreeting.index(after: endIndex) // error
+</code></pre><ul>
+<li>使用该indices属性访问字符串中各个字符的所有索引。</li>
+</ul>
+<pre><code>for index in Mygreeting.characters.indices {
+    print(&quot;\(Mygreeting[index]) &quot;, terminator: &quot;&quot;)
+}
+// Prints &quot;G u t e n   T a g ! &quot;</code></pre><ul>
+<li>注意:<br>您可以使用 startIndex 和 endIndex 属性或者 index(before:) 、 index(after:) 和 index(_:offsetB y:) 方法在任意一个确认的并遵循 Collection 协议的类型里面，如上文所示是使用在 String 中，您也可 以使用在 Array 、 Dictionary 和 Set 中。<h4 id="插入和删除"><a href="#插入和删除" class="headerlink" title="插入和删除"></a>插入和删除</h4></li>
+<li>要将单个字符插入到指定索引的字符串中，请使用该insert(_:at:)方法，并将另一个字符串的内容插入指定的索引，请使用该insert(contentsOf:at:)方法。</li>
+</ul>
+<pre><code>var myWelcome = &quot;hello&quot;
+myWelcome.insert(&quot;!&quot;, at: myWelcome.endIndex) // welcome 变量现在等于 &quot;hello!&quot;
+myWelcome.insert(contentsOf:&quot; there&quot;.characters, at: myWelcome.index(before: myWelcome.endIndex))
+// welcome 变量现在等于 &quot;hello there!&quot;</code></pre><ul>
+<li>调用 remove(at:) 方法可以在一个字符串的指定索引删除一个字符，调用 removeSubrange(_:) 方法可以在一 个字符串的指定索引删除一个子字符串。</li>
+</ul>
+<pre class=" language-swift"><code class="language-swift">myWelcome<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>at<span class="token punctuation">:</span> myWelcome<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span>before<span class="token punctuation">:</span> myWelcome<span class="token punctuation">.</span>endIndex<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// welcome 现在等于 "hello there"</span>
+<span class="token keyword">let</span> range <span class="token operator">=</span> myWelcome<span class="token punctuation">.</span><span class="token function">index</span><span class="token punctuation">(</span>myWelcome<span class="token punctuation">.</span>endIndex<span class="token punctuation">,</span> offsetBy<span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">&lt;</span>myWelcome<span class="token punctuation">.</span>endIndex
+myWelcome<span class="token punctuation">.</span><span class="token function">removeSubrange</span><span class="token punctuation">(</span>range<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// welcome 现在等于 "hello"</span></code></pre>
+<ul>
+<li>注意: 您可以使用 insert(<em>:at:) 、 insert(contentsOf:at:) 、 remove(at:) 和 removeSubrange(</em>:) 方法 在任意一个确认的并遵循 RangeReplaceableCollection 协议的类型里面，如上文所示是使用在 String 中，您也可以使用在 Array、Dictionary 和 Set 中。<h4 id="子字符串Substrings"><a href="#子字符串Substrings" class="headerlink" title="子字符串Substrings"></a>子字符串Substrings</h4></li>
+<li>当您从字符串中获取子字符串时，例如，使用下标或类似方法，prefix(_:)结果是一个实例Substring，而不是另一个字符串。Swift中的子字符串具有与字符串大致相同的方法，这意味着您可以使用字符串等子字符串。与字符串不同，在对字符串执行操作时，您只需要很短的时间来使用子字符串。当您准备好将结果存储较长时间后，您可以将子字符串转换为实例String。例如：</li>
+</ul>
+<pre><code>let greeting = &quot;Hello, world!&quot;
+let index = greeting.index(of: &quot;,&quot;) ?? greeting.endIndex
+let beginning = greeting[..&lt;index]
+// beginning is &quot;Hello&quot;
+
+// Convert the result to a String for long-term storage.
+let newString = String(beginning)</code></pre><ul>
+<li><p>像字符串一样，每个子字符串都有一个内存区域，其中存储组成子字符串的字符。字符串和子串之间的区别在于，作为性能优化，子字符串可以重新使用用于存储原始字符串或用于存储另一个子字符串的内存的一部分的内存部分。（Strings有一个类似的优化，但是如果两个字符串共享内存，它们是相等的。）这个性能优化意味着你不必支付复制内存的性能成本，直到你修改字符串或子字符串。如上所述，子串不适合长期存储 - 因为它们重新使用原始字符串的存储，只要使用任何一个子字符串，整个原始字符串必须保存在存储器中。</p>
+</li>
+<li><p>在上面的例子中，greeting是一个字符串，这意味着它有一个内存区域，其中存储组成字符串的字符。因为beginning是一个子串greeting，它会重新使用所使用的内存greeting。相比之下，newString是一个字符串 - 当它从子字符串创建时，它有自己的存储。</p>
+</li>
+<li><p>注意：二者String和Substring符合StringProtocol协议。如果您正在编写操作字符串数据的代码，则接受一个StringProtocol值可以将该字符串数据作为一个String或多个Substring值传递。</p>
+<h4 id="比较字符串"><a href="#比较字符串" class="headerlink" title="比较字符串"></a>比较字符串</h4></li>
+<li><p>Swift 提供了三种方式来比较文本值:字符串字符相等、前缀相等和后缀相等。</p>
+</li>
+<li><p>字符串/字符相等</p>
+</li>
+</ul>
+<pre><code>let quotation = &quot;We&#39;re a lot alike, you and I.&quot;
+let sameQuotation = &quot;We&#39;re a lot alike, you and I.&quot;
+if quotation == sameQuotation {
+    print(&quot;These two strings are considered equal&quot;)
+}
+// 打印输出 &quot;These two strings are considered equal&quot;</code></pre><ul>
+<li>前缀/后缀相等</li>
+<li>通过调用字符串的 hasPrefix(<em>:) / hasSuffix(</em>:) 方法来检查字符串是否拥有特定前缀/后缀，两个方法均接收一 个 String 类型的参数，并返回一个布尔值。<br>下面的例子以一个字符串数组表示莎士比亚话剧《罗密欧与朱丽叶》中前两场的场景位置:</li>
+</ul>
+<pre><code>let romeoAndJuliet = [
+    &quot;Act 1 Scene 1: Verona, A public place&quot;,
+    &quot;Act 1 Scene 2: Capulet&#39;s mansion&quot;,
+    &quot;Act 1 Scene 3: A room in Capulet&#39;s mansion&quot;,
+    &quot;Act 1 Scene 4: A street outside Capulet&#39;s mansion&quot;,
+    &quot;Act 1 Scene 5: The Great Hall in Capulet&#39;s mansion&quot;,
+    &quot;Act 2 Scene 1: Outside Capulet&#39;s mansion&quot;,
+    &quot;Act 2 Scene 2: Capulet&#39;s orchard&quot;,
+    &quot;Act 2 Scene 3: Outside Friar Lawrence&#39;s cell&quot;,
+    &quot;Act 2 Scene 4: A street in Verona&quot;,
+    &quot;Act 2 Scene 5: Capulet&#39;s mansion&quot;,
+    &quot;Act 2 Scene 6: Friar Lawrence&#39;s cell&quot;
+]</code></pre><ul>
+<li>您可以调用 hasPrefix(_:) 方法来计算话剧中第一幕的场景数:</li>
+</ul>
+<pre><code>var act1SceneCount = 0
+for scene in romeoAndJuliet {
+    if scene.hasPrefix(&quot;Act 1 &quot;) {
+        act1SceneCount += 1
+    } }
+print(&quot;There are \(act1SceneCount) scenes in Act 1&quot;) // 打印输出 &quot;There are 5 scenes in Act 1&quot;</code></pre><ul>
+<li>相似地，您可以用 hasSuffix(_:) 方法来计算发生在不同地方的场景数:</li>
+</ul>
+<pre><code>var mansionCount = 0
+var cellCount = 0
+for scene in romeoAndJuliet {
+    if scene.hasSuffix(&quot;Capulet&#39;s mansion&quot;) {
+        mansionCount += 1
+    } else if scene.hasSuffix(&quot;Friar Lawrence&#39;s cell&quot;) {
+        cellCount += 1
+    } }
+print(&quot;\(mansionCount) mansion scenes; \(cellCount) cell scenes&quot;)
+// 打印输出 &quot;6 mansion scenes; 2 cell scenes&quot;</code></pre><hr>
+<h2 id="集合类型-Collection-Types"><a href="#集合类型-Collection-Types" class="headerlink" title="集合类型 (Collection Types)"></a>集合类型 (Collection Types)</h2><ul>
+<li>Swift 语言提供 Arrays 、 Sets 和 Dictionaries 三种基本的集合类型用来存储集合数据。数组(Arrays)是有序<br>数据的集。集合(Sets)是无序无重复数据的集。字典(Dictionaries)是无序的键值对的集。</li>
+</ul>
+<p>Swift 语言中的 Arrays 、 Sets 和 Dictionaries 中存储的数据值类型必须明确。这意味着我们不能把不正确的数 据类型插入其中。同时这也说明我们完全可以对取回值的类型非常自信。<br>注意:<br>Swift 的 Arrays 、 Sets 和 Dictionaries 类型被实现为泛型集合。更多关于泛型类型和集合，参见 泛型章 节。</p>
+<h4 id="集合的可变性"><a href="#集合的可变性" class="headerlink" title="集合的可变性"></a>集合的可变性</h4><ul>
+<li>如果创建一个 Arrays 、 Sets 或 Dictionaries 并且把它分配成一个变量，这个集合将会是可变的。这意味着我们 可以在创建之后添加更多或移除已存在的数据项，或者改变集合中的数据项。如果我们把 Arrays 、 Sets 或 ionaries 分配成常量，那么它就是不可变的，它的大小和内容都不能被改变。<h4 id="数组-Arrays"><a href="#数组-Arrays" class="headerlink" title="数组(Arrays)"></a>数组(Arrays)</h4></li>
+<li>数组使用有序列表存储同一类型的多个值。相同的值可以多次出现在一个数组的不同位置中。写 Swift 数组应该遵循像 Array<element> 这样的形式，其中 Element 是这个数组中唯一允许存在的数据类 型。我们也可以使用像 [Element] 这样的简单语法。尽管两种形式在功能上是一样的，但是推荐较短的那种，而 且在本文中都会使用这种形式来使用数组。</element></li>
+<li>创建一个空数组</li>
+<li>我们可以使用构造语法来创建一个由特定数据类型构成的空数组:</li>
+</ul>
+<pre><code>var someInts = [Int]()
+print(&quot;someInts is of type [Int] with \(someInts.count) items.&quot;) // 打印 &quot;someInts is of type [Int] with 0 items.&quot;</code></pre><ul>
+<li>注意，通过构造函数的类型， someInts 的值类型被推断为 [Int] 。<br>或者，如果代码上下文中已经提供了类型信息，例如一个函数参数或者一个已经定义好类型的常量或者变量，我 们可以使用空数组语句创建一个空数组，它的写法很简单: [] (一对空方括号):</li>
+</ul>
+<pre><code>someInts.append(3)
+// someInts 现在包含一个 Int 值
+someInts = []
+// someInts 现在是空数组，但是仍然是 [Int] 类型的。</code></pre><ul>
+<li>创建一个带有默认值的数组</li>
+<li>Swift 中的 Array 类型还提供一个可以创建特定大小并且所有数据都被默认的构造方法。我们可以把准备加入新 数组的数据项数量( count )和适当类型的初始值( repeating )传入数组构造函数:</li>
+</ul>
+<pre><code>var threeDoubles = Array(repeating: 0.0, count: 3)
+// threeDoubles 是一种 [Double] 数组，等价于 [0.0, 0.0, 0.0]</code></pre><ul>
+<li>通过两个数组相加创建一个数组</li>
+<li>我们可以使用加法操作符( + )来组合两种已存在的相同类型数组。新数组的数据类型会被从两个数组的数据类 型中推断出来:</li>
+</ul>
+<pre><code>var anotherThreeDoubles = Array(repeating: 2.5, count: 3)
+// anotherThreeDoubles 被推断为 [Double]，等价于 [2.5, 2.5, 2.5]
+var sixDoubles = threeDoubles + anotherThreeDoubles
+// sixDoubles 被推断为 [Double]，等价于 [0.0, 0.0, 0.0, 2.5, 2.5, 2.5]</code></pre><ul>
+<li>访问和修改数组</li>
+<li>我们可以通过数组的方法和属性来访问和修改数组，或者使用下标语法。 可以使用数组的只读属性 count 来获取数组中的数据项数量:</li>
+</ul>
+<pre><code>var shoppingList = [&quot;Eggs&quot;, &quot;Milk&quot;]
+print(&quot;The shopping list contains \(shoppingList.count) items.&quot;)
+// 输出 &quot;The shopping list contains 2 items.&quot;(这个数组有2个项)</code></pre><ul>
+<li>使用布尔属性 isEmpty 作为一个缩写形式去检查 count 属性是否为 0 :</li>
+</ul>
+<pre><code>if shoppingList.isEmpty {
+    print(&quot;The shopping list is empty.&quot;)
+} else {
+    print(&quot;The shopping list is not empty.&quot;)
+}
+// 打印 &quot;The shopping list is not empty.&quot;(shoppinglist 不是空的)</code></pre><ul>
+<li>也可以使用 append(_:) 方法在数组后面添加新的数据项:</li>
+</ul>
+<pre><code>shoppingList.append(&quot;Flour&quot;)
+// shoppingList 现在有3个数据项，有人在摊煎饼</code></pre><ul>
+<li>除此之外，使用加法赋值运算符( += )也可以直接在数组后面添加一个或多个拥有相同类型的数据项:</li>
+</ul>
+<pre><code>shoppingList += [&quot;Baking Powder&quot;]
+// shoppingList 现在有四项了
+shoppingList += [&quot;Chocolate Spread&quot;, &quot;Cheese&quot;, &quot;Butter&quot;] // shoppingList 现在有七项了</code></pre><ul>
+<li>可以直接使用下标语法来获取数组中的数据项，把我们需要的数据项的索引值放在直接放在数组名称的方括号<br>中:</li>
+</ul>
+<pre><code>var firstItem = shoppingList[0] // 第一项是 &quot;Eggs&quot;</code></pre><ul>
+<li>我们也可以用下标来改变某个已有索引值对应的数据值:</li>
+</ul>
+<pre><code>shoppingList[0] = &quot;Six eggs&quot;
+// 其中的第一项现在是 &quot;Six eggs&quot; 而不是 &quot;Eggs&quot;</code></pre><ul>
+<li>还可以利用下标来一次改变一系列数据值，即使新数据和原有数据的数量是不一样的。下面的例子把 “Chocolate Spread” ， “Cheese” ，和 “Butter” 替换为 “Bananas” 和 “Apples” :</li>
+</ul>
+<pre><code>shoppingList[4...6] = [&quot;Bananas&quot;, &quot;Apples&quot;] // shoppingList 现在有6项</code></pre><ul>
+<li>注意:不可以用下标访问的形式去在数组尾部添加新项。</li>
+<li>调用数组的 insert(_:at:) 方法来在某个具体索引值之前添加数据项:</li>
+</ul>
+<pre><code>shoppingList.insert(&quot;Maple Syrup&quot;, at: 0) // shoppingList 现在有7项
+// &quot;Maple Syrup&quot; 现在是这个列表中的第一项</code></pre><ul>
+<li>类似的我们可以使用 remove(at:) 方法来移除数组中的某一项。这个方法把数组在特定索引值中存储的数据项移 除并且返回这个被移除的数据项(我们不需要的时候就可以无视它):</li>
+</ul>
+<pre><code>let mapleSyrup = shoppingList.remove(at: 0)
+// 索引值为0的数据项被移除
+// shoppingList 现在只有6项，而且不包括 Maple Syrup
+// mapleSyrup 常量的值等于被移除数据项的值 &quot;Maple Syrup&quot;</code></pre><ul>
+<li>如果我们只想把数组中的最后一项移除，可以使用 removeLast() 方法而不是 remove(at:) 方法来避免我们需要获 取数组的 count 属性。就像后者一样，前者也会返回被移除的数据项:</li>
+</ul>
+<pre><code>let apples = shoppingList.removeLast()
+// 数组的最后一项被移除了
+// shoppingList 现在只有5项，不包括 Apples // apples 常量的值现在等于 &quot;Apples&quot; 字符串</code></pre><h4 id="数组的遍历"><a href="#数组的遍历" class="headerlink" title="数组的遍历"></a>数组的遍历</h4><ul>
+<li>我们可以使用 for-in 循环来遍历所有数组中的数据项:</li>
+</ul>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">for</span> item <span class="token keyword">in</span> shoppingList <span class="token punctuation">{</span>
+    <span class="token function">print</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// Six eggs</span>
+<span class="token comment" spellcheck="true">// Milk</span>
+<span class="token comment" spellcheck="true">// Flour</span>
+<span class="token comment" spellcheck="true">// Baking Powder</span>
+<span class="token comment" spellcheck="true">// Bananas</span></code></pre>
+<ul>
+<li>如果我们同时需要每个数据项的值和索引值，可以使用 enumerated() 方法来进行数组遍历。 enumerated() 返回 一个由每一个数据项索引值和数据值组成的元组。我们可以把这个元组分解成临时常量或者变量来进行遍历:</li>
+</ul>
+<pre><code>for (index, value) in shoppingList.enumerated() {
+    print(&quot;Item \(String(index + 1)): \(value)&quot;)
+}
+// Item 1: Six eggs
+// Item 2: Milk
+// Item 3: Flour
+// Item 4: Baking Powder
+// Item 5: Bananas</code></pre><h3 id="集合-Sets"><a href="#集合-Sets" class="headerlink" title="集合(Sets)"></a>集合(Sets)</h3><ul>
+<li>集合(Set)用来存储相同类型并且没有确定顺序的值。当集合元素顺序不重要时或者希望确保每个元素只出现一次 时可以使用集合而不是数组。<h4 id="集合类型的哈希值"><a href="#集合类型的哈希值" class="headerlink" title="集合类型的哈希值"></a>集合类型的哈希值</h4></li>
+<li>一个类型为了存储在集合中，该类型必须是可哈希化的–也就是说，该类型必须提供一个方法来计算它的哈希 值。一个哈希值是 Int 类型的，相等的对象哈希值必须相同，比如 a==b ,因此必须 a.hashValue == b.hashValue。<br>Swift 的所有基本类型(比如 String , Int , Double 和 Bool )默认都是可哈希化的，可以作为集合的值的类型或 者字典的键的类型。没有关联值的枚举成员值(在枚举有讲述)默认也是可哈希化的。</li>
+<li>Swift 中的 Set 类型被写为 Set<element> ，这里的 Element 表示 Set 中允许存储的类型，和数组不同的是，  合没有等价的简化形式。</element></li>
+<li>创建和构造一个空的集合</li>
+</ul>
+<pre><code>var letters = Set&lt;Character&gt;()
+print(&quot;letters is of type Set&lt;Character&gt; with \(letters.count) items.&quot;) // 打印 &quot;letters is of type Set&lt;Character&gt; with 0 items.&quot;</code></pre><ul>
+<li>此外，如果上下文提供了类型信息，比如作为函数的参数或者已知类型的变量或常量，我们可以通过一个空的数 组字面量创建一个空的 Set :</li>
+</ul>
+<pre><code>letters.insert(&quot;a&quot;)
+// letters 现在含有1个 Character 类型的值
+letters = []
+// letters 现在是一个空的 Set, 但是它依然是 Set&lt;Character&gt; 类型</code></pre><h4 id="用数组字面量创建集合"><a href="#用数组字面量创建集合" class="headerlink" title="用数组字面量创建集合"></a>用数组字面量创建集合</h4><ul>
+<li>你可以使用数组字面量来构造 合，并且可以使用简化形式写一个或者多个值作为 合元素。<br>下面的例子创建一个称之为 favoriteGenres 的 合来存储 String 类型的值:</li>
+</ul>
+<pre><code>var favoriteGenres: Set&lt;String&gt; = [&quot;Rock&quot;, &quot;Classical&quot;, &quot;Hip hop&quot;] // favoriteGenres 被构造成含有三个初始值的集合
+print(favoriteGenres)</code></pre><ul>
+<li>Swift 的 Set 类型没有确定的顺序，为了按照特定顺序来遍历一个 Set 中的值可以使用 sorted() 方法，它将返<br>回一个有序数组，这个数组的元素排列顺序由操作符’&lt;’对元素进行比较的结果来确定.</li>
+</ul>
+<pre><code>var favoriteGenres: Set = [&quot;Rock&quot;, &quot;Classical&quot;, &quot;Hip hop&quot;]
+for genre in favoriteGenres.sorted() {
+    print(&quot;\(genre)&quot;)
+}
+// prints &quot;Classical&quot;
+// prints &quot;Hip hop&quot;
+// prints &quot;Rock&quot;</code></pre><h4 id="集合操作"><a href="#集合操作" class="headerlink" title="集合操作"></a>集合操作</h4><ul>
+<li>你可以高效地完成 Set 的一些基本操作，比如把两个 合组合到一起，判断两个 合共有元素，或者判断两个  合是否全包含，部分包含或者不相交。</li>
+<li>使用该intersection(_:)方法创建一个仅具有两个集合通用值的新集合。</li>
+<li>使用该symmetricDifference(_:)方法创建一个新集合，其中的值可以是任一集，但不能同时使用。</li>
+<li>使用该union(_:)方法创建一个新集合，其中包含两个集合中的所有值。</li>
+<li>使用该subtracting(_:)方法创建一个新集合，其值不在指定的集合中。</li>
+</ul>
+<pre><code>let oddDigits: Set = [1, 3, 5, 7, 9]
+let evenDigits: Set = [0, 2, 4, 6, 8]
+let singleDigitPrimeNumbers: Set = [2, 3, 5, 7]
+
+oddDigits.union(evenDigits).sorted()
+// [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+oddDigits.intersection(evenDigits).sorted()
+// []
+oddDigits.subtracting(singleDigitPrimeNumbers).sorted()
+// [1, 9]
+oddDigits.symmetricDifference(singleDigitPrimeNumbers).sorted()
+// [1, 2, 9]</code></pre><h4 id="集合成员关系和相等"><a href="#集合成员关系和相等" class="headerlink" title="集合成员关系和相等"></a>集合成员关系和相等</h4><ul>
+<li>使用“等于”运算符（==）来确定两个集合是否包含所有相同的值。</li>
+<li>使用该isSubset(of:)方法确定集合的所有值是否包含在指定的集合中。</li>
+<li>使用该isSuperset(of:)方法来确定集合是否包含指定集合中的所有值。</li>
+<li>使用isStrictSubset(of:)或isStrictSuperset(of:)方法来确定集合是子集还是超集，但不等于指定集。</li>
+<li>使用该isDisjoint(with:)方法来确定两个集合是否没有共同的值。</li>
+</ul>
+<pre><code>let houseAnimals: Set = [&quot;🐶&quot;, &quot;🐱&quot;]
+let farmAnimals: Set = [&quot;🐮&quot;, &quot;🐔&quot;, &quot;🐑&quot;, &quot;🐶&quot;, &quot;🐱&quot;]
+let cityAnimals: Set = [&quot;🐦&quot;, &quot;🐭&quot;]
+
+houseAnimals.isSubset(of: farmAnimals)
+// true
+farmAnimals.isSuperset(of: houseAnimals)
+// true
+farmAnimals.isDisjoint(with: cityAnimals)
+// true</code></pre><h3 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h3><h4 id="创建一个空字典"><a href="#创建一个空字典" class="headerlink" title="创建一个空字典"></a>创建一个空字典</h4><pre class=" language-swift"><code class="language-swift"><span class="token keyword">var</span> namesOfIntegers <span class="token operator">=</span> <span class="token builtin">Int</span><span class="token punctuation">:</span> <span class="token builtin">String</span>
+<span class="token comment" spellcheck="true">// namesOfIntegers 是一个空的 [Int: String] 字典</span>
+namesOfIntegers<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"sixteen"</span>
+<span class="token comment" spellcheck="true">// namesOfIntegers 现在包含一个键值对</span>
+namesOfIntegers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true">// namesOfIntegers 又成为了一个 [Int: String] 类型的空字典</span></code></pre>
+<h4 id="访问和修改词典"><a href="#访问和修改词典" class="headerlink" title="访问和修改词典"></a>访问和修改词典</h4><pre class=" language-swift"><code class="language-swift"><span class="token keyword">var</span> airports <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"YYZ"</span><span class="token punctuation">:</span> <span class="token string">"Toronto Pearson"</span><span class="token punctuation">,</span> <span class="token string">"DUB"</span><span class="token punctuation">:</span> <span class="token string">"Dublin"</span><span class="token punctuation">]</span>
+<span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"The dictionary of airports contains (airports.count) items."</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// 打印 "The dictionary of airports contains 2 items."(这个字典有两个数据项)</span>
+<span class="token keyword">if</span> airports<span class="token punctuation">.</span><span class="token builtin">isEmpty</span> <span class="token punctuation">{</span>
+    <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"The airports dictionary is empty."</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"The airports dictionary is not empty."</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 打印 "The airports dictionary is not empty."</span>
+airports<span class="token punctuation">[</span><span class="token string">"LHR"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"London"</span>
+<span class="token comment" spellcheck="true">// the airports dictionary now contains 3 items</span>
+airports<span class="token punctuation">[</span><span class="token string">"LHR"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"London Heathrow"</span>
+<span class="token comment" spellcheck="true">// the value for "LHR" has been changed to "London Heathrow"</span></code></pre>
+<ul>
+<li>作为另一种下标方法，字典的 updateValue(<em>:forKey:) 方法可以设置或者更新特定键对应的值。就像上面所示的 下标示例， updateValue(</em>:forKey:) 方法在这个键不存在对应值的时候会设置新值或者在存在时更新已存在的 值。和上面的下标方法不同的， updateValue(<em>:forKey:) 这个方法返回更新值之前的原值。这样使得我们可以检 查更新是否成功。<br>updateValue(</em>:forKey:) 方法会返回对应值的类型的可选值。举例来说:对于存储 String 值的字典，这个函数会 返回一个 String? 或者“可选 String ”类型的值。<br>如果有值存在于更新前，则这个可选值包含了旧值，否则它将会是 nil 。</li>
+</ul>
+<pre><code>if let oldValue = airports.updateValue(&quot;Dublin Airport&quot;, forKey: &quot;DUB&quot;) {
+    print(&quot;The old value for DUB was \(oldValue).&quot;)
+}
+// 输出 &quot;The old value for DUB was Dublin.&quot;</code></pre><ul>
+<li>我们也可以使用下标语法来在字典中检索特定键对应的值。因为有可能请求的键没有对应的值存在，字典的下标 访问会返回对应值的类型的可选值。如果这个字典包含请求键所对应的值，下标会返回一个包含这个存在值的可 选值，否则将返回 nil :</li>
+</ul>
+<pre><code>if let airportName = airports[&quot;DUB&quot;] {
+    print(&quot;The name of the airport is \(airportName).&quot;)
+} else {
+    print(&quot;That airport is not in the airports dictionary.&quot;)
+}
+// Prints &quot;The name of the airport is Dublin Airport.&quot;</code></pre><ul>
+<li>我们还可以使用下标语法来通过给某个键的对应值赋值为 nil 来从字典里移除一个键值对:</li>
+</ul>
+<pre><code>airports[&quot;APL&quot;] = &quot;Apple International&quot;
+// &quot;Apple International&quot; is not the real airport for APL, so delete it
+airports[&quot;APL&quot;] = nil
+// APL has now been removed from the dictionary</code></pre><ul>
+<li>此外， removeValue(forKey:) 方法也可以用来在字典中移除键值对。这个方法在键值对存在的情况下会移除该键 值对并且返回被移除的值或者在没有值的情况下返回 nil :</li>
+</ul>
+<pre><code>if let removedValue = airports.removeValue(forKey: &quot;DUB&quot;) {
+    print(&quot;The removed airport&#39;s name is \(removedValue).&quot;)
+} else {
+    print(&quot;The airports dictionary does not contain a value for DUB.&quot;)
+}
+// Prints &quot;The removed airport&#39;s name is Dublin Airport.&quot;
+</code></pre><h4 id="字典遍历"><a href="#字典遍历" class="headerlink" title="字典遍历"></a>字典遍历</h4><pre><code>for (airportCode, airportName) in airports {
+    print(&quot;\(airportCode): \(airportName)&quot;)
+}
+// YYZ: Toronto Pearson
+// LHR: London Heathrow</code></pre><ul>
+<li>您还可以通过访问其属性keys和values属性来检索字典键或值的可迭代集合：</li>
+</ul>
+<pre><code>for airportCode in airports.keys {
+    print(&quot;Airport code: \(airportCode)&quot;)
+}
+// Airport code: YYZ
+// Airport code: LHR
+
+for airportName in airports.values {
+    print(&quot;Airport name: \(airportName)&quot;)
+}
+// Airport name: Toronto Pearson
+// Airport name: London Heathrow</code></pre><ul>
+<li>如果您需要使用带有Array实例的API的字典键或值，请使用keys或values属性初始化新数组：</li>
+</ul>
+<pre class=" language-swift"><code class="language-swift"><span class="token keyword">let</span> airportCodes <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span>airports<span class="token punctuation">.</span>keys<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// airportCodes is ["YYZ", "LHR"]</span>
+
+<span class="token keyword">let</span> airportNames <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span>airports<span class="token punctuation">.</span>values<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// airportNames is ["Toronto Pearson", "London Heathrow"]</span></code></pre>
+
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《swift基础总结》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2017/03/15/2017-03-15-swift-ji-chu-zong-jie/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                刘星星
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'abc79898ea014913ba7c',
+        clientSecret: '41f23ea4570391c06c9f4f47d0acec45d8dfe3ff',
+        repo: 'blogtalk',
+        owner: 'smileasy',
+        admin: "smileasy",
+        id: '2017-03-15T00-00-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2017/04/15/2017-04-15-ios-kai-fa-zhong-de-shou-shi-shi-bie-qi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="iOS开发中的手势识别器">
+                        
+                        <span class="card-title">iOS开发中的手势识别器</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+UIGestureRecognizer//当前手势状态
+typedef NS_ENUM(NSInteger, UIGestureRecognizerState) {
+    //尚未识别是何种手势操作（但可能已经触发了触摸事件），默认
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2017-04-15
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                    iOS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/iOS/" target="_blank">
+                        <span class="chip bg-color">iOS</span>
+                    </a>
+                    
+                    <a href="/tags/Object-C/" target="_blank">
+                        <span class="chip bg-color">Object-C</span>
+                    </a>
+                    
+                    <a href="/tags/手势识别/" target="_blank">
+                        <span class="chip bg-color">手势识别</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2017/03/13/2017-03-13-chu-shi-swift/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="初识swift">
+                        
+                        <span class="card-title">初识swift</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+关于swift官方文档1
+官方文档2
+官方文档3
+官方文档4
+
+Swift 是一种新的编程语言，用于编写 iOS 和 OS X 应用。Swift 结合了 C 和 Objective-C 的优点并且不受 C 兼容性的限制。Swift 采
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2017-03-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                    iOS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/iOS/" target="_blank">
+                        <span class="chip bg-color">iOS</span>
+                    </a>
+                    
+                    <a href="/tags/swift/" target="_blank">
+                        <span class="chip bg-color">swift</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站博客内容由刘星星负责更新维护.
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;当前站点总字数:&nbsp;
+                <span class="white-color">118.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

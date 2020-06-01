@@ -1,0 +1,1182 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="JavaScript的数组常用操作, 星星的博客">
+    <meta name="description" content="for in 遍历数组（不仅可以遍历对象，也可以遍历数组，毕竟数组只是一种特殊对象）var a = [1, 2, 3];
+a.foo = true;
+
+for (var key in a) {
+console.log(key);
+}
+// ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>JavaScript的数组常用操作 | 星星的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">星星的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">星星的博客</div>
+        <div class="logo-desc">
+            
+            一起学习 共同进步
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        JavaScript的数组常用操作
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/JavaScript/" target="_blank">
+                                <span class="chip bg-color">JavaScript</span>
+                            </a>
+                        
+                            <a href="/tags/ES5/" target="_blank">
+                                <span class="chip bg-color">ES5</span>
+                            </a>
+                        
+                            <a href="/tags/数组/" target="_blank">
+                                <span class="chip bg-color">数组</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/JavaScript/" class="post-category" target="_blank">
+                                JavaScript
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-07-30
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        3.7k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        16 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="for-in-遍历数组（不仅可以遍历对象，也可以遍历数组，毕竟数组只是一种特殊对象）"><a href="#for-in-遍历数组（不仅可以遍历对象，也可以遍历数组，毕竟数组只是一种特殊对象）" class="headerlink" title="for in 遍历数组（不仅可以遍历对象，也可以遍历数组，毕竟数组只是一种特殊对象）"></a>for in 遍历数组（不仅可以遍历对象，也可以遍历数组，毕竟数组只是一种特殊对象）</h3><pre><code>var a = [1, 2, 3];
+a.foo = true;
+
+for (var key in a) {
+console.log(key);
+}
+// 0
+// 1
+// 2
+// foo</code></pre><blockquote>
+<p>上面代码在遍历数组时，也遍历到了非整数键foo。所以，不推荐使用for…in遍历数组</p>
+</blockquote>
+<h3 id="使用delete命令删除一个数组成员，会形成空位，并且不会影响length属性"><a href="#使用delete命令删除一个数组成员，会形成空位，并且不会影响length属性" class="headerlink" title="使用delete命令删除一个数组成员，会形成空位，并且不会影响length属性"></a>使用delete命令删除一个数组成员，会形成空位，并且不会影响length属性</h3><pre><code>var a = [1, 2, 3];
+delete a[1];
+
+a[1] // undefined
+a.length // 3</code></pre><h3 id="“类似数组的对象”的操作"><a href="#“类似数组的对象”的操作" class="headerlink" title="“类似数组的对象”的操作"></a>“类似数组的对象”的操作</h3><pre><code>var obj = {
+//自定义类数组对象
+0: &#39;a&#39;,
+1: &#39;b&#39;,
+2: &#39;c&#39;,
+length: 3
+};
+let isArray = obj instanceof Array;
+console.log(isArray); //false
+//方式1转换为数组
+var arr1 = Array.prototype.slice.call(obj);
+isArray = arr1 instanceof Array;
+console.log(isArray); //true
+//使用call()把数组的方法放到对象上
+Array.prototype.forEach.call(obj,print);
+function print(value, index) {
+console.log(index + &#39; : &#39; + value);
+}
+Array.prototype.forEach.call(obj,(value, index) =&gt; {
+console.log(index + &#39; =&gt; &#39; + value);
+});
+
+</code></pre><hr>
+<h3 id="1-Array-isArray"><a href="#1-Array-isArray" class="headerlink" title="1.Array.isArray()"></a>1.Array.isArray()</h3><pre><code>var arr = [1, 2, 3];
+
+typeof arr // &quot;object&quot;
+Array.isArray(arr) // true</code></pre><h3 id="2-push-，pop-（会改变原数组）"><a href="#2-push-，pop-（会改变原数组）" class="headerlink" title="2.push()，pop() （会改变原数组）"></a>2.push()，pop() （会改变原数组）</h3><pre><code>var arr = [];
+
+arr.push(1) // 1
+arr.push(&#39;a&#39;) // 2
+arr.push(true, {}) // 4
+arr // [1, &#39;a&#39;, true, {}]</code></pre><h3 id="3-shift-，unshift-（会改变原数组）"><a href="#3-shift-，unshift-（会改变原数组）" class="headerlink" title="3.shift()，unshift()（会改变原数组）"></a>3.shift()，unshift()（会改变原数组）</h3><ul>
+<li>shift()方法用于删除数组的第一个元素，并返回该元素。注意，该方法会改变原数组</li>
+<li>shift()方法可以遍历并清空一个数组</li>
+</ul>
+<pre><code>
+var list = [1, 2, 3, 4];
+var item;
+
+while (item = list.shift()) {
+console.log(item);
+}
+list // []
+</code></pre><blockquote>
+<p>上面代码通过list.shift()方法每次取出一个元素，从而遍历数组。它的前提是数组元素不能是0或任何布尔值等于false的元素，因此这样的遍历不是很可靠。</p>
+</blockquote>
+<ul>
+<li>unshift()方法用于在数组的第一个位置添加元素，并返回添加新元素后的数组长度。注意，该方法会改变原数组。</li>
+</ul>
+<pre><code>
+var a = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;];
+
+a.unshift(&#39;x&#39;); // 4
+a // [&#39;x&#39;, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;]
+
+var arr = [ &#39;c&#39;, &#39;d&#39; ];
+arr.unshift(&#39;a&#39;, &#39;b&#39;) // 4
+arr // [ &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39; ]
+</code></pre><h3 id="4-join"><a href="#4-join" class="headerlink" title="4.join()"></a>4.join()</h3><ul>
+<li>join()方法以指定参数作为分隔符，将所有数组成员连接为一个字符串返回。如果不提供参数，默认用逗号分隔。</li>
+</ul>
+<pre><code>var a = [1, 2, 3, 4];
+
+a.join(&#39; &#39;) // &#39;1 2 3 4&#39;
+a.join(&#39; | &#39;) // &quot;1 | 2 | 3 | 4&quot;
+a.join() // &quot;1,2,3,4&quot;</code></pre><ul>
+<li>通过call方法，这个方法也可以用于字符串或类似数组的对象。</li>
+</ul>
+<pre><code>Array.prototype.join.call(&#39;hello&#39;, &#39;-&#39;)
+// &quot;h-e-l-l-o&quot;
+
+var obj = { 0: &#39;a&#39;, 1: &#39;b&#39;, length: 2 };
+Array.prototype.join.call(obj, &#39;-&#39;)
+// &#39;a-b&#39;
+</code></pre><h3 id="5-concat"><a href="#5-concat" class="headerlink" title="5.concat()"></a>5.concat()</h3><ul>
+<li>concat方法用于多个数组的合并。它将新数组的成员，添加到原数组成员的后部，然后返回一个新数组，原数组不变。</li>
+</ul>
+<pre><code>[&#39;hello&#39;].concat([&#39;world&#39;])
+// [&quot;hello&quot;, &quot;world&quot;]
+
+[&#39;hello&#39;].concat([&#39;world&#39;], [&#39;!&#39;])
+// [&quot;hello&quot;, &quot;world&quot;, &quot;!&quot;]
+
+[].concat({a: 1}, {b: 2})
+// [{ a: 1 }, { b: 2 }]
+
+[2].concat({a: 1})
+// [2, {a: 1}]
+
+
+
+[1, 2, 3].concat(4, 5, 6)
+// [1, 2, 3, 4, 5, 6]</code></pre><ul>
+<li>如果数组成员包括对象，concat方法返回当前数组的一个浅拷贝。所谓“浅拷贝”，指的是新数组拷贝的是对象的引用。</li>
+</ul>
+<pre><code>var obj = { a: 1 };
+var oldArray = [obj];
+
+var newArray = oldArray.concat();
+
+obj.a = 2;
+newArray[0].a // 2</code></pre><h3 id="6-reverse-改变原数组"><a href="#6-reverse-改变原数组" class="headerlink" title="6.reverse() (改变原数组)"></a>6.reverse() (改变原数组)</h3><pre><code>
+var a = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;];
+
+a.reverse() // [&quot;c&quot;, &quot;b&quot;, &quot;a&quot;]
+a // [&quot;c&quot;, &quot;b&quot;, &quot;a&quot;]
+</code></pre><h3 id="7-slice"><a href="#7-slice" class="headerlink" title="7.slice()"></a>7.slice()</h3><ul>
+<li>slice方法用于提取目标数组的一部分，返回一个新数组，原数组不变。 </li>
+</ul>
+<pre><code>arr.slice(start, end);</code></pre><blockquote>
+<p>它的第一个参数为起始位置（从0开始），第二个参数为终止位置（但该位置的元素本身不包括在内）。如果省略第二个参数，则一直返回到原数组的最后一个成员。</p>
+</blockquote>
+<pre><code>var a = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;];
+
+a.slice(0) // [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+a.slice(1) // [&quot;b&quot;, &quot;c&quot;]
+a.slice(1, 2) // [&quot;b&quot;]
+a.slice(2, 6) // [&quot;c&quot;]
+a.slice() // [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+</code></pre><blockquote>
+<p>上面代码中，最后一个例子slice没有参数，实际上等于返回一个原数组的拷贝。</p>
+</blockquote>
+<ul>
+<li>如果slice方法的参数是负数，则表示倒数计算的位置。</li>
+</ul>
+<pre><code>var a = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;];
+a.slice(-2) // [&quot;b&quot;, &quot;c&quot;]
+a.slice(-2, -1) // [&quot;b&quot;]</code></pre><ul>
+<li>slice方法的一个重要应用，是将类似数组的对象转为真正的数组.</li>
+</ul>
+<pre><code>Array.prototype.slice.call({ 0: &#39;a&#39;, 1: &#39;b&#39;, length: 2 })
+// [&#39;a&#39;, &#39;b&#39;]
+
+Array.prototype.slice.call(document.querySelectorAll(&quot;div&quot;));
+Array.prototype.slice.call(arguments);</code></pre><h3 id="8-splice-改变原数组"><a href="#8-splice-改变原数组" class="headerlink" title="8.splice() (改变原数组)"></a>8.splice() (改变原数组)</h3><ul>
+<li>splice方法用于删除原数组的一部分成员，并可以在删除的位置添加新的数组成员，返回值是被删除的元素。注意，该方法会改变原数组。</li>
+</ul>
+<pre><code>arr.splice(start, count, addElement1, addElement2, ...);</code></pre><ul>
+<li>splice的第一个参数是删除的起始位置（从0开始），第二个参数是被删除的元素个数。如果后面还有更多的参数，则表示这些就是要被插入数组的新元素。</li>
+</ul>
+<pre><code>var a = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;, &#39;f&#39;];
+a.splice(4, 2) // [&quot;e&quot;, &quot;f&quot;]
+a // [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
+
+
+var a = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;, &#39;f&#39;];
+a.splice(4, 2, 1, 2) // [&quot;e&quot;, &quot;f&quot;]
+a // [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, 1, 2]
+
+
+
+var a = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;, &#39;f&#39;];
+a.splice(-4, 2) // [&quot;c&quot;, &quot;d&quot;]
+</code></pre><ul>
+<li>如果只是单纯地插入元素，splice方法的第二个参数可以设为0。</li>
+</ul>
+<pre><code>var a = [1, 1, 1];
+
+a.splice(1, 0, 2) // []
+a // [1, 2, 1, 1]</code></pre><ul>
+<li>如果只提供第一个参数，等同于将原数组在指定位置拆分成两个数组。</li>
+</ul>
+<pre><code>var a = [1, 2, 3, 4];
+a.splice(2) // [3, 4]
+a // [1, 2]</code></pre><h3 id="9-sort"><a href="#9-sort" class="headerlink" title="9.sort()"></a>9.sort()</h3><pre><code>[10111, 1101, 111].sort(function (a, b) {
+return a - b;
+})
+// [111, 1101, 10111]</code></pre><blockquote>
+<p>上面代码中，sort的参数函数本身接受两个参数，表示进行比较的两个数组成员。如果该函数的返回值大于0，表示第一个成员排在第二个成员后面；其他情况下，都是第一个元素排在第二个元素前面。</p>
+</blockquote>
+<pre><code>[
+{ name: &quot;张三&quot;, age: 30 },
+{ name: &quot;李四&quot;, age: 24 },
+{ name: &quot;王五&quot;, age: 28  }
+].sort(function (o1, o2) {
+return o1.age - o2.age;
+})
+// [
+//   { name: &quot;李四&quot;, age: 24 },
+//   { name: &quot;王五&quot;, age: 28  },
+//   { name: &quot;张三&quot;, age: 30 }
+// ]</code></pre><h3 id="10-map"><a href="#10-map" class="headerlink" title="10.map()"></a>10.map()</h3><ul>
+<li>map方法将数组的所有成员依次传入参数函数，然后把每一次的执行结果组成一个新数组返回。</li>
+</ul>
+<pre><code>var numbers = [1, 2, 3];
+
+numbers.map(function (n) {
+return n + 1;
+});
+// [2, 3, 4]
+
+numbers
+// [1, 2, 3]</code></pre><ul>
+<li>map方法接受一个函数作为参数。该函数调用时，map方法向它传入三个参数：当前成员、当前位置和数组本身。</li>
+</ul>
+<pre><code>[1, 2, 3].map(function(elem, index, arr) {
+return elem * index;
+});
+// [0, 2, 6]</code></pre><ul>
+<li>map方法还可以接受第二个参数，用来绑定回调函数内部的this变量。</li>
+</ul>
+<pre><code>var arr = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;];
+
+[1, 2].map(function (e) {
+return this[e];
+}, arr)
+// [&#39;b&#39;, &#39;c&#39;]</code></pre><ul>
+<li>如果数组有空位，map方法的回调函数在这个位置不会执行，会跳过数组的空位。</li>
+</ul>
+<pre><code>var f = function (n) { return &#39;a&#39; };
+
+[1, undefined, 2].map(f) // [&quot;a&quot;, &quot;a&quot;, &quot;a&quot;]
+[1, null, 2].map(f) // [&quot;a&quot;, &quot;a&quot;, &quot;a&quot;]
+[1, , 2].map(f) // [&quot;a&quot;, , &quot;a&quot;]</code></pre><h3 id="11-forEach"><a href="#11-forEach" class="headerlink" title="11.forEach()"></a>11.forEach()</h3><ul>
+<li>forEach方法与map方法很相似，也是对数组的所有成员依次执行参数函数。但是，forEach方法不返回值，只用来操作数据。这就是说，如果数组遍历的目的是为了得到返回值，那么使用map方法，否则使用forEach方法</li>
+<li>forEach的用法与map方法一致，参数是一个函数，该函数同样接受三个参数：当前值、当前位置、整个数组。</li>
+</ul>
+<pre><code>function log(element, index, array) {
+console.log(&#39;[&#39; + index + &#39;] = &#39; + element);
+}
+
+[2, 5, 9].forEach(log);
+// [0] = 2
+// [1] = 5
+// [2] = 9</code></pre><ul>
+<li>forEach方法也可以接受第二个参数，绑定参数函数的this变量。</li>
+</ul>
+<pre><code>var out = [];
+
+[1, 2, 3].forEach(function(elem) {
+this.push(elem * elem);
+}, out);
+
+out // [1, 4, 9]</code></pre><blockquote>
+<p>上面代码中，空数组out是forEach方法的第二个参数，结果，回调函数内部的this关键字就指向out。<br>注意，forEach方法无法中断执行，总是会将所有成员遍历完。如果希望符合某种条件时，就中断遍历，要使用for循环。</p>
+</blockquote>
+<pre><code>var log = function (n) {
+console.log(n + 1);
+};
+
+[1, undefined, 2].forEach(log)
+// 2
+// NaN
+// 3
+
+[1, null, 2].forEach(log)
+// 2
+// 1
+// 3
+
+[1, , 2].forEach(log)
+// 2
+// 3</code></pre><blockquote>
+<p>上面代码中，forEach方法不会跳过undefined和null，但会跳过空位。</p>
+</blockquote>
+<h3 id="12-filter"><a href="#12-filter" class="headerlink" title="12.filter()"></a>12.filter()</h3><ul>
+<li>filter方法用于过滤数组成员，满足条件的成员组成一个新数组返回。它的参数是一个函数，所有数组成员依次执行该函数，返回结果为true的成员组成一个新数组返回。该方法不会改变原数组。</li>
+</ul>
+<pre><code>[1, 2, 3, 4, 5].filter(function (elem) {
+return (elem &gt; 3);
+})
+// [4, 5]</code></pre><pre><code>var arr = [0, 1, &#39;a&#39;, false];
+
+arr.filter(Boolean)
+// [1, &quot;a&quot;]</code></pre><blockquote>
+<p>上面代码中，filter方法返回数组arr里面所有布尔值为true的成员</p>
+</blockquote>
+<ul>
+<li>filter方法的参数函数可以接受三个参数：当前成员，当前位置和整个数组:</li>
+</ul>
+<pre><code>[1, 2, 3, 4, 5].filter(function (elem, index, arr) {
+return index % 2 === 0;
+});
+// [1, 3, 5]</code></pre><ul>
+<li>filter方法还可以接受第二个参数，用来绑定参数函数内部的this变量。</li>
+</ul>
+<pre><code>var obj = { MAX: 3 };
+var myFilter = function (item) {
+if (item &gt; this.MAX) return true;
+};
+
+var arr = [2, 8, 3, 4, 1, 3, 2, 9];
+arr.filter(myFilter, obj) // [8, 4, 9]</code></pre><blockquote>
+<p>上面代码中，过滤器myFilter内部有this变量，它可以被filter方法的第二个参数obj绑定，返回大于3的成员。</p>
+</blockquote>
+<h3 id="13-some-，every"><a href="#13-some-，every" class="headerlink" title="13.some()，every()"></a>13.some()，every()</h3><ul>
+<li><p>这两个方法类似“断言”（assert），返回一个布尔值，表示判断数组成员是否符合某种条件。</p>
+</li>
+<li><p>它们接受一个函数作为参数，所有数组成员依次执行该函数。该函数接受三个参数：当前成员、当前位置和整个数组，然后返回一个布尔值。</p>
+</li>
+<li><p>some方法是只要一个成员的返回值是true，则整个some方法的返回值就是true，否则返回false</p>
+</li>
+</ul>
+<pre><code>var arr = [1, 2, 3, 4, 5];
+arr.some(function (elem, index, arr) {
+return elem &gt;= 3;
+});
+// true</code></pre><blockquote>
+<p>上面代码中，如果数组arr有一个成员大于等于3，some方法就返回true。</p>
+</blockquote>
+<ul>
+<li>every方法是所有成员的返回值都是true，整个every方法才返回true，否则返回false</li>
+</ul>
+<pre><code>var arr = [1, 2, 3, 4, 5];
+arr.every(function (elem, index, arr) {
+return elem &gt;= 3;
+});
+// false</code></pre><blockquote>
+<p>上面代码中，数组arr并非所有成员大于等于3，所以返回false</p>
+</blockquote>
+<ul>
+<li>注意，对于空数组，some方法返回false，every方法返回true，回调函数都不会执行。</li>
+</ul>
+<pre><code>function isEven(x) { return x % 2 === 0 }
+
+[].some(isEven) // false
+[].every(isEven) // true</code></pre><ul>
+<li>some和every方法还可以接受第二个参数，用来绑定参数函数内部的this变量</li>
+</ul>
+<h3 id="14-reduce-，reduceRight"><a href="#14-reduce-，reduceRight" class="headerlink" title="14.reduce()，reduceRight()"></a>14.reduce()，reduceRight()</h3><ul>
+<li>reduce方法和reduceRight方法依次处理数组的每个成员，最终累计为一个值。它们的差别是，reduce是从左到右处理（从第一个成员到最后一个成员），reduceRight则是从右到左（从最后一个成员到第一个成员），其他完全一样。</li>
+</ul>
+<pre><code>[1, 2, 3, 4, 5].reduce(function (a, b) {
+console.log(a, b);
+return a + b;
+})
+// 1 2
+// 3 3
+// 6 4
+// 10 5
+//最后结果：15</code></pre><blockquote>
+<p>上面代码中，reduce方法求出数组所有成员的和。第一次执行，a是数组的第一个成员1，b是数组的第二个成员2。第二次执行，a为上一轮的返回值3，b为第三个成员3。第三次执行，a为上一轮的返回值6，b为第四个成员4。第四次执行，a为上一轮返回值10，b为第五个成员5。至此所有成员遍历完成，整个方法的返回值就是最后一轮的返回值15。</p>
+</blockquote>
+<ol>
+<li>reduce方法和reduceRight方法的第一个参数都是一个函数。该函数接受以下四个参数。</li>
+<li>累积变量，默认为数组的第一个成员</li>
+<li>当前变量，默认为数组的第二个成员</li>
+<li>当前位置（从0开始）</li>
+<li>原数组</li>
+</ol>
+<ul>
+<li>这四个参数之中，只有前两个是必须的，后两个则是可选的。</li>
+<li>如果要对累积变量指定初值，可以把它放在reduce方法和reduceRight方法的第二个参数。</li>
+</ul>
+<pre><code>[1, 2, 3, 4, 5].reduce(function (a, b) {
+return a + b;
+}, 10);
+// 25</code></pre><pre><code>function add(prev, cur) {
+return prev + cur;
+}
+
+[].reduce(add)
+// TypeError: Reduce of empty array with no initial value
+[].reduce(add, 1)
+// 1</code></pre><blockquote>
+<p>上面代码指定参数a的初值为10，所以数组从10开始累加，最终结果为25。注意，这时b是从数组的第一个成员开始遍历。上面的第二个参数相当于设定了默认值，处理空数组时尤其有用。</p>
+</blockquote>
+<ul>
+<li>下面是一个reduceRight方法的例子:</li>
+</ul>
+<pre><code>function subtract(prev, cur) {
+return prev - cur;
+}
+
+[3, 2, 1].reduce(subtract) // 0
+[3, 2, 1].reduceRight(subtract) // -4</code></pre><blockquote>
+<p>上面代码中，reduce方法相当于3减去2再减去1，reduceRight方法相当于1减去2再减去3。</p>
+</blockquote>
+<ul>
+<li>由于这两个方法会遍历数组，所以实际上还可以用来做一些遍历相关的操作。比如，找出字符长度最长的数组成员。</li>
+</ul>
+<pre><code>function findLongest(entries) {
+return entries.reduce(function (longest, entry) {
+return entry.length &gt; longest.length ? entry : longest;
+}, &#39;&#39;);
+}
+
+findLongest([&#39;aaa&#39;, &#39;bb&#39;, &#39;c&#39;]) // &quot;aaa&quot;</code></pre><h3 id="15-indexOf-，lastIndexOf"><a href="#15-indexOf-，lastIndexOf" class="headerlink" title="15.indexOf()，lastIndexOf()"></a>15.indexOf()，lastIndexOf()</h3><ul>
+<li>indexOf方法返回给定元素在数组中第一次出现的位置，如果没有出现则返回-1</li>
+</ul>
+<pre><code>var a = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;];
+
+a.indexOf(&#39;b&#39;) // 1
+a.indexOf(&#39;y&#39;) // -1</code></pre><ul>
+<li>indexOf方法还可以接受第二个参数，表示搜索的开始位置</li>
+</ul>
+<pre><code>[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;].indexOf(&#39;a&#39;, 1) // -1</code></pre><blockquote>
+<p>上面代码从1号位置开始搜索字符a，结果为-1，表示没有搜索到。</p>
+</blockquote>
+<ul>
+<li>lastIndexOf方法返回给定元素在数组中最后一次出现的位置，如果没有出现则返回-1。</li>
+</ul>
+<pre><code>var a = [2, 5, 9, 2];
+a.lastIndexOf(2) // 3
+a.lastIndexOf(7) // -1</code></pre><ul>
+<li>注意，这两个方法不能用来搜索NaN的位置，即它们无法确定数组成员是否包含NaN</li>
+</ul>
+<pre><code>[NaN].indexOf(NaN) // -1
+[NaN].lastIndexOf(NaN) // -1</code></pre><blockquote>
+<p>这是因为这两个方法内部，使用严格相等运算符（===）进行比较，而NaN是唯一一个不等于自身的值。</p>
+</blockquote>
+<hr>
+<h3 id="16-链式使用"><a href="#16-链式使用" class="headerlink" title="16. 链式使用"></a>16. 链式使用</h3><pre><code>var users = [
+{name: &#39;tom&#39;, email: &#39;tom@example.com&#39;},
+{name: &#39;peter&#39;, email: &#39;peter@example.com&#39;}
+];
+
+users
+.map(function (user) {
+return user.email;
+})
+.filter(function (email) {
+return /^t/.test(email);
+})
+.forEach(function (email) {
+console.log(email);
+});
+// &quot;tom@example.com&quot;</code></pre><blockquote>
+<p>上面代码中，先产生一个所有 Email 地址组成的数组，然后再过滤出以t开头的 Email 地址，最后将它打印出来。</p>
+</blockquote>
+
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《JavaScript的数组常用操作》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2018/07/30/2018-07-30-javascript-shu-zu-de-chang-yong-cao-zuo/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                刘星星
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'abc79898ea014913ba7c',
+        clientSecret: '41f23ea4570391c06c9f4f47d0acec45d8dfe3ff',
+        repo: 'blogtalk',
+        owner: 'smileasy',
+        admin: "smileasy",
+        id: '2018-07-30T00-00-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/08/03/2018-08-03-ios-zhong-de-gcd-shi-yong-zong-jie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="iOS中的GCD使用总结">
+                        
+                        <span class="card-title">iOS中的GCD使用总结</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+iOS中的GCD使用总结GCD是iOS开发者必须要熟练掌握和使用的异步执行任务的技术之一。下面是我自己总结的GCD的使用总结。
+GCD的APIDispatch QueueGCD中，执行时存在2种Dispatch Queue。一种是串行
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2018-08-03
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                    iOS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/总结提高/" target="_blank">
+                        <span class="chip bg-color">总结提高</span>
+                    </a>
+                    
+                    <a href="/tags/多线程/" target="_blank">
+                        <span class="chip bg-color">多线程</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/04/28/2018-04-28-javascript-zong-jie-ti-gao/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="JavaScript总结提高.md">
+                        
+                        <span class="card-title">JavaScript总结提高.md</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+数据类型判断
+数据类型分为基本数据类型和对象类型；变量的值类型分为基本类型（保存的基本类型的数据）和引用类型（保存的是地址值 array、 function、object ）。
+
+对于undefined和null的判断：
+       
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-04-28
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/JavaScript/" class="post-category" target="_blank">
+                                    JavaScript
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/JavaScript/" target="_blank">
+                        <span class="chip bg-color">JavaScript</span>
+                    </a>
+                    
+                    <a href="/tags/总结提高/" target="_blank">
+                        <span class="chip bg-color">总结提高</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站博客内容由刘星星负责更新维护.
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;当前站点总字数:&nbsp;
+                <span class="white-color">118.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

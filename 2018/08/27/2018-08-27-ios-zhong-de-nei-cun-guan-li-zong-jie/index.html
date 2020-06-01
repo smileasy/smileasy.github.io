@@ -1,0 +1,968 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="iOS中的内存管理总结, 星星的博客">
+    <meta name="description" content="
+
+
+
+内存管理iOS通过以下三种方式来管理内存方案：
+TaggedPointer
+//非指针型的isa
+NONPOINTER_ISA
+//包含了引用计数表 和 弱引用表
+散列表TaggedPointerTaggedPointer对象是为了">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>iOS中的内存管理总结 | 星星的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">星星的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">星星的博客</div>
+        <div class="logo-desc">
+            
+            一起学习 共同进步
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        iOS中的内存管理总结
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/iOS/" target="_blank">
+                                <span class="chip bg-color">iOS</span>
+                            </a>
+                        
+                            <a href="/tags/总结提高/" target="_blank">
+                                <span class="chip bg-color">总结提高</span>
+                            </a>
+                        
+                            <a href="/tags/内存管理/" target="_blank">
+                                <span class="chip bg-color">内存管理</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                iOS
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2018-08-27
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        4.6k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        16 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <meta name="referrer" content="no-referrer">
+
+
+
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><p>iOS通过以下三种方式来管理内存方案：</p>
+<pre><code>TaggedPointer
+//非指针型的isa
+NONPOINTER_ISA
+//包含了引用计数表 和 弱引用表
+散列表</code></pre><h3 id="TaggedPointer"><a href="#TaggedPointer" class="headerlink" title="TaggedPointer"></a>TaggedPointer</h3><p>TaggedPointer对象是为了改进在64位架构下内存的占用和效率问题。比如NSNumber和NSDate，使用4个字节就可以基本满足需要，剩余的4个字节作为特殊的标记，表示这是一个特别的指针，不指向任何地址。</p>
+<h3 id="NONPOINTER-ISA"><a href="#NONPOINTER-ISA" class="headerlink" title="NONPOINTER_ISA"></a>NONPOINTER_ISA</h3><p>在arm64位下iOS操作系统，苹果也对isa指针进行了优化。Objective-C对象的isa区域不再只是一个指针.<br>NONPOINTER_ISA中，只有33位作为指针部分，其余的31位使用了类似于TaggedPointer的概念。在31位中，其中19位（extra_rc）被用来存储该对象额外的引用计数值，其余的位数用来标识是否关联过对象，是否有弱引用对象等标志。</p>
+<h3 id="散列表方式"><a href="#散列表方式" class="headerlink" title="散列表方式"></a>散列表方式</h3><p>散列表的这种方案是通过sideTables()这种hash表来存储的。在sideTables下面挂载了若干个sideTable这种数据结构。sideTable下共包含3个元素：<br>1.自旋锁spinlock_t、2.引用计数表RefcountMap、3.弱引用表weak_table_t.</p>
+<p>为什么不是一个sideTable？</p>
+<blockquote>
+<p>如果只有一张表时，当有多个线程来操作其中的一个对象，来更改它的引用计数时，为了保证数据的正确性，就需要为这张表进行加锁操作来保证安全，更改完成后再释放锁让其他的对象操作自己的引用计数。那么效率就会十分的低下。所以系统引入了分离锁这个方案，将内存对象存入到不同的sidetable来提高效率。</p>
+</blockquote>
+<p>那么我们如何快速的定位到它属于哪个sideTable呢？</p>
+<blockquote>
+<p>sideTables其实是个hash表。系统通过hash查找，来找到对应的索引。</p>
+</blockquote>
+<h4 id="自旋锁spinlock-t"><a href="#自旋锁spinlock-t" class="headerlink" title="自旋锁spinlock_t"></a>自旋锁spinlock_t</h4><p>自旋锁是一个忙等的锁。是指当一个线程在获取锁的时候，如果锁已经被其它线程获取，那么该线程将循环等待，然后不断的判断锁是否能够被成功获取，直到获取到锁才会退出循环。获取锁的线程一直处于活跃状态，但是并没有执行任何有效的任务，使用这种锁会造成busy-waiting。<br>它是为实现保护共享资源而提出一种锁机制。其实，自旋锁与互斥锁比较类似，它们都是为了解决对某项资源的互斥使用。无论是互斥锁，还是自旋锁，在任何时刻，最多只能有一个保持者，也就说，在任何时刻最多只能有一个执行单元获得锁。但是两者在调度机制上略有不同。对于互斥锁，如果资源已经被占用，资源申请者只能进入睡眠状态。但是自旋锁不会引起调用者睡眠，如果自旋锁已经被别的执行单元保持，调用者就一直循环在那里看是否该自旋锁的保持者已经释放了锁，”自旋”一词就是因此而得名。</p>
+<h4 id="引用计数表RefcountMap"><a href="#引用计数表RefcountMap" class="headerlink" title="引用计数表RefcountMap"></a>引用计数表RefcountMap</h4><p>RefcountMap实际上是一个哈希表。通过同哈希算法可以避免循环遍历，达到快速查找的目的。size_t用来存储一个对象的引用计数值（64）位。<br>其中第一位用weakly_referenced表示该对象是否有弱引用。第二位用deallocating表示当前对象是否正在进行dealloc。其余的用来保存引用计数。</p>
+<h4 id="弱引用表weak-table-t"><a href="#弱引用表weak-table-t" class="headerlink" title="弱引用表weak_table_t"></a>弱引用表weak_table_t</h4><p>weak_table_t也是一个哈希表。对应的hash值用weak_entry_t来表示。</p>
+<hr>
+<h3 id="ARC"><a href="#ARC" class="headerlink" title="ARC"></a>ARC</h3><p>ARC是LLVM编译器和Runtime共同协作来为我们实现引用计数的管理。ARC禁止手动调用retain/release/retaionCount/dealloc.ARC中新增了weak和strong属性关键字。</p>
+<h4 id="引用计数管理"><a href="#引用计数管理" class="headerlink" title="引用计数管理"></a>引用计数管理</h4><h5 id="alloc的实现"><a href="#alloc的实现" class="headerlink" title="alloc的实现"></a>alloc的实现</h5><p>alloc的实现比较简单，就是经过一系列的调用，最终调用了C函数的calloc。注意，此时并没有设置引用计数为1.</p>
+<h5 id="retain的实现"><a href="#retain的实现" class="headerlink" title="retain的实现"></a>retain的实现</h5><pre><code>SideTable&amp; table = SideTables()[this];
+size_t refcntStorage = table.refcnts[this];
+refcntStorage += SIDE_TABLE_RC_ONE;</code></pre><blockquote>
+<p>我们可以知道，通过对象的this指针到SideTables中查找到该对象所在的table。然后再通过this指针查找到该对象所对应的引用计数值。因为是做retain操作，所以系统再通过SIDE_TABLE_RC_ONE这个宏对原有的refcntStorage引用计数再加上1.</p>
+</blockquote>
+<p>我们在进行retain操作的时候，系统是怎样查找它对应的引用计数的呢？</p>
+<blockquote>
+<p>通过上面的分析，我们可以知道，系统是通过两次哈希查找，来查找到对应的引用计数值，然后再做加一操作。</p>
+</blockquote>
+<h5 id="release实现"><a href="#release实现" class="headerlink" title="release实现"></a>release实现</h5><pre><code>SideTable&amp; table = SideTables()[this];
+RefcountMap::iterator it = table.refcnts.find(this);
+it-&gt;second -= SIDE_TABLE_RC_ONE;</code></pre><blockquote>
+<p>同样的，系统首先通过this指针查找到对象所在的table表。然后再在table表中查找到对应的引用计数，再对该对象的引用计数做减一操作。</p>
+</blockquote>
+<h5 id="retainCount实现"><a href="#retainCount实现" class="headerlink" title="retainCount实现"></a>retainCount实现</h5><pre><code>SideTable&amp; table = SideTables()[this];
+size_t refcnt_result = 1;
+RefcountMap::iterator it = table.refcnts.find(this);
+refcnt_result += it-&gt;second &gt;&gt; SIDE_TABLE_RC_SHIFT;</code></pre><blockquote>
+<p>同样的，系统首先通过this指针查找到对象所在的table表，并初始化一个局部变量，然后再在table表中查找到对应的引用计数，再对该对象z做一次向右偏移操作，最后与局部变量refcnt_result的值1想加。所以呢，当我们新alloc一个对象时，虽然在引用计数表中是没有这个对象的，但由于refcnt_result初始化为1，所以alloc之后调用retainCount的结果为1.</p>
+</blockquote>
+<h5 id="dealloc实现"><a href="#dealloc实现" class="headerlink" title="dealloc实现"></a>dealloc实现</h5><p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/BE2BBB45902844E08CD9F954476D2F18/28181" alt="image"></p>
+<p>如上图所示，调用dealloc时，系统会在内部调用<code>_objc_rootDealloc</code>函数，<code>_objc_rootDealloc</code>函数内部又会调用<code>rootDealloc</code>函数。<code>rootDealloc</code>会做以下5种判断：</p>
+<ul>
+<li><ol>
+<li>nonpointer_isa:判断当前对象是否使用了非指针型的isa</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>weakly_referenced:判断当前对象是否有weak指针指向它</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>has_assoc:判断当前对象是否有关联对象</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>has_cxx_dtor:判断当前对象的实现是否涉及到C++相关的内容，以及呢当前对象是否使用ARC来管理内存</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>has_sidetable_rc:判断当前对象的引用计数是否是通过sidetable表来维护的。因为有的对象是通过nonpointer_isa这种非指针型的isa指针来维护的，nonpointer_isa中有19位被用来存储对象的引用计数，当超过最大阈值时，再通过sidetable来维护引用计数。</li>
+</ol>
+</li>
+</ul>
+<p>当该对象根据以上5个条件判断均不满足时，那么系统会直接调用C中的函数free来直接释放对象。否则的话，系统会调用objct_dispose()来做进一步的操作。</p>
+<h5 id="objct-dispose内部实现"><a href="#objct-dispose内部实现" class="headerlink" title="objct_dispose内部实现"></a>objct_dispose内部实现</h5><p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/EA41DEAFEDCA47E1BCA3AC48830FB83E/28183" alt="image"></p>
+<p>如上图所示，系统会调用objc_destructInstance函数来销毁对象的实例，然后再执行C函数的free函数。</p>
+<h5 id="objc-destructInstance内部实现"><a href="#objc-destructInstance内部实现" class="headerlink" title="objc_destructInstance内部实现"></a>objc_destructInstance内部实现</h5><p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/E3D6451E63344BA88094994F85DE149E/28185" alt="image"></p>
+<p>如上图所示，系统会首先判断hasCxxDtor,上面已经说过hasCxxDtor是用来判断对象是否有c++的实现以及是否通过ARC来管理内存。如果有的话，系统会调用object_cxxDestruct函数来做进一步操作。如果没有的话，会接着判断hasAssociatedObjects是否有关联对象。如果有关联对象的话，系统会调用_object_remove_associations函数，接着如果没有关联对象的话，系统会调用clearDeallocating函数结束调用流程。</p>
+<h5 id="clearDeallocating内部实现"><a href="#clearDeallocating内部实现" class="headerlink" title="clearDeallocating内部实现"></a>clearDeallocating内部实现</h5><p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/9124BC005A1D49FF9CE1693F9647C1E4/28276" alt="image"></p>
+<p>如上图所示，系统会首先调用sidetable_clearDeallocating函数，接着系统会调用weak_clear_no_lock,weak_clear_no_lock会将指向该对象的弱引用指针置为nil（这也就可以解释“为什么对象有weak指针指向时，当该对象dealloc时，它的weak指针为什么会自动被置为nil？”原因就是在dealloc的内部实现中，有做对象的弱引用指针置为nil的操作。 ）。在调用了weak_clear_no_lock函数之后，系统会调用table_refcnts.erase来对对象的引用计数进行擦除，将该对象在引用计数表中的相关存储给清除掉，最后结束调用流程。</p>
+<h4 id="弱引用管理"><a href="#弱引用管理" class="headerlink" title="弱引用管理"></a>弱引用管理</h4><p>那么一个weak修饰的变量是怎样被添加到弱引用表当中的呢？</p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/83E829C3A9CC4CDF83F43E3B7E0049BF/28288" alt="image"></p>
+<p>如上图所示，当我们通过一个弱引用指针指向一个变量obj1时，代码经过编译后就入上图所示，调用了objc_initWeak函数。</p>
+<h5 id="objc-initWeak函数的调用栈"><a href="#objc-initWeak函数的调用栈" class="headerlink" title="objc_initWeak函数的调用栈"></a>objc_initWeak函数的调用栈</h5><p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/289B463635C240A48EF210EA85F78E7C/28296" alt="image"></p>
+<p>如上图所示， objc_initWeak函数会首先调用storeWeak函数，接着调用weak_register_no_lock函数，到弱引用表中进行注册添加。在这个函数中，系统通过哈希算法得到需要插入的位置，如果该位置已经有了该对象对应的弱引用数组，那么系统就讲这个新的弱引用变量添加到该数组中，如果没有对应的数组，系统会重新创建一个弱引用数组，然后在该数组下标为0的位置添加这个新的弱引用指针。</p>
+<p>我们知道，在销毁weak修饰的对象时，系统会同时将这个weak指针置为nil。那么系统是怎样实现的呢？</p>
+<p>通过dealloc的分析，我们知道系统会在dealloc的底层调用weak_clear_no_lock函数。在这个函数中，系统会根据当前对象的弱引用指针查找弱引用表，把当前对象对应的弱引用数组给取出，然后遍历这个弱引用数组，将数组中的每一个弱引用指针分别置为nil。</p>
+<h5 id="总结：为什么weak指针指向的对象被废弃后会被自动置为nil？"><a href="#总结：为什么weak指针指向的对象被废弃后会被自动置为nil？" class="headerlink" title="总结：为什么weak指针指向的对象被废弃后会被自动置为nil？"></a>总结：为什么weak指针指向的对象被废弃后会被自动置为nil？</h5><p>当对象被废弃后，对象的dealloc方法会有做对象的弱引用指针置为nil的方法（也就是weak_clear_no_lock方法）。在这个方法中，系统会根据当前对象的弱引用指针，通过哈希方法查找到当前对象对应的弱引用数组，然后遍历这个弱引用数组，将数组中的每一个弱引用指针分别置为nil。</p>
+<hr>
+<h3 id="自动释放池"><a href="#自动释放池" class="headerlink" title="自动释放池"></a>自动释放池</h3><p>我们在OC中的main函数中会发现自动释放池的使用：</p>
+<pre><code>#import &lt;UIKit/UIKit.h&gt;
+#import &quot;AppDelegate.h&quot;
+
+int main(int argc, char * argv[]) {
+    NSString * appDelegateClassName;
+    @autoreleasepool {
+        // Setup code that might create autoreleased objects goes here.
+        appDelegateClassName = NSStringFromClass([AppDelegate class]);
+    }
+    return UIApplicationMain(argc, argv, nil, appDelegateClassName);
+}</code></pre><p>@autoreleasepool经过编译器编译之后，会改写为以下的代码：</p>
+<pre><code>void* ctx = objc_autoreleasePoolPush();
+{
+
+    //在xcode中被{}包裹的代码
+}
+objc_autoreleasePoolPop(ctx);</code></pre><h4 id="objc-autoreleasePoolPush和objc-autoreleasePoolPop的实现"><a href="#objc-autoreleasePoolPush和objc-autoreleasePoolPop的实现" class="headerlink" title="objc_autoreleasePoolPush和objc_autoreleasePoolPop的实现"></a>objc_autoreleasePoolPush和objc_autoreleasePoolPop的实现</h4><p>objc_autoreleasePoolPush内部会调用C++类的AutoreleasePoolPage中的push方法。对应的objc_autoreleasePoolPop会调用AutoreleasePoolPage类中的pop方法：</p>
+<pre><code>void* objc_autoreleasePoolPush(void)      -----&gt;
+
+void* AutoreleasePoolPage::push(void)
+
+
+
+void* objc_autoreleasePoolPop(void* ctx)      -----&gt;
+
+void* AutoreleasePoolPage::pop(void* ctx)</code></pre><p>实际上，一次pop操作相当于一次批量的pop操作。也就是说，在@autoreleasepool中的花括号{}所包含的对象都会被添加到自动释放池中，当进行pop操作时，花括号中所有的对象都会被发送一次release消息。</p>
+<h4 id="自动释放池的数据结构"><a href="#自动释放池的数据结构" class="headerlink" title="自动释放池的数据结构"></a>自动释放池的数据结构</h4><p>实际上，自动释放池是以栈为节点通过双向链表的形式组合而成，并且它是和线程一一对应的。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/BC46FB527433412C9C8F2BC4D872CC41/28376" alt="image"></p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/8F07A4A8485A404D86631282A953DB44/28380" alt="image"></p>
+<h5 id="AutoreleasePoolPage的内部实现"><a href="#AutoreleasePoolPage的内部实现" class="headerlink" title="AutoreleasePoolPage的内部实现"></a>AutoreleasePoolPage的内部实现</h5><p>如下图所示，AutoreleasePoolPage主要有4个成员变量：next指向下一个可以填充的位置；而parent和next则是双向链表中的父指针和子指针；thread则很明显是一个线程相关的变量，所以我们才说autoreleasePool是和线程一一对应的。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/29EF31D5E7C049A49E58EE159D7CC1D4/28386" alt="image"></p>
+<p>如下图所示，在这个栈中，存放的就是@autoreleasepool中花括号中创建的autorelease对象。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/E71B11B09AEE4334B314132BD0BF4E52/28400" alt="image"></p>
+<h5 id="AutoreleasePoolPage-push的实现"><a href="#AutoreleasePoolPage-push的实现" class="headerlink" title="AutoreleasePoolPage::push的实现"></a>AutoreleasePoolPage::push的实现</h5><p>当调用AutoreleasePoolPage::push函数时，意味着会向栈中添加新的一批对象。此时，会将当前的next置为nil，我们称它为哨兵对象。同时将next指针指向下一个可以入栈的位置，然后将这一批对象依次添加到栈中。这也就是AutoreleasePoolPage的push方法的实现过程。实际上，我们每次进行一个@autoreleasepool的代码块的创建，就相当于不断的先在栈中插入哨兵对象，然后添加一批新的autorelease对象的过程。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/5ADB4857E9A14D51B0ABA802A4127CD7/28420" alt="image"></p>
+<h5 id="对象调用autorelease的流程"><a href="#对象调用autorelease的流程" class="headerlink" title="对象调用autorelease的流程"></a>对象调用autorelease的流程</h5><p>如下图，当我们调用了一个对象的autorelease，那么系统会先判断栈中的next指针是否指向了栈顶，如果没有指向栈顶，说明还有存储空间，便直接做入栈的push操作，将该对象添加到next的位置；如果next已经位于栈顶，那么系统会先新增加一个栈节点到链表上，然后在新的栈上添加对象。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/B57FF57C802448C29835BF5DB3717B8C/28431" alt="image"></p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/800CF036B2A24E11B91CBA6DAF4D227D/28445" alt="image"></p>
+<h5 id="AutoreleasePoolPage-pop"><a href="#AutoreleasePoolPage-pop" class="headerlink" title="AutoreleasePoolPage::pop"></a>AutoreleasePoolPage::pop</h5><p>如下图所示：在进行pop操作的时候，系统会根据传入的哨兵对象找到对应的位置。而这个哨兵对象，就是上面提到过的<code>void* ctx = objc_autoreleasePoolPush();</code>,然后将哨兵对象ctx传给pop函数<code>objc_autoreleasePoolPop(ctx);</code>。通过哨兵对象找到对应的位置之后，系统就会给上次push操作之后添加的对象依次发送release消息，最后再将next指针回退到正确的位置。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/02F03F6FA193448992443660562E55AF/28469" alt="image"></p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/E0BC4947137E4946BFAA9E1BDFCE610B/28472" alt="image"></p>
+<h5 id="下面代码，array对象的内存是什么时候释放的呢？"><a href="#下面代码，array对象的内存是什么时候释放的呢？" class="headerlink" title="下面代码，array对象的内存是什么时候释放的呢？"></a>下面代码，array对象的内存是什么时候释放的呢？</h5><pre><code>- (void)viewDidLoad {
+    [super viewDidLoad];
+    NSMutableArray *array = [NSMutableArray array];
+    NSLog(@&quot;%@&quot;, array);
+}</code></pre><blockquote>
+<p>实际上，在每一次的runloop循环当中，runloop都会在它将要结束的时候，对前一次创建的autoreleasePool进行pop操作，然后再push进来一个新的autoreleasePool。所以说，我们在viewDidLoad中创建的array对象，会在当次runloop将要结束的时候调用AutoreleasePoolPage::pop(),对array进行释放。</p>
+</blockquote>
+<h5 id="autoreleasePool的实现原理是怎样的？"><a href="#autoreleasePool的实现原理是怎样的？" class="headerlink" title="autoreleasePool的实现原理是怎样的？"></a>autoreleasePool的实现原理是怎样的？</h5><blockquote>
+<p>autoreleasePool是以栈为节点通过双向链表形式组合而成的数据结构。</p>
+</blockquote>
+<h5 id="autoreleasePool为什么可以嵌套使用呢？"><a href="#autoreleasePool为什么可以嵌套使用呢？" class="headerlink" title="autoreleasePool为什么可以嵌套使用呢？"></a>autoreleasePool为什么可以嵌套使用呢？</h5><blockquote>
+<p>实际上，多层嵌套调用就是多次插入哨兵对象。我们每次进行@autoreleasepool中代码块创建的时候，系统就会为我们进行一次哨兵对象的插入，然后将这批对象添加到AutoreleasePoolPage当中。</p>
+</blockquote>
+<h3 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h3><p>iOS中的循环引用可以分为3种：自循环引用、相互循环引用、多循环引用。</p>
+<h4 id="自循环引用"><a href="#自循环引用" class="headerlink" title="自循环引用"></a>自循环引用</h4><p>如下图，创建一个对象，该对象有个成员变量obj，当我们将该对象赋值给obj的话，就会产生自循环引用的问题。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/8CF7408482CC47E19E870A03D127F40A/28511" alt="image"></p>
+<h4 id="相互循环引用"><a href="#相互循环引用" class="headerlink" title="相互循环引用"></a>相互循环引用</h4><p>如下图，有两个对象，他们均有一个成员变量引用了对方，就会造成相互循环引用。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/4A2F4A97FC0B4965A989ADB8476835F3/28519" alt="image"></p>
+<h4 id="多循环引用"><a href="#多循环引用" class="headerlink" title="多循环引用"></a>多循环引用</h4><p>如下图，多循环引用其实跟相互循环引用的情况是一样的，就是多个对象依次引用下一个对象造成的。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/71F857102EBE4AFB83BE66CF455E0C36/28526" alt="image"></p>
+<h4 id="如何解决循环引用？"><a href="#如何解决循环引用？" class="headerlink" title="如何解决循环引用？"></a>如何解决循环引用？</h4><p>我们在开发中，经常涉及到的循环引用有代理、Block、NSTimer等情况。一方面，我们可以通过避免循环引用，例如我们在使用代理时，通过弱引用来避免产生循环引用。比如使用<code>__weak __block __unsafe_unretained</code>.另一方面，我们也可以在合适的时机通过手动来断开循环引用。</p>
+<blockquote>
+<p>通过<strong>block方式来避免循环引用需要注意</strong>block在MRC和在ARC中不同的表现。在MRC中，<strong>block不会增加引用计数，避免了循环引用。但是在ARC下，</strong>block修饰的对象会被强引用，无法避免循环引用，需要我们手动解环。</p>
+</blockquote>
+<blockquote>
+<p>通过<strong>unsafe_unretained来避免循环引用时，</strong>unsafe_unretained修饰的对象不会增加引用计数，从而避免了循环引用。但是，如果被<strong>unsafe_unretained修饰的对象在某一时机被释放，会产生悬垂指针。所以我们也不建议使用</strong>unsafe_unretained来解决循环引用的问题。</p>
+</blockquote>
+<h5 id="解决NSTimer造成的循环引用"><a href="#解决NSTimer造成的循环引用" class="headerlink" title="解决NSTimer造成的循环引用"></a>解决NSTimer造成的循环引用</h5><p>定时器有重复定时器和非重复定时器的分别。非重复定时器使用时一般是在回调方法中调用<code>[timer invalidate]; timer = nil;</code>来解决循环引用的问题。这里我们讨论的是重复定时器。首先，我们要明白NSTimer造成循环引用的原因。例如我们要实现一个无限滚动的广告栏View。那么我们的控制器VC会持有这个View，而View为了实现定时滚动，则会运用到了定时器。我们知道定时器会通过targe持有这个View。这个时候就产生了View和Timer相互引用的问题。</p>
+<pre><code>[NSTimer scheduledTimerWithTimeInterval:interval target:object selector:@selector(fire:) userInfo:userInfo repeats:repeats];</code></pre><p>如下图，如果是想通过View对Timer使用弱引用的方式来解决循环引用的方式是行不通的。因为当View中的Timer被创建启动后，Timer会被当前的runloop进行强引用，如果timer是在主线程创建的，那么这个timer便会被主线程的runloop所持有。由于主线程的runloop常住内存，所以runloop会对timer进行强引用，而timer又通过targe对view进行强引用，这就形成了主线程的runloop对view对象的强引用。所以，当控制器VC销毁后，它的这个循环滚动的子视图view由于被runloop强持有，从而无法销毁。进而造成了内存泄露。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/35C5AC10280748A6A1A3721883B17B87/28599" alt="image"></p>
+<p>如下图，我们可以通过创建中间对象来解决Timer造成的循环引用问题。中间对象对Timer对象和view视图对象都采用弱引用的方式。由此轮播图的view只被控制器VC所持有。当控制器VC退出后就会释放对轮播图View。当定时器Timer进行下次循环的回调时，会判断视图对象是否被释放废弃掉了，如果被释放了则调用timer的invalidate方法。由于Timer和中间对象并没有形成相互引用，从而解决了内存泄露的问题（实际上，我们运用中间对象的思路，就是利用视图对象被释放后，中间对象对视图的弱引用会被置为nil这个原理，来在这个时机解决循环引用的问题）。</p>
+<p><img src="https://note.youdao.com/yws/public/resource/29c97d56d2957fcf5f47e6d23fcd3f2a/xmlnote/F83C23F1163E41EB8A0635CBABE22A7C/28609" alt="image"></p>
+<pre><code>#import &lt;Foundation/Foundation.h&gt;
+
+@interface NSTimer (WeakTimer)
+
++ (NSTimer *)scheduledWeakTimerWithTimeInterval:(NSTimeInterval)interval
+                                         target:(id)aTarget
+                                       selector:(SEL)aSelector
+                                       userInfo:(id)userInfo
+                                        repeats:(BOOL)repeats;
+
+@end
+</code></pre><pre><code>
+#import &quot;NSTimer+WeakTimer.h&quot;
+
+@interface TimerWeakObject : NSObject
+@property (nonatomic, weak) id target;
+@property (nonatomic, assign) SEL selector;
+@property (nonatomic, weak) NSTimer *timer;
+
+- (void)fire:(NSTimer *)timer;
+@end
+
+@implementation TimerWeakObject
+
+- (void)fire:(NSTimer *)timer
+{
+    if (self.target) {
+        if ([self.target respondsToSelector:self.selector]) {
+            [self.target performSelector:self.selector withObject:timer.userInfo];
+        }
+    }
+    else{
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+}
+
+@end
+
+@implementation NSTimer (WeakTimer)
+
++ (NSTimer *)scheduledWeakTimerWithTimeInterval:(NSTimeInterval)interval
+                                         target:(id)aTarget
+                                       selector:(SEL)aSelector
+                                       userInfo:(id)userInfo
+                                        repeats:(BOOL)repeats
+{
+    TimerWeakObject *object = [[TimerWeakObject alloc] init];
+    object.target = aTarget;
+    object.selector = aSelector;
+    object.timer = [NSTimer scheduledTimerWithTimeInterval:interval target:object selector:@selector(fire:) userInfo:userInfo repeats:repeats];
+
+    return object.timer;
+}
+
+@end
+</code></pre>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《iOS中的内存管理总结》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2018/08/27/2018-08-27-ios-zhong-de-nei-cun-guan-li-zong-jie/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                刘星星
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'abc79898ea014913ba7c',
+        clientSecret: '41f23ea4570391c06c9f4f47d0acec45d8dfe3ff',
+        repo: 'blogtalk',
+        owner: 'smileasy',
+        admin: "smileasy",
+        id: '2018-08-27T00-00-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2018/10/01/2018-10-01-shu-ju-ku-ru-men/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="数据库入门1">
+                        
+                        <span class="card-title">数据库入门1</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+基本概念什么是数据库？
+
+数据库(database) 保存有组织的数据的容器(通常是一个文 件或一组文件)。数据库软件称为DBMS(数据库管理系统)。数据库 是通过DBMS创建和操纵的容器。
+
+什么是SQL?
+
+SQL(发音为字母S-
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2018-10-01
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/MySQL/" class="post-category" target="_blank">
+                                    MySQL
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/基础知识/" target="_blank">
+                        <span class="chip bg-color">基础知识</span>
+                    </a>
+                    
+                    <a href="/tags/MySQL/" target="_blank">
+                        <span class="chip bg-color">MySQL</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/08/03/2018-08-03-ios-zhong-de-gcd-shi-yong-zong-jie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="iOS中的GCD使用总结">
+                        
+                        <span class="card-title">iOS中的GCD使用总结</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+iOS中的GCD使用总结GCD是iOS开发者必须要熟练掌握和使用的异步执行任务的技术之一。下面是我自己总结的GCD的使用总结。
+GCD的APIDispatch QueueGCD中，执行时存在2种Dispatch Queue。一种是串行
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-08-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                    iOS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/总结提高/" target="_blank">
+                        <span class="chip bg-color">总结提高</span>
+                    </a>
+                    
+                    <a href="/tags/多线程/" target="_blank">
+                        <span class="chip bg-color">多线程</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站博客内容由刘星星负责更新维护.
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;当前站点总字数:&nbsp;
+                <span class="white-color">118.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

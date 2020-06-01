@@ -1,0 +1,1477 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="在uni-app中使用Vuex, 星星的博客">
+    <meta name="description" content="
+
+引入vuexuni-app已经内置了vuex，我们可以直接引入使用。官方文档
+state的使用我们按照大型项目中的实际需求，将不同模块的状态管理划分为不同的module。例如我们有2个模块home和user，将home和user模块引入">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>在uni-app中使用Vuex | 星星的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">星星的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">星星的博客</div>
+        <div class="logo-desc">
+            
+            一起学习 共同进步
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        在uni-app中使用Vuex
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/uni-app/" target="_blank">
+                                <span class="chip bg-color">uni-app</span>
+                            </a>
+                        
+                            <a href="/tags/Vuex/" target="_blank">
+                                <span class="chip bg-color">Vuex</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Vue-js/" class="post-category" target="_blank">
+                                Vue.js
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-10-17
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        3.4k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        17 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <meta name="referrer" content="no-referrer">
+
+<h4 id="引入vuex"><a href="#引入vuex" class="headerlink" title="引入vuex"></a>引入vuex</h4><p>uni-app已经内置了vuex，我们可以直接引入使用。<a href="https://vuex.vuejs.org/zh/" target="_blank" rel="noopener">官方文档</a></p>
+<h3 id="state的使用"><a href="#state的使用" class="headerlink" title="state的使用"></a>state的使用</h3><p>我们按照大型项目中的实际需求，将不同模块的状态管理划分为不同的module。例如我们有2个模块home和user，将home和user模块引入到index中（此处只是分步骤讲解，可以直接下载Demo）。</p>
+<p>此时我们在home模块中定义state：</p>
+<pre><code>    state: {
+        homeCount: 123,
+        homeName: &#39;刘德华&#39;
+    }</code></pre><p>我们想要在场景中获取内容：</p>
+<pre><code>//普通方式获取模块home中的homeName的内容
+console.log(this.$store.state.home.homeName)</code></pre><p>通过辅助函数mapState获取（同时还可以重新命名变量）：</p>
+<pre><code>            ...mapState( {
+                    // 映射 this.myCount 为 this.$store.state.home.homeCount
+                    myCount: state =&gt; state.home.homeCount,
+                    myName: state =&gt; state.home.homeName
+                }),</code></pre><h4 id="Getters"><a href="#Getters" class="headerlink" title="Getters"></a>Getters</h4><p>Getters可以认为是 store 的计算属性。我的理解是相当于computed的角色。</p>
+<p>此时我们在home模块中定义getters：</p>
+<pre><code>    getters: { //（可以认为是 store 的计算属性）
+        homeCountPower: state =&gt; state.homeCount * state.homeCount,
+        homeNameDesc: state =&gt; state.homeName + &#39;长得真帅啊&#39;,
+    },</code></pre><p>我们想要在场景中获取内容：</p>
+<pre><code>// 获取getters的内容
+ console.log(this.$store.getters.homeNameDesc)
+
+ //error:注意此处不能通过.home.getters，而是直接.getters
+ // console.log(this.$store.home.getters.homeNameDesc)</code></pre><p>通过辅助函数mapGetters获取（同时还可以重新命名变量）：</p>
+<pre><code>            ...mapGetters(
+                 {
+                    countPower: &#39;homeCountPower&#39;,
+                    nameDesc: &#39;homeNameDesc&#39;
+                }
+            ),</code></pre><p>当然，我们也可以不通过getters来在对应的模块来组织内容，我们可以根据实际需要，直接在computed中来更改内容也是可以的：</p>
+<pre><code>        computed: {
+            homeCount() {
+                return this.$store.state.home.homeCount + &#39;KG&#39;
+            },
+            }</code></pre><p> getters中的函数是可以相互调用的：</p>
+<pre><code>    getters: { //（可以认为是 store 的计算属性）
+        homeCountPower: state =&gt; state.homeCount * state.homeCount,
+        homeNameDesc: state =&gt; state.homeName + &#39;长得真帅啊&#39;,
+        homeInfo: (state, getters) =&gt; {
+            //假如是复杂的处理逻辑，可以用上面的简便写法
+            return &#39;明星&#39; + getters.homeNameDesc + &#39;!!!!!!!&#39;
+        } 
+    },</code></pre><p>在主页中使用homeInfo：</p>
+<pre><code>//如果不更改getters中原有的名字，可以直接传一个数组
+            ...mapGetters(
+                 [&#39;homeInfo&#39;]
+            ),</code></pre><p> getters中的函数也是可以传递参数的。假如现在我需要动态给homeCount进行更改，需要这要做：</p>
+<pre><code>        editHomeCount: (state) =&gt; {//动态更改homeCount
+            return (data) =&gt; {
+                return state.homeCount + data 
+            }
+        } </code></pre><pre><code>            //如果不更改getters中原有的名字，可以直接传一个数组
+            ...mapGetters(
+                 [&#39;homeInfo&#39;, &#39;editHomeCount&#39;]
+            ),</code></pre><pre><code>        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{homeInfo}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{editHomeCount(1000)}}&lt;/text&gt;
+        &lt;/view&gt;</code></pre><h4 id="Mutation"><a href="#Mutation" class="headerlink" title="Mutation"></a>Mutation</h4><p>更改 Vuex 的 store 中的状态的唯一方法是提交 mutation。言下之意就是我们规范的修改store中的变量只能通过commit的 方式。</p>
+<pre><code>    mutations: {
+        [ADD](state, num) {
+            state.homeCount += num
+        },
+        [MIN](state, num) {
+            state.homeCount -= num
+        }
+    },</code></pre><blockquote>
+<p>ADD 和MIN是通过export导出的常量。根据ES6的语法，来替代函数名称。</p>
+</blockquote>
+<p>使用辅助函数mapMutations： </p>
+<pre><code>            //方式1：直接使用
+            ...mapMutations(
+                [ADD, MIN],
+            ),
+            //方式2： 重新命名
+            ...mapMutations( {
+                addAmount: ADD,
+                minAmount: MIN
+            }),</code></pre><p>此时我们呢用2个按钮来定义点击事件：</p>
+<pre><code>&lt;button type=&quot;primary&quot; @click=&quot;add(1000)&quot;&gt;增加&lt;/button&gt;
+&lt;button type=&quot;primary&quot; @click=&quot;min(2000)&quot;&gt;减小&lt;/button&gt;</code></pre><p>我们有3种方式来调用mutations的函数：</p>
+<pre><code>            add(data) {
+                //方式1：
+                this.ADD(data)
+                //方式2：
+                // this.addAmount(data)
+                //方式3：直接通过commit方式提交
+                // this.$store.commit(ADD, data)
+            },
+            min(data) {
+                this.MIN(data)
+                // this.minAmount(data)
+                // this.$store.commit(MIN, data)
+            },</code></pre><p>如果我们传给mutations中函数的参数比较复杂呢？我们在state中增加一个数组：</p>
+<pre><code>        homeGoods: [{
+                goodsId: 100,
+                goodsName: &#39;番茄&#39;,
+                goodsPrice: 22
+            },
+            {
+                goodsId: 100,
+                goodsName: &#39;土豆&#39;,
+                goodsPrice: 44
+            }
+        ]</code></pre><p>mutations中增加一个添加商品的函数：</p>
+<pre><code>        addGoods(state, playload) {//增加一个商品
+            //方式1和2的方式：
+            // state.homeGoods.push(playload)
+            //方式3：
+            state.homeGoods.push(playload.data)
+        }</code></pre><pre><code>&lt;button type=&quot;primary&quot; @click=&quot;addMoreGoods&quot;&gt;增加一个商品&lt;/button&gt;
+
+            addMoreGoods() {
+                let goods = {
+                    goodsId: 100,
+                    goodsName: &#39;榴莲&#39;,
+                    goodsPrice: 150
+                }
+                //方式1：
+                // this.addGoods(goods)
+                //方式2：
+                // this.$store.commit(&#39;addGoods&#39;, goods)
+                //方式3：（需要更改mutations中的取参数的方式）
+                this.$store.commit({
+                    type: &#39;addGoods&#39;,
+                    data: goods 
+                })
+                console.log(this.$store.state.home.homeGoods)
+            },</code></pre><h5 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h5><blockquote>
+<p>Action 类似于 mutation，不同在于：<br>Action 提交的是 mutation，而不是直接变更状态。<br>Action 可以包含任意异步操作。</p>
+</blockquote>
+<p>action是用来针对异步操作的。有的人会把网络请求在action中实现，然后在页面中直接调用。页面的代码会减少很多。</p>
+<pre><code>    actions: {
+        requestListData(context) {
+            let goods = {
+                goodsId: 120,
+                goodsName: &#39;西瓜&#39;,
+                goodsPrice: 66
+            }
+            // 模拟异步操作
+            setTimeout(() =&gt; {
+                context.commit({
+                    type: &#39;addGoods&#39;,
+                    data: goods 
+                })
+            },2000)
+        }
+    }</code></pre><p>在页面中使用：</p>
+<pre><code>&lt;button type=&quot;primary&quot; @click=&quot;asyncAddMoreGoods&quot;&gt;异步增加一个商品&lt;/button&gt;
+
+
+            ...mapActions({
+                requestData: &#39;requestListData&#39;
+            }),
+            asyncAddMoreGoods() {
+                //方式1：
+                // this.requestData()
+                // 方式2:
+                this.$store.dispatch(&#39;requestListData&#39;)
+            },</code></pre><p>有的时候需要异步增加结果回调，我们可以这样：</p>
+<pre><code>actions: {
+            requestHomeInfo(context,playload) {
+            // 模拟异步操作
+            setTimeout(() =&gt; {
+                context.commit(&#39;addOneGoods&#39;,playload.data)
+                playload.callback(&#39;添加成功了。。&#39;)
+            },2000)
+        }
+}</code></pre><p>在页面中使用callback回调：</p>
+<pre><code>&lt;button type=&quot;primary&quot; @click=&quot;asyncCallback&quot;&gt;异步增加商品回调&lt;/button&gt;
+
+
+            asyncCallback() {
+                //直接使用方式2进行测试：
+                let goods = {
+                    goodsId: 199,
+                    goodsName: &#39;圣女果&#39;,
+                    goodsPrice: 177
+                }
+                this.$store.dispatch(&#39;requestHomeInfo&#39;, {
+                    data: goods,
+                    callback: (res) =&gt; {
+                        console.log(res)
+                    }
+                })
+            },</code></pre><p>使用promise来实现：</p>
+<pre><code>actions: {
+            requestPromiseInfo(context, playload) {
+            return new Promise((resolve, reject) =&gt; {
+                // 模拟异步操作
+                setTimeout(() =&gt; {
+                    context.commit(&#39;addOneGoods&#39;,playload)
+                    resolve(&#39;Promise添加成功了...&#39;)
+                },2000)
+            })
+        }
+}</code></pre><pre><code>            asyncPromise() {
+                //直接使用方式2进行测试：
+                let goods = {
+                    goodsId: 911,
+                    goodsName: &#39;酸奶&#39;,
+                    goodsPrice: 199
+                }
+                this.$store.
+                        dispatch(&#39;requestPromiseInfo&#39;, goods)
+                        .then(res =&gt; {
+                            console.log(res)
+                        }) 
+            },</code></pre><h3 id="在uni-APP中使用Vuex案例"><a href="#在uni-APP中使用Vuex案例" class="headerlink" title="在uni-APP中使用Vuex案例"></a>在uni-APP中使用Vuex案例</h3><h4 id="home-js"><a href="#home-js" class="headerlink" title="home.js"></a>home.js</h4><pre><code>//home.js
+import {
+    ADD,
+    MIN
+} from &#39;../common/const.js&#39;
+
+
+export default {
+    state: {
+        homeCount: 123,
+        homeName: &#39;刘德华&#39;,
+        homeGoods: [{
+                goodsId: 100,
+                goodsName: &#39;番茄&#39;,
+                goodsPrice: 22
+            },
+            {
+                goodsId: 100,
+                goodsName: &#39;土豆&#39;,
+                goodsPrice: 44
+            }
+        ]
+    },
+    getters: { //（可以认为是 store 的计算属性）
+        homeCountPower: state =&gt; state.homeCount * state.homeCount,
+        homeNameDesc: state =&gt; state.homeName + &#39;长得真帅啊&#39;,
+        homeInfo: (state, getters) =&gt; {
+            //假如这是复杂的处理逻辑，简单的处理可以用上面的简便写法
+            return &#39;明星&#39; + getters.homeNameDesc + &#39;!!!!!!!&#39;
+        },
+        editHomeCount: (state) =&gt; {//动态更改homeCount
+            return (data) =&gt; {
+                return state.homeCount + data 
+            }
+        } 
+    },
+    mutations: {
+        [ADD](state, num) {
+            state.homeCount += num
+        },
+        [MIN](state, num) {
+            state.homeCount -= num
+        },
+        addGoods(state, playload) {//增加一个商品
+            //方式1和2的方式：
+            // state.homeGoods.push(playload)
+            //方式3：
+            state.homeGoods.push(playload.data)
+        },
+        addOneGoods(state, playload) {//增加一个商品
+            state.homeGoods.push(playload)
+        },
+    },
+    actions: {
+        requestListData(context) {
+            let goods = {
+                goodsId: 120,
+                goodsName: &#39;西瓜&#39;,
+                goodsPrice: 66
+            }
+            // 模拟异步操作
+            setTimeout(() =&gt; {
+                context.commit({
+                    type: &#39;addGoods&#39;,
+                    data: goods 
+                })
+            },2000)
+        },
+        requestHomeInfo(context,playload) {
+            // 模拟异步操作
+            setTimeout(() =&gt; {
+                context.commit(&#39;addOneGoods&#39;,playload.data)
+                playload.callback(&#39;添加成功了。。&#39;)
+            },2000)
+        },
+        requestPromiseInfo(context, playload) {
+            return new Promise((resolve, reject) =&gt; {
+                // 模拟异步操作
+                setTimeout(() =&gt; {
+                    context.commit(&#39;addOneGoods&#39;,playload)
+                    resolve(&#39;Promise添加成功了...&#39;)
+                },2000)
+            })
+        }
+    }
+}
+</code></pre><h4 id="user-js"><a href="#user-js" class="headerlink" title="user.js"></a>user.js</h4><pre><code>import {
+    USER_NAME,
+    USER_AGE
+} from &#39;../common/const.js&#39;
+
+export default {
+    state: {
+        userAge: 18,
+        userName: &#39;渣渣辉&#39;
+    },
+    getters: {
+        userAge: state =&gt; state.userAge + &#39;岁！&#39;,
+        userName: state =&gt; state.userName + &#39;贪玩蓝月！&#39;,
+    },
+    mutations: {
+        [USER_NAME](state, name) {
+            state.userName = name
+        },
+        [USER_AGE](state, age) {
+            state.userAge = age
+        }
+    },
+    actions: {
+
+    }
+}</code></pre><h4 id="index-js"><a href="#index-js" class="headerlink" title="index.js"></a>index.js</h4><pre><code>import Vue from &#39;vue&#39;
+import Vuex from &#39;vuex&#39;
+import home from&#39;./home.js&#39;
+import user from&#39;./user.js&#39;
+Vue.use(Vuex)
+
+// home使用了命名空间
+const store = new Vuex.Store({
+    modules:{
+        home,
+        user 
+    }
+})
+export default store
+</code></pre><h4 id="创建好对应的文件后，我们需要到uni-APP的main文件中进行挂载："><a href="#创建好对应的文件后，我们需要到uni-APP的main文件中进行挂载：" class="headerlink" title="创建好对应的文件后，我们需要到uni-APP的main文件中进行挂载："></a>创建好对应的文件后，我们需要到uni-APP的main文件中进行挂载：</h4><pre><code>iimport Vue from &#39;vue&#39;
+import App from &#39;./App&#39;
+// 1.导入
+import store from &#39;./store&#39;
+Vue.config.productionTip = false
+
+App.mpType = &#39;app&#39;
+const app = new Vue({
+    ...App,
+    store
+})
+app.$mount()
+</code></pre><h4 id="在我们需要的vue文件中使用："><a href="#在我们需要的vue文件中使用：" class="headerlink" title="在我们需要的vue文件中使用："></a>在我们需要的vue文件中使用：</h4><blockquote>
+<p>vuex为我们提供了mapState mapMutations mapGetters mapActions等辅助函数。可以根据自己的实际情况来决定是否使用。我将分别演示使用与否的情况。</p>
+</blockquote>
+<p>index.vue</p>
+<pre><code>&lt;template&gt;
+    &lt;view class=&quot;content&quot;&gt;
+        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;block v-for=&quot;item in homeGoodsList &quot; :key=&#39;item.goodsId&#39;&gt;
+                &lt;view&gt;
+                    &lt;text class=&quot;title&quot;&gt;{{item.goodsId}}&lt;/text&gt;
+                    &lt;text class=&quot;title&quot;&gt;{{item.goodsName}}&lt;/text&gt;
+                    &lt;text class=&quot;title&quot;&gt;{{item.goodsPrice}}&lt;/text&gt;
+                &lt;/view&gt;
+            &lt;/block&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{myName}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{myCount}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{nameDesc}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{countPower}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{homeInfo}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{editHomeCount(1000)}}&lt;/text&gt;
+        &lt;/view&gt;
+
+        &lt;!-- ***************************************** --&gt;
+        &lt;view class=&quot;text-area-user&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{userName}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-area-user&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{userAge}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-area-user&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{userName1}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-area-user&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{userAge1}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-content&quot;&gt;
+            &lt;view&gt;
+                &lt;button type=&quot;primary&quot; @click=&quot;add(1000)&quot;&gt;增加&lt;/button&gt;
+                &lt;button type=&quot;primary&quot; @click=&quot;min(2000)&quot;&gt;减小&lt;/button&gt;
+                &lt;button type=&quot;primary&quot; @click=&quot;addMoreGoods&quot;&gt;增加一个商品&lt;/button&gt;
+                &lt;button type=&quot;primary&quot; @click=&quot;asyncAddMoreGoods&quot;&gt;异步增加一个商品&lt;/button&gt;
+                &lt;button type=&quot;primary&quot; @click=&quot;asyncCallback&quot;&gt;异步callback增加商品回调&lt;/button&gt;
+                &lt;button type=&quot;primary&quot; @click=&quot;asyncPromise&quot;&gt;异步promise增加商品回调&lt;/button&gt;
+                &lt;button type=&quot;warn&quot; @click=&quot;gotoUser&quot;&gt;跳转&lt;/button&gt;
+                &lt;button type=&quot;warn&quot; @click=&quot;changeName&quot;&gt;改变名字&lt;/button&gt;
+                &lt;button type=&quot;warn&quot; @click=&quot;changeAge&quot;&gt;改变年龄&lt;/button&gt;
+            &lt;/view&gt;
+        &lt;/view&gt;
+    &lt;/view&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    import {
+        ADD,
+        MIN,
+        USER_NAME,
+        USER_AGE
+    } from &#39;../../common/const.js&#39;;
+    import {
+        mapState,
+        mapMutations,
+        mapGetters,
+        mapActions
+    } from &#39;vuex&#39;;
+
+    export default {
+        data() {
+            return {
+
+            }
+        },
+        computed: {
+            homeCount() {
+                return this.$store.state.home.homeCount + &#39;KG&#39;
+            },
+            ...mapGetters({
+                countPower: &#39;homeCountPower&#39;,
+                nameDesc: &#39;homeNameDesc&#39;,
+            }),
+            //如果不更改getters中原有的名字，可以直接传一个数组
+            ...mapGetters(
+                [&#39;homeInfo&#39;, &#39;editHomeCount&#39;]
+            ),
+            ...mapState({
+                // 映射 this.count 为 this.$store.state.home.homeCount
+                myCount: state =&gt; state.home.homeCount,
+                myName: state =&gt; state.home.homeName,
+                homeGoodsList: state =&gt; state.home.homeGoods
+            }),
+
+            //不使用命名空间的user
+            userAge() {
+                return this.$store.state.user.userAge
+            },
+            userName() {
+                return this.$store.state.user.userName
+            },
+            userAge1() {
+                return this.$store.getters.userAge
+            },
+            userName1() {
+                return this.$store.getters.userName
+            }
+        },
+        onLoad() {
+            //普通方式获取模块home中的homeName的内容
+            console.log(this.$store.state.home.homeName)
+            // 获取getters的内容
+            console.log(this.$store.getters.homeNameDesc)
+            //error:注意此处不能通过.home.getters，而是直接.getters
+            // console.log(this.$store.home.getters.homeNameDesc)
+
+
+
+            // console.log(this.$store.state.user.userAge)
+            // console.log(this.$store.getters.userName)
+            // console.log(this.$store.getters.userAge)
+        },
+        methods: {
+            //将this.addAmount(data) 映射为 this.$store.commit(ADD, data)
+            //将this.minAmount(data) 映射为 this.$store.commit(MIN, data)
+            //同理，mapActions也可以如此使用
+            //注： 如果调用名一致，则可以直接使用数组，而不是对象：
+
+            //方式1：直接使用
+            ...mapMutations(
+                [ADD, MIN],
+            ),
+            //方式2： 重新命名
+            ...mapMutations({
+                addAmount: ADD,
+                minAmount: MIN
+            }),
+            ...mapMutations(
+                [&#39;addGoods&#39;]
+            ),
+            ...mapActions({
+                requestData: &#39;requestListData&#39;
+            }),
+            asyncPromise() {
+                //直接使用方式2进行测试：
+                let goods = {
+                    goodsId: 911,
+                    goodsName: &#39;酸奶&#39;,
+                    goodsPrice: 199
+                }
+                this.$store.
+                        dispatch(&#39;requestPromiseInfo&#39;, goods)
+                        .then(res =&gt; {
+                            console.log(res)
+                        }) 
+            },
+            asyncCallback() {
+                //直接使用方式2进行测试：
+                let goods = {
+                    goodsId: 199,
+                    goodsName: &#39;圣女果&#39;,
+                    goodsPrice: 177
+                }
+                this.$store.dispatch(&#39;requestHomeInfo&#39;, {
+                    data: goods,
+                    callback: (res) =&gt; {
+                        console.log(res)
+                    }
+                })
+            },
+            asyncAddMoreGoods() {
+                //方式1：
+                // this.requestData()
+                // 方式2:
+                this.$store.dispatch(&#39;requestListData&#39;)
+            },
+            addMoreGoods() {
+                let goods = {
+                    goodsId: 100,
+                    goodsName: &#39;榴莲&#39;,
+                    goodsPrice: 150
+                }
+                //方式1：
+                // this.addGoods(goods)
+                //方式2：
+                // this.$store.commit(&#39;addGoods&#39;, goods)
+                //方式3：（需要更改mutations中的取参数的方式）
+                this.$store.commit({
+                    type: &#39;addGoods&#39;,
+                    data: goods
+                })
+                console.log(this.$store.state.home.homeGoods)
+            },
+            add(data) {
+                //方式1：
+                this.ADD(data)
+                //方式2：
+                // this.addAmount(data)
+                //方式3：直接通过commit方式提交
+                // this.$store.commit(ADD, data)
+            },
+            min(data) {
+                this.MIN(data)
+                // this.minAmount(data)
+                // this.$store.commit(MIN, data)
+            },
+            gotoUser() {
+                uni.navigateTo({
+                    url: &#39;../user/user&#39;,
+                    success: res =&gt; {},
+                    fail: () =&gt; {},
+                    complete: () =&gt; {}
+                });
+            },
+
+            ...mapMutations({
+                setUserAge: USER_AGE,
+                setUserName: USER_NAME
+            }),
+            changeAge() {
+                this.setUserAge(33)
+            },
+            changeName() {
+                this.setUserName(&#39;张家辉&#39;)
+            }
+        }
+    }
+&lt;/script&gt;
+
+&lt;style&gt;
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logo {
+        height: 200rpx;
+        width: 200rpx;
+        margin-top: 200rpx;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 50rpx;
+    }
+
+    .text-area {
+        display: flex;
+        justify-content: center;
+    }
+
+    .text-area-user {
+        display: flex;
+        justify-content: center;
+        background-color: #F0AD4E;
+    }
+
+
+    .title {
+        font-size: 36rpx;
+        color: #8f8f94;
+    }
+
+    .text-content {
+        width: 100vw;
+        background: #007AFF;
+        height: 300upx;
+    }
+&lt;/style&gt;
+
+</code></pre><p>user.vue</p>
+<pre><code>&lt;template&gt;
+    &lt;view class=&quot;content&quot;&gt;
+        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{userName}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{userAge}}&lt;/text&gt;
+        &lt;/view&gt;
+
+        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{userName1}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-area&quot;&gt;
+            &lt;text class=&quot;title&quot;&gt;{{userAge1}}&lt;/text&gt;
+        &lt;/view&gt;
+        &lt;view class=&quot;text-content&quot;&gt;
+            &lt;view&gt;
+                &lt;button type=&quot;warn&quot; @click=&quot;gotoBack&quot;&gt;返回上一页&lt;/button&gt;
+                &lt;button type=&quot;warn&quot; @click=&quot;changeUserName&quot;&gt;改变名字&lt;/button&gt;
+                &lt;button type=&quot;warn&quot; @click=&quot;changeUserAge&quot;&gt;改变年龄&lt;/button&gt;
+            &lt;/view&gt;
+        &lt;/view&gt;
+    &lt;/view&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+    import {
+        USER_NAME,
+        USER_AGE
+    } from &#39;../../common/const.js&#39;;
+    import {
+        mapState,
+        mapMutations,
+        mapGetters,
+        mapActions
+    } from &#39;vuex&#39;;
+
+    export default {
+        data() {
+            return {}
+        },
+        computed: {
+            ...mapState({
+                userAge1: state =&gt; state.user.userAge + &#39;哈哈哈哈&#39;,
+                userName1: state =&gt; state.user.userName + &#39;真可爱啊啊啊&#39;
+            }),
+            ...mapGetters([
+                 // 把 `this.userAge` 映射为 `this.$store.getters.userAge`
+                &quot;userAge&quot;,
+                &quot;userName&quot;
+            ])
+        },
+        onLoad() {
+            // 想要获取getters的内容，但是home是使用命名空间来获取的，所以暂时不知道怎么获取
+            // console.log(this.$store.getters)
+            console.log(this.$store.state.user.userAge)
+            console.log(this.$store.state.user.userName)
+        },
+        methods: {
+            ...mapMutations(
+                [
+                    USER_NAME, USER_AGE
+                ]),
+                changeUserName() {
+                    this.USER_NAME(&#39;zhangjiahui&#39;)
+                },
+                changeUserAge() {
+                    this.USER_AGE(77)
+                },
+                gotoBack() {
+                    uni.navigateBack({
+                        delta: 1
+                    });
+                }
+        }
+    }
+&lt;/script&gt;
+
+&lt;style&gt;
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logo {
+        height: 200rpx;
+        width: 200rpx;
+        margin-top: 200rpx;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 50rpx;
+    }
+
+    .text-area {
+        display: flex;
+        justify-content: center;
+    }
+
+    .title {
+        font-size: 36rpx;
+        color: #8f8f94;
+    }
+
+    .text-content {
+        width: 100vw;
+        background: #007AFF;
+        height: 300upx;
+    }
+&lt;/style&gt;
+</code></pre><p><a href="https://github.com/smileasy/vuexDemo" target="_blank" rel="noopener">Demo链接</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《在uni-app中使用Vuex》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/10/17/2019-10-17-zai-uni-app-zhong-shi-yong-vuex/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                刘星星
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'abc79898ea014913ba7c',
+        clientSecret: '41f23ea4570391c06c9f4f47d0acec45d8dfe3ff',
+        repo: 'blogtalk',
+        owner: 'smileasy',
+        admin: "smileasy",
+        id: '2019-10-17T00-00-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/11/21/2019-11-21-zai-uni-app-zhong-zi-ding-yi-cha-jian/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="在uni-app中自定义组件与插件">
+                        
+                        <span class="card-title">在uni-app中自定义组件与插件</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+
+
+前言在Vue的开发中，我们为了使代码能有更好的复用性，在开发阶段将具有相似业务的模块功能抽取成组件。而对于插件而言，则是通常用来为 Vue 添加全局功能。像我们使用的vue-router,就是一个插件。为了演示组件和插件的用法，我
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-21
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Vue-js/" class="post-category" target="_blank">
+                                    Vue.js
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/总结提高/" target="_blank">
+                        <span class="chip bg-color">总结提高</span>
+                    </a>
+                    
+                    <a href="/tags/uni-app/" target="_blank">
+                        <span class="chip bg-color">uni-app</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/09/01/2019-09-01-zai-uni-app-zhong-shi-yong-wei-xin-deng-lu-zong-jie/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="在uni-app中使用微信登录总结">
+                        
+                        <span class="card-title">在uni-app中使用微信登录总结</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+在uni-app中使用微信登录总结最近开发了一款使用uni-app框架的小程序，名字叫“花果鲜inside”（因为是针对公司业务的小程序，注册后需要后台审核，所以只能游客浏览哈）。现将开发问题中涉及到的微信授权登录业务总结一下.
+登录
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Vue-js/" class="post-category" target="_blank">
+                                    Vue.js
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/总结提高/" target="_blank">
+                        <span class="chip bg-color">总结提高</span>
+                    </a>
+                    
+                    <a href="/tags/uni-app/" target="_blank">
+                        <span class="chip bg-color">uni-app</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站博客内容由刘星星负责更新维护.
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;当前站点总字数:&nbsp;
+                <span class="white-color">118.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
