@@ -351,6 +351,31 @@
     
     
     <entry>
+      <title>React 基础使用</title>
+      <link href="/2019/03/11/2019-03-11-react-ji-chu-shi-yong/"/>
+      <url>/2019/03/11/2019-03-11-react-ji-chu-shi-yong/</url>
+      
+        <content type="html"><![CDATA[<meta name="referrer" content="no-referrer"><h4 id="使用-React-做一个-TodoList"><a href="#使用-React-做一个-TodoList" class="headerlink" title="使用 React 做一个 TodoList"></a>使用 React 做一个 TodoList</h4><pre class=" language-react"><code class="language-react"><!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8">  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>React</title></head><body>  <div id="example"></div>  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>  <script src="https://cdn.bootcdn.net/ajax/libs/babel-standalone/7.0.0-beta.3/babel.min.js"></script>  <script type="text/babel">    class App extends React.Component {      state = { todos: ['吃饭', '睡觉', '敲代码'] }      addTodos = (thing) => {        let todos = [...this.state.todos]        todos.unshift(thing)        this.setState({todos})      }      render() {        const { todos } = this.state        return (          <div>            <h1>Simple Todo</h1>            <Add count={todos.length} addTodos={this.addTodos}/>            <Lists todos={todos} />          </div>        )      }    }    class Add extends React.Component {      add = () => {        let {addTodos} = this.props        let content = this.todoInput.value.trim()        addTodos(content)        this.todoInput.value = ''      }      render() {        const {count} = this.props        return (          <div>            <input type="text" ref={(input) => {this.todoInput = input}}/>            <button onClick={this.add}>Add#{count}</button>          </div>        )      }    }    class Lists extends React.Component {      render() {        const {todos} = this.props        return (          <div>               <ul>                {todos.map((item, index) => {                  return<li key={index}>{item}</li>                })}              </ul>          </div>        )      }    }    ReactDOM.render(<App />, document.getElementById('example'));  </script></body></html></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> React.js </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 基础总结 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>RxSwift基础总结</title>
       <link href="/2019/03/01/2019-03-01-rxswift-ji-chu-zong-jie/"/>
       <url>/2019/03/01/2019-03-01-rxswift-ji-chu-zong-jie/</url>
@@ -1077,9 +1102,9 @@
       
         <tags>
             
-            <tag> 手势识别 </tag>
-            
             <tag> Git </tag>
+            
+            <tag> 手势识别 </tag>
             
         </tags>
       
