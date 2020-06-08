@@ -1,0 +1,1098 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="iOS中Masonry的使用总结, 星星的博客">
+    <meta name="description" content="
+
+MasonryMasonry是一个基于AutoLayout的开源布局框架。类似的还有PureLayout,snapKit等。基于 frame的框架有Facade以及Neon。现在我们使用最多的就是Masonry和SnapKit/Snap">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>iOS中Masonry的使用总结 | 星星的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">星星的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">星星的博客</div>
+        <div class="logo-desc">
+            
+            一起学习 共同进步
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        iOS中Masonry的使用总结
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/iOS/" target="_blank">
+                                <span class="chip bg-color">iOS</span>
+                            </a>
+                        
+                            <a href="/tags/总结提高/" target="_blank">
+                                <span class="chip bg-color">总结提高</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/iOS/" class="post-category" target="_blank">
+                                iOS
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-04-01
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        2.1k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        10 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <meta name="referrer" content="no-referrer">
+
+<h2 id="Masonry"><a href="#Masonry" class="headerlink" title="Masonry"></a>Masonry</h2><p>Masonry是一个基于<code>AutoLayout</code>的开源布局框架。类似的还有<code>PureLayout</code>,<code>snapKit</code>等。基于 frame的框架有<a href="https://github.com/mamaral/Facade" target="_blank" rel="noopener">Facade</a>以及<a href="https://github.com/mamaral/Neon" target="_blank" rel="noopener">Neon</a>。现在我们使用最多的就是<a href="https://github.com/SnapKit/Masonry" target="_blank" rel="noopener">Masonry</a>和<a href="https://github.com/SnapKit" target="_blank" rel="noopener">SnapKit</a>/<strong><a href="https://github.com/SnapKit/SnapKit" target="_blank" rel="noopener">SnapKit</a></strong>。以下，是对Masonry的使用总结。</p>
+<p>核心方法有以下3个：</p>
+<ul>
+<li><p><strong>mas_makeConstraints</strong>: 负责添加约束 </p>
+</li>
+<li><p><strong>mas_updateConstraints</strong>:  更新约束 </p>
+</li>
+<li><p><strong>mas_remakeConstraints</strong>:  清除所有约束</p>
+</li>
+</ul>
+<blockquote>
+<p>需要注意的是，使用mas_makeConstrains方法的元素必须事先添加到父视图中</p>
+</blockquote>
+<p>按比例取值：</p>
+<ul>
+<li>multipliedBy属性：约束值与该值相乘</li>
+<li>dividedBy属性：约束值与该值相除</li>
+</ul>
+<pre><code>    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.view);
+        make.width.equalTo(self.view.mas_width).dividedBy(2);
+        make.height.equalTo(self.view.mas_width).multipliedBy(0.5);
+    }];</code></pre><blockquote>
+<p>dividedBy(2)与multipliedBy(0.5)的值是一样的。最终是一个居中的等宽高的正方形。</p>
+</blockquote>
+<h4 id="Masonry的基本使用-相对父视图布局"><a href="#Masonry的基本使用-相对父视图布局" class="headerlink" title="Masonry的基本使用-相对父视图布局"></a>Masonry的基本使用-相对父视图布局</h4><p>1.创建一个View，上下左右空出50个像素。我们可以使用<code>offset</code>来实现效果：</p>
+<pre class=" language-objective-c"><code class="language-objective-c">  [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+          make.top.equalTo(self.view.mas_top).with.offset(50);
+          make.left.equalTo(self.view.mas_left).with.offset(50);
+          make.bottom.equalTo(self.view.mas_bottom).with.offset(-50);
+          make.right.equalTo(self.view.mas_right).with.offset(-50);
+      }];</code></pre>
+<p>也可以不指定约束边，默认取需要添加约束的边，简化写法如下：</p>
+<pre class=" language-objective-c"><code class="language-objective-c">    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).mas_offset(50);
+        make.left.equalTo(self.view).mas_offset(50);
+        make.right.equalTo(self.view).mas_offset(-50);
+        make.bottom.equalTo(self.view).mas_offset(-50);
+    }];</code></pre>
+<p>还可以再简化些：</p>
+<pre><code>    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(50)
+        make.left.equalTo(@50);
+        make.bottom.equalTo(@(-50));
+        make.right.equalTo(@(-50));
+    }];</code></pre><blockquote>
+<p>不声明相对视图，则默认值就是相对于依赖父视图对应相同约束的偏移量。如果你想使用字面量，那么就使用<code>equalTo(@50)</code>这种方式。如果不想使用字面量，那么就使用<code>mas_equalTo(50)</code>的方式。</p>
+</blockquote>
+<p>还可以使用<code>EdgeInsets</code>来实现：</p>
+<pre class=" language-objective-c"><code class="language-objective-c">    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(50, 50, 50, 50));
+      }];</code></pre>
+<blockquote>
+<p>同样的，也可以去除<code>equalTo(self.view)</code>,那么也是相对于父视图添加约束。</p>
+</blockquote>
+<ol start="2">
+<li>创建一个View，水平居中，垂直居中但是向上偏移50像素。</li>
+</ol>
+<pre class=" language-objective-c"><code class="language-objective-c">    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(200);
+        make.height.mas_equalTo(200);
+        make.center.equalTo(self.view).centerOffset(CGPointMake(0, -100));
+          //make.center.mas_equalTo(0).centerOffset(CGPointMake(0, -100));
+    }];</code></pre>
+<p>3.有2个 view，topView 是 bottomView 的父视图。现在，我们使用bottomView来撑开父视图topView：</p>
+<pre class=" language-objective-c"><code class="language-objective-c">    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.right.mas_equalTo(-20);
+        make.top.mas_equalTo(100);
+    }];
+    [_bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.mas_equalTo(50);
+        make.right.bottom.mas_equalTo(-50);
+        make.height.mas_equalTo(80);
+    }];</code></pre>
+<h4 id="Masonry的基本使用-相对兄弟视图布局"><a href="#Masonry的基本使用-相对兄弟视图布局" class="headerlink" title="Masonry的基本使用-相对兄弟视图布局"></a>Masonry的基本使用-相对兄弟视图布局</h4><p>创建一个topView，水平居中，垂直居中但是向上偏移50像素。创建另一个 view，等宽等高，距离topView的底部100个像素。</p>
+<pre><code>    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(200);
+        make.height.mas_equalTo(200);
+        make.center.equalTo(self.view).centerOffset(CGPointMake(0, -100));
+    }];
+    [_bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(_topView);
+        make.top.equalTo(self.topView.mas_bottom).offset(100);
+        make.left.and.right.equalTo(_topView);
+    }];</code></pre><h4 id="mas-topLayoutGuide与mas-bottomLayoutGuide的使用"><a href="#mas-topLayoutGuide与mas-bottomLayoutGuide的使用" class="headerlink" title="mas_topLayoutGuide与mas_bottomLayoutGuide的使用"></a><code>mas_topLayoutGuide</code>与<code>mas_bottomLayoutGuide</code>的使用</h4><p><code>mas_topLayoutGuide</code>主要是针对导航栏布局，<code>mas_bottomLayoutGuide</code>则针对 tabbar 布局。</p>
+<p>如果存在导航，那么我们设置topView 距离顶部为0，那么会发现 topView 会穿透到导航栏下面：</p>
+<pre class=" language-objective-c"><code class="language-objective-c">    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.right.mas_equalTo(-20);
+        make.height.mas_equalTo(80);
+        make.top.mas_equalTo(0);
+    }];</code></pre>
+<p>你可以通过设置导航栏的来解决：</p>
+<pre><code>self.navigationController.navigationBar.translucent = NO;</code></pre><p>或者手动加上导航栏的高度:</p>
+<pre><code>make.top.mas_equalTo(导航栏高度 + 偏移量);</code></pre><p>当然，你可以使用<code>mas_topLayoutGuide</code>来布局：</p>
+<pre class=" language-objective-c"><code class="language-objective-c">    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.right.mas_equalTo(-20);
+        make.height.mas_equalTo(80);
+        make.top.mas_equalTo(self.mas_topLayoutGuide);
+    }];</code></pre>
+<p>同理，如果你想距离 tabbar 进行布局，那么就使用<code>mas_bottomLayoutGuide</code>来进行布局。</p>
+<h4 id="masonry-中数组的使用"><a href="#masonry-中数组的使用" class="headerlink" title="masonry 中数组的使用"></a>masonry 中数组的使用</h4><p>假如一个 view 的高度设置的是数组，那么会取数组中高度最低的那个值：</p>
+<pre class=" language-objective-c"><code class="language-objective-c">    _topView = [UIView new];
+    _topView.backgroundColor = [UIColor blueColor];
+    [self.view addSubview:_topView];
+    _bottomView = [UIView new];
+    _bottomView.backgroundColor = [UIColor redColor];
+    [self.view addSubview:_bottomView];
+    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.width.height.mas_equalTo(100);
+        make.top.mas_equalTo(self.mas_topLayoutGuide);
+    }];
+    [_bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.width.height.mas_equalTo(150);
+        make.top.mas_equalTo(_topView.mas_bottom).offset(30);
+    }];
+    UIView *testView = [[UIView alloc]init];
+    testView.backgroundColor = [UIColor orangeColor];
+    [self.view addSubview:testView];
+    [testView mas_makeConstraints:^(MASConstraintMaker *make) {
+           make.centerX.mas_equalTo(0);
+        make.width.height.mas_equalTo(@[_topView.mas_height, _bottomView.mas_height]);
+        make.top.mas_equalTo(_bottomView.mas_bottom).offset(40);
+       }];</code></pre>
+<blockquote>
+<p>testView 最终取的是100的值。</p>
+</blockquote>
+<h4 id="masonry-布局-UIScrollView"><a href="#masonry-布局-UIScrollView" class="headerlink" title="masonry 布局 UIScrollView"></a>masonry 布局 UIScrollView</h4><p>在使用masonry对UIScrollView设置约束时，我们不能直接设置 contentsize，我们需要使用一个 contentView 来撑起 contentSize。</p>
+<pre class=" language-objective-c"><code class="language-objective-c">    // 水平方向滚动视图
+    UIScrollView *scrollView = ({
+        UIScrollView *scrollView = [[UIScrollView alloc] init];
+        scrollView.backgroundColor = UIColor.orangeColor;
+        scrollView.pagingEnabled = YES;
+        scrollView;
+    });
+    [self.view addSubview:scrollView];
+
+    //设置 Scrollview 的约束
+    [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.insets(UIEdgeInsetsMake(150, 50, 50, 50));
+    }];
+    // 设置scrollView的子视图，即过渡视图contentSize
+    UIView *contentView = [[UIView alloc] init];
+    [scrollView addSubview:contentView];
+    [contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(scrollView);
+        make.height.mas_equalTo(scrollView);
+    }];
+    UIView *previousView = nil;
+    for (int i = 0; i < 10; i++) {
+        UILabel *label = ({
+            UILabel *label = [[UILabel alloc] init];
+            label.textAlignment = NSTextAlignmentCenter;
+            label.numberOfLines = 2;
+            label.backgroundColor = UIColor.redColor;
+            label.text = [NSString stringWithFormat:@"水平方向\n第 %d 个视图", (i + 1)];
+            label;
+        });
+        // 添加到父视图，并设置过渡视图中子视图的约束
+        [contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(contentView).offset(20);
+            make.bottom.equalTo(contentView).offset(-20);
+            make.width.equalTo(scrollView).offset(-40);
+            if (previousView) {
+                make.left.mas_equalTo(previousView.mas_right).offset(40);
+            } else {
+                make.left.mas_equalTo(20);
+            }
+        }];
+        previousView = label;
+    }
+    //设置将影响到scrollView的contentSize
+    [contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(previousView.mas_right).offset(20);
+    }];</code></pre>
+<h4 id="使用-masonry-实现多列等宽"><a href="#使用-masonry-实现多列等宽" class="headerlink" title="使用 masonry 实现多列等宽"></a>使用 masonry 实现多列等宽</h4><p>1.不指定每个 view 的宽度，根据视图间距，动态设置 view 的宽度：</p>
+<pre><code>    self.navigationController.navigationBar.translucent = NO;
+    NSMutableArray *views = @[].mutableCopy;
+            [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.insets(UIEdgeInsetsMake(50, 50, 50, 50));
+              }];
+    for (NSInteger i = 0; i &lt; 3; i++) {
+        UILabel *label = ({
+            UILabel *label = [[UILabel alloc] init];
+            label.textAlignment = NSTextAlignmentCenter;
+            label.numberOfLines = 2;
+            label.backgroundColor = UIColor.redColor;
+            label.text = [NSString stringWithFormat:@&quot; %ld&quot;, (i + 1)];
+            label;
+        });
+        [views addObject:label];
+        [_topView addSubview:label];
+    }
+    [views mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(_topView);
+        make.height.mas_equalTo(100);
+    }];
+    [views mas_distributeViewsAlongAxis:MASAxisTypeHorizontal
+                       withFixedSpacing:10
+                            leadSpacing:50
+                            tailSpacing:100];</code></pre><p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/29DA22C4DAD148799AFD88EF469886CE/36061" alt></p>
+<p>2.指定视图宽度，设置“头部”和“尾部”的间隔，中间间距自动计算：</p>
+<pre><code>    _topView = [UIView new];
+    _topView.backgroundColor = [UIColor blueColor];
+    [self.view addSubview:_topView];
+    self.navigationController.navigationBar.translucent = NO;
+    NSMutableArray *views = @[].mutableCopy;
+    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.insets(UIEdgeInsetsMake(50, 50, 50, 50));
+    }];
+    for (NSInteger i = 0; i &lt; 3; i++) {
+        UILabel *label = ({
+            UILabel *label = [[UILabel alloc] init];
+            label.textAlignment = NSTextAlignmentCenter;
+            label.numberOfLines = 2;
+            label.backgroundColor = UIColor.redColor;
+            label.text = [NSString stringWithFormat:@&quot; %ld&quot;, (i + 1)];
+            label;
+        });
+        [views addObject:label];
+        [_topView addSubview:label];
+    }
+    [views mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(_topView);
+        make.height.mas_equalTo(70);
+    }];
+    [views mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedItemLength:50 leadSpacing:10 tailSpacing:40];</code></pre><blockquote>
+<p>withFixedItemLength:50中，50就是指定的宽度。</p>
+</blockquote>
+<p><img src="https://note.youdao.com/yws/public/resource/731f775e4394ed68a36c3d9ffab6fb48/xmlnote/B1A19EC454914D81B25C9310BCE0252A/36066" alt></p>
+<p>2.设置宽高比例：</p>
+<pre class=" language-objective-c"><code class="language-objective-c">    _topView = [UIView new];
+    _topView.backgroundColor = [UIColor blueColor];
+    [self.view addSubview:_topView];
+    _bottomView = [UIView new];
+    _bottomView.backgroundColor = [UIColor redColor];
+    [self.topView addSubview:_bottomView];
+    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.mas_equalTo(0);
+        make.width.height.mas_equalTo(self.view.mas_width).multipliedBy(0.5);
+    }];
+    [_bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.mas_equalTo(0);
+        make.width.mas_equalTo(_topView);
+        //subView.height = subView.width * 0.5;
+        make.height.mas_equalTo(_bottomView.mas_width).multipliedBy(0.5);
+    }];</code></pre>
+<p>3.UILabel 与 UIButton 的自适应：</p>
+<pre class=" language-objective-c"><code class="language-objective-c">- (void)createDemo {
+    self.contentLabel = [[UILabel alloc]init];
+    self.contentLabel.tag = 100;
+    [self.view addSubview:self.contentLabel];
+    self.contentLabel.text = @"最近是用Masonry";
+    self.contentLabel.backgroundColor = UIColor.redColor;
+    //设置最大宽度约束
+    [self.contentLabel setPreferredMaxLayoutWidth:self.view.bounds.size.width - 30];
+    [self.contentLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    self.contentLabel.numberOfLines = 0;
+    [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(100);
+        make.left.mas_equalTo(15);
+    }];
+
+    UIButton *btn = [[UIButton alloc] init];
+    self.btn = btn;
+    btn.backgroundColor = [UIColor blueColor];
+    btn.titleLabel.numberOfLines = 0;
+    [btn setTitle:@"添加文字" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(clicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btn];
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.contentLabel.mas_bottom).mas_offset(20);
+        make.centerX.mas_equalTo(self.view);
+        make.width.mas_lessThanOrEqualTo(self.view.mas_width).offset(-100);
+        make.height.mas_greaterThanOrEqualTo(btn.titleLabel.mas_height);
+//        make.height.mas_equalTo(@[btn.titleLabel.mas_height, btn.imageView.mas_height]);
+    }];
+
+}
+- (void)clicked {
+    self.contentLabel.text = [self.contentLabel.text stringByAppendingString:@"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"];
+    [self.btn setTitle:[self.btn.titleLabel.text stringByAppendingString:@"BBBBBBBBBBBBBBBB"] forState:UIControlStateNormal];
+}</code></pre>
+<h4 id="动态修改约束"><a href="#动态修改约束" class="headerlink" title="动态修改约束"></a>动态修改约束</h4><p>1.我们可以通过设置优先级来实现约束动画。比如删除一个视图：</p>
+<pre><code>    _topView = [UIView new];
+    _topView.backgroundColor = [UIColor blueColor];
+    [self.view addSubview:_topView];
+    _bottomView = [UIView new];
+    _bottomView.backgroundColor = [UIColor redColor];
+    [self.view addSubview:_bottomView];
+    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.width.height.mas_equalTo(150);
+        make.top.mas_equalTo(self.mas_topLayoutGuide);
+    }];
+    [_bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.width.height.mas_equalTo(150);
+        make.top.mas_equalTo(_topView.mas_bottom).offset(30);
+    }];
+    UIView *testView = [[UIView alloc]init];
+    testView.backgroundColor = [UIColor orangeColor];
+    [self.view addSubview:testView];
+    [testView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.width.height.mas_equalTo(150);
+        make.top.mas_equalTo(_bottomView.mas_bottom).offset(40);
+        make.top.mas_equalTo(_topView.mas_bottom).offset(40).priority(250);
+    }];</code></pre><p>删除视图：</p>
+<pre><code>    [_bottomView removeFromSuperview];
+    [UIView animateWithDuration:1.0 animations:^{
+        [self.view layoutIfNeeded];
+    }];</code></pre><ol start="2">
+<li><p>通过卸载和装载约束来实现：</p>
+<p>声明2个全局变量：</p>
+<pre><code>@property (nonatomic, strong)MASConstraint *constraint;
+@property (nonatomic, strong)MASConstraint *constraint1;</code></pre><p>实现：</p>
+<pre class=" language-objective-c"><code class="language-objective-c">    UIView *testView = [[UIView alloc]init];
+    testView.backgroundColor = [UIColor orangeColor];
+    [self.view addSubview:testView];
+
+    _topView = [UIView new];
+    _topView.backgroundColor = [UIColor blueColor];
+    [self.view addSubview:_topView];
+    _bottomView = [UIView new];
+    _bottomView.backgroundColor = [UIColor redColor];
+    [self.view addSubview:_bottomView];
+    [_topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.width.height.mas_equalTo(150);
+        make.top.mas_equalTo(self.mas_topLayoutGuide);
+    }];
+    [_bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.width.height.mas_equalTo(150);
+        _constraint1 = make.top.mas_equalTo(_topView.mas_bottom).offset(30);
+        make.top.mas_equalTo(testView.mas_bottom).offset(30).priority(250);
+    }];
+
+    [testView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.width.height.mas_equalTo(150);
+        _constraint = make.top.mas_equalTo(_bottomView.mas_bottom).offset(40);
+        make.top.mas_equalTo(_topView.mas_bottom).offset(40).priority(250);
+    }];</code></pre>
+<p>点击卸载约束，则发现bottomView 和 testView 的位置发生了交换：</p>
+<pre><code>    [_constraint uninstall];
+    [_constraint1 uninstall];
+    [UIView animateWithDuration:1.0 animations:^{
+        [self.view layoutIfNeeded];
+    }];</code></pre></li>
+</ol>
+<ul>
+<li><a href="https://www.jianshu.com/p/99c418cd11f7" target="_blank" rel="noopener">参考文章</a></li>
+<li><a href="https://www.jianshu.com/p/fba79bcc10e1" target="_blank" rel="noopener">参考文章2</a></li>
+</ul>
+
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《iOS中Masonry的使用总结》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/04/01/2019-04-01-ios-zhong-masonry-de-shi-yong-zong-jie/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                刘星星
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: 'abc79898ea014913ba7c',
+        clientSecret: '41f23ea4570391c06c9f4f47d0acec45d8dfe3ff',
+        repo: 'blogtalk',
+        owner: 'smileasy',
+        admin: "smileasy",
+        id: '2019-04-01T00-00-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/07/01/2019-07-01-wei-xin-xiao-cheng-xu-zong-jie-ti-gao/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="微信小程序总结提高">
+                        
+                        <span class="card-title">微信小程序总结提高</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+
+
+微信小程序总结提高现如今,微信小程序的开发越来越受欢迎,最近一段时间先后开发和维护了几个微信小程序,既有原生的,也有使用框架开发的.我现在维护的项目使用的框架有mpvue(现在已经迁移到uni-app)上,uni-app框架,Tar
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-01
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/微信小程序/" class="post-category" target="_blank">
+                                    微信小程序
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/总结提高/" target="_blank">
+                        <span class="chip bg-color">总结提高</span>
+                    </a>
+                    
+                    <a href="/tags/微信小程序/" target="_blank">
+                        <span class="chip bg-color">微信小程序</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/03/11/2019-03-11-react-ji-chu-shi-yong/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="React 基础使用">
+                        
+                        <span class="card-title">React 基础使用</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+
+使用 React 做一个 TodoList&lt;!DOCTYPE html>
+&lt;html lang="en">
+
+&lt;head>
+  &lt;meta charset="UTF-8">
+  &lt;meta name="vi
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-03-11
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/React-js/" class="post-category" target="_blank">
+                                    React.js
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/基础总结/" target="_blank">
+                        <span class="chip bg-color">基础总结</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站博客内容由刘星星负责更新维护.
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;当前站点总字数:&nbsp;
+                <span class="white-color">121k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
